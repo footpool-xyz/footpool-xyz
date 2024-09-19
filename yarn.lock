@@ -776,6 +776,66 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@footpool-xyz/foundry@workspace:packages/foundry":
+  version: 0.0.0-use.local
+  resolution: "@footpool-xyz/foundry@workspace:packages/foundry"
+  dependencies:
+    dotenv: ~16.3.1
+    envfile: ~6.18.0
+    ethers: ~5.7.1
+    prettier: ~2.8.8
+    qrcode: ~1.5.3
+    shx: ^0.3.4
+    toml: ~3.0.0
+  languageName: unknown
+  linkType: soft
+
+"@footpool-xyz/nextjs@workspace:packages/nextjs":
+  version: 0.0.0-use.local
+  resolution: "@footpool-xyz/nextjs@workspace:packages/nextjs"
+  dependencies:
+    "@heroicons/react": ^2.0.11
+    "@rainbow-me/rainbowkit": 2.1.2
+    "@tanstack/react-query": ^5.28.6
+    "@trivago/prettier-plugin-sort-imports": ^4.1.1
+    "@types/node": ^17.0.35
+    "@types/nprogress": ^0
+    "@types/react": ^18.0.9
+    "@types/react-copy-to-clipboard": ^5.0.4
+    "@typescript-eslint/eslint-plugin": ^5.39.0
+    "@uniswap/sdk-core": ^4.0.1
+    "@uniswap/v2-sdk": ^3.0.1
+    abitype: 1.0.5
+    autoprefixer: ^10.4.12
+    blo: ^1.0.1
+    burner-connector: ^0.0.8
+    daisyui: 4.5.0
+    eslint: ^8.15.0
+    eslint-config-next: ^14.0.4
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-prettier: ^4.2.1
+    next: ^14.0.4
+    next-themes: ^0.2.1
+    nprogress: ^0.2.0
+    postcss: ^8.4.16
+    prettier: ^2.8.4
+    qrcode.react: ^3.1.0
+    react: ^18.2.0
+    react-copy-to-clipboard: ^5.1.0
+    react-dom: ^18.2.0
+    react-hot-toast: ^2.4.0
+    tailwindcss: ^3.4.3
+    type-fest: ^4.6.0
+    typescript: 5.5.3
+    use-debounce: ^8.0.4
+    usehooks-ts: ^2.13.0
+    vercel: ^32.4.1
+    viem: 2.17.4
+    wagmi: 2.10.10
+    zustand: ^4.1.2
+  languageName: unknown
+  linkType: soft
+
 "@heroicons/react@npm:^2.0.11":
   version: 2.0.18
   resolution: "@heroicons/react@npm:2.0.18"
@@ -1728,66 +1788,6 @@ __metadata:
   checksum: dbb0b27df753eb6c6380010b25cc9a9ea31f9cb08864fc51e69e5880ff7e2b8f85b72caea1f1f28af165e83b72c48dd38617e43fc632779d025b50ba32ea759e
   languageName: node
   linkType: hard
-
-"@se-2/foundry@workspace:packages/foundry":
-  version: 0.0.0-use.local
-  resolution: "@se-2/foundry@workspace:packages/foundry"
-  dependencies:
-    dotenv: ~16.3.1
-    envfile: ~6.18.0
-    ethers: ~5.7.1
-    prettier: ~2.8.8
-    qrcode: ~1.5.3
-    shx: ^0.3.4
-    toml: ~3.0.0
-  languageName: unknown
-  linkType: soft
-
-"@se-2/nextjs@workspace:packages/nextjs":
-  version: 0.0.0-use.local
-  resolution: "@se-2/nextjs@workspace:packages/nextjs"
-  dependencies:
-    "@heroicons/react": ^2.0.11
-    "@rainbow-me/rainbowkit": 2.1.2
-    "@tanstack/react-query": ^5.28.6
-    "@trivago/prettier-plugin-sort-imports": ^4.1.1
-    "@types/node": ^17.0.35
-    "@types/nprogress": ^0
-    "@types/react": ^18.0.9
-    "@types/react-copy-to-clipboard": ^5.0.4
-    "@typescript-eslint/eslint-plugin": ^5.39.0
-    "@uniswap/sdk-core": ^4.0.1
-    "@uniswap/v2-sdk": ^3.0.1
-    abitype: 1.0.5
-    autoprefixer: ^10.4.12
-    blo: ^1.0.1
-    burner-connector: ^0.0.8
-    daisyui: 4.5.0
-    eslint: ^8.15.0
-    eslint-config-next: ^14.0.4
-    eslint-config-prettier: ^8.5.0
-    eslint-plugin-prettier: ^4.2.1
-    next: ^14.0.4
-    next-themes: ^0.2.1
-    nprogress: ^0.2.0
-    postcss: ^8.4.16
-    prettier: ^2.8.4
-    qrcode.react: ^3.1.0
-    react: ^18.2.0
-    react-copy-to-clipboard: ^5.1.0
-    react-dom: ^18.2.0
-    react-hot-toast: ^2.4.0
-    tailwindcss: ^3.4.3
-    type-fest: ^4.6.0
-    typescript: 5.5.3
-    use-debounce: ^8.0.4
-    usehooks-ts: ^2.13.0
-    vercel: ^32.4.1
-    viem: 2.17.4
-    wagmi: 2.10.10
-    zustand: ^4.1.2
-  languageName: unknown
-  linkType: soft
 
 "@sinclair/typebox@npm:0.25.24":
   version: 0.25.24
@@ -5618,6 +5618,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"footpool-xyz@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "footpool-xyz@workspace:."
+  dependencies:
+    husky: ^8.0.1
+    lint-staged: ^13.0.3
+  languageName: unknown
+  linkType: soft
+
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -9213,15 +9222,6 @@ __metadata:
   checksum: b7c7d1a68d6ca946f2fbb0778e0c4ec63c65501b54023b2af7d7e9f48fdb6c6580d6f7675cd53bda5944c5ebc057560d5a6365079752546865defb3b79dea454
   languageName: node
   linkType: hard
-
-"se-2@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "se-2@workspace:."
-  dependencies:
-    husky: ^8.0.1
-    lint-staged: ^13.0.3
-  languageName: unknown
-  linkType: soft
 
 "secp256k1@npm:^5.0.0":
   version: 5.0.0
