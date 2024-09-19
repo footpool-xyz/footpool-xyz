@@ -5,24 +5,45 @@ import { useReducer } from "react";
 import { ContractReadMethods } from "./ContractReadMethods";
 import { ContractVariables } from "./ContractVariables";
 import { ContractWriteMethods } from "./ContractWriteMethods";
+import type { Abi } from "abitype";
+import { createPublicClient, getContract, http } from "viem";
 import { Address, Balance } from "~~/components/scaffold-eth";
 import { useDeployedContractInfo, useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { ContractName } from "~~/utils/scaffold-eth/contract";
+import { Contract, ContractName } from "~~/utils/scaffold-eth/contract";
 
 type ContractUIProps = {
   contractName: ContractName;
   className?: string;
+  contractAddress?: `0x${string}`;
 };
 
 /**
  * UI component to interface with deployed contracts.
  **/
-export const ContractUI = ({ contractName, className = "" }: ContractUIProps) => {
+export const ContractUI = ({ contractName, className = "", contractAddress }: ContractUIProps) => {
   const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
   const { targetNetwork } = useTargetNetwork();
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
+
   const networkColor = useNetworkColor();
+
+  const client = createPublicClient({
+    chain: targetNetwork,
+    transport: http(),
+  });
+
+  const { data: deployedContractDataFromHook, isLoading: deployedContractLoading } =
+    useDeployedContractInfo(contractName);
+  let deployedContractData = deployedContractDataFromHook;
+
+  if (contractAddress !== undefined && deployedContractDataFromHook != undefined) {
+    // @ts-ignore
+    deployedContractData = getContract({
+      address: contractAddress as `0x${string}`,
+      abi: deployedContractDataFromHook.abi as Abi,
+      client: client,
+    }) as Contract<"MatchWeek">;
+  }
 
   if (deployedContractLoading) {
     return (
