@@ -1,0 +1,47 @@
+{
+  "name": "footpool-xyz",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/foundry",
+      "packages/nextjs"
+    ]
+  },
+  "scripts": {
+    "account": "yarn workspace @footpool-xyz/foundry account",
+    "chain": "yarn workspace @footpool-xyz/foundry chain",
+    "fork": "yarn workspace @footpool-xyz/foundry fork",
+    "deploy": "yarn workspace @footpool-xyz/foundry deploy",
+    "verify": "yarn workspace @footpool-xyz/foundry verify",
+    "deploy:verify": "yarn workspace @footpool-xyz/foundry deploy:verify",
+    "compile": "yarn workspace @footpool-xyz/foundry compile",
+    "generate": "yarn account:generate",
+    "account:generate": "yarn workspace @footpool-xyz/foundry account:generate",
+    "account:import": "yarn workspace @footpool-xyz/foundry account:import",
+    "flatten": "yarn workspace @footpool-xyz/foundry flatten",
+    "foundry:format": "yarn workspace @footpool-xyz/foundry format",
+    "foundry:lint": "yarn workspace @footpool-xyz/foundry lint",
+    "foundry:test": "yarn workspace @footpool-xyz/foundry test",
+    "test": "yarn foundry:test",
+    "format": "yarn next:format && yarn foundry:format",
+    "start": "yarn workspace @footpool-xyz/nextjs dev",
+    "next:lint": "yarn workspace @footpool-xyz/nextjs lint",
+    "next:format": "yarn workspace @footpool-xyz/nextjs format",
+    "next:check-types": "yarn workspace @footpool-xyz/nextjs check-types",
+    "next:build": "yarn workspace @footpool-xyz/nextjs build",
+    "next:serve": "yarn workspace @footpool-xyz/nextjs serve",
+    "postinstall": "husky install",
+    "precommit": "lint-staged",
+    "vercel": "yarn workspace @footpool-xyz/nextjs vercel",
+    "vercel:yolo": "yarn workspace @footpool-xyz/nextjs vercel:yolo"
+  },
+  "packageManager": "yarn@3.2.3",
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}
