@@ -7,9 +7,21 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./FunctionsConsumer.sol";
 
 contract MatchWeek is Initializable, OwnableUpgradeable {
+    error MatchWeek__AlreadyClosed();
+    error MatchWeek_NotClosedYet();
+    error MatchWeek__OnlyFactoryOrOwnerAllowed();
+    error MatchWeek__NotEnoughTokenAllowance();
+
     event BetAdded(address indexed sender, uint256 amount, Bet[] bets);
     event RewardSended(address indexed to, uint256 reward);
     event RefundSent(address to, uint256 refunded);
+    event EnabledMatchWeek(uint256 id);
+    event MatchAdded(uint256 id);
+
+    uint256 private constant DECIMALS = 1e18;
+    uint256 private constant AMOUNT_TO_BET = 5 * DECIMALS;
+    uint256 private constant REWARD_PERCENTAGE = 90;
+    uint256 private constant BASE_PERCENTAGE = 91000;
 
     struct Bet {
         uint32 matchId;
@@ -36,115 +48,137 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
 
     }
 
-    mapping(uint256 => Match) public matches;
-    uint256[] private matchesIds;
-    uint8 private matchesLength;
-    mapping(address => Bet[]) private betsByStakeholder;
-    address[] private stakeholders;
-    FunctionsConsumer public consumer;
-    IERC20 token;
+    uint256 public s_id;
+    string public s_title;
+    bool public s_isEnabled;
+    bool public s_isClosed;
 
-    uint256 id;
-    string public description;
-    bool public isEnabled;
-    bool public isClosed;
+    uint256[] private s_matchesIds;
+    uint8 private s_numOfMatches;
+    mapping(uint256 => Match) public s_matches;
+    mapping(address => Bet[]) private s_betsByStakeholder;
+    address[] private s_stakeholders;
+    address private s_factoryAddress;
+
+    IERC20 s_token;
+    FunctionsConsumer s_consumer;
 
     function initialize(
-        uint256 _id,
-        string memory _description,
-        address _owner,
-        address _consumer
+        uint256 id,
+        string memory _title,
+        address owner,
+        address consumer
     ) public initializer {
-        __Ownable_init(_owner);
-        id = _id;
-        isEnabled = false;
-        description = _description;
-        isClosed = false;
-        consumer = FunctionsConsumer(_consumer);
+        __Ownable_init(owner);
+        s_id = id;
+        s_isEnabled = false;
+        s_title = _title;
+        s_isClosed = false;
+        s_consumer = FunctionsConsumer(consumer);
+        s_factoryAddress = msg.sender;
     }
 
-    function enable() external {
-        isEnabled = true;
+    function enable() external onlyOwnerOrFactory {
+        s_isEnabled = true;
+        emit EnabledMatchWeek(s_id);
     }
 
     function summary() external view returns (string memory, bool, bool, uint256, uint256) {
-        return (description, isEnabled, isClosed, stakeholders.length, id);
+        return (s_title, s_isEnabled, s_isClosed, s_stakeholders.length, s_id);
     }
 
-    function close() external ifNotClosed {
-        isClosed = true;
+    function close() external onlyOpen {
+        s_isClosed = true;
+    }
+
+    function getResults() external view returns (string memory) {
+        return s_consumer.getResponse();
     }
 
     function addMatches(
-        Match[] calldata _matches
-    ) public onlyOwner ifNotClosed {
-        matchesLength = uint8(_matches.length);
+        Match[] calldata matchesToAdd
+    ) external onlyOwner onlyOpen {
+        uint256 matchesLength = matchesToAdd.length;
+
         for (uint8 i; i < matchesLength; ++i) {
-            uint32 matchId = _matches[i].id;
-            Match memory newMatch =
-                Match(matchId, _matches[i].localTeam, _matches[i].awayTeam, Result.UNDEFINED);
-            matches[matchId] = newMatch;
-            matchesIds.push(matchId);
+            uint32 matchId = matchesToAdd[i].id;
+            Match memory newMatch = Match(
+                matchId, matchesToAdd[i].localTeam, matchesToAdd[i].awayTeam, Result.UNDEFINED
+            );
+            s_matches[matchId] = newMatch;
+            s_matchesIds.push(matchId);
+            emit MatchAdded(matchId);
+            s_numOfMatches++;
         }
     }
 
-    function getMatches() public view returns (Match[] memory) {
-        uint256 matchesIdsLentgh = matchesIds.length;
-        Match[] memory _matches = new Match[](matchesLength);
+    function addBets(Bet[] calldata bets, address paymentTokenAddress) external onlyOpen {
+        _betPayment(paymentTokenAddress);
+        _storeBets(bets);
+    }
+
+    function addResults(
+        MatchResult[] calldata results
+    ) external onlyOwner onlyOpen {
+        uint256 resultsLength = results.length;
+        for (uint8 i = 0; i < resultsLength; ++i) {
+            s_matches[results[i].matchId].result = results[i].result;
+        }
+
+        _sendRewardsToWinners();
+        s_isClosed = true;
+    }
+
+    function withdrawFunds() external onlyOwner {
+        if (s_isClosed == false) {
+            revert MatchWeek_NotClosedYet();
+        }
+
+        address owner = owner();
+        uint256 balance = s_token.balanceOf(address(this));
+        s_token.transfer(owner, balance);
+    }
+
+    function refundToStakeholders() external onlyOwner {
+        uint256 stakeholdersLength = s_stakeholders.length;
+        uint256 amount = AMOUNT_TO_BET;
+        for (uint32 i; i < stakeholdersLength; i++) {
+            address to = s_stakeholders[i];
+            s_token.transfer(to, amount);
+            emit RefundSent(to, amount);
+        }
+    }
+
+    function getMatches() external view returns (Match[] memory) {
+        uint256 matchesIdsLentgh = s_numOfMatches;
+        Match[] memory matchesArray = new Match[](s_numOfMatches);
         for (uint8 i = 0; i < matchesIdsLentgh; ++i) {
-            _matches[i] = matches[matchesIds[i]];
+            matchesArray[i] = s_matches[s_matchesIds[i]];
         }
 
-        return _matches;
+        return matchesArray;
     }
 
-    function addBets(Bet[] calldata bets, address paymentTokenAddress) public ifNotClosed {
-        token = IERC20(paymentTokenAddress);
-        uint256 amount = 5 * (10 ** 18);
-        uint256 allowedAmountToTransfer = token.allowance(msg.sender, address(this)) * (10 ** 18);
-        require(amount <= allowedAmountToTransfer, "You need to approve your tokens first");
-        token.transferFrom(msg.sender, address(this), amount);
-
-        uint256 betsLength = bets.length;
-        for (uint8 i; i < betsLength; ++i) {
-            uint32 matchId = bets[i].matchId;
-            Result result = bets[i].result;
-
-            betsByStakeholder[msg.sender].push(Bet(matchId, result));
-        }
-        stakeholders.push(msg.sender);
-        emit BetAdded(msg.sender, amount, betsByStakeholder[msg.sender]);
+    function title() external view returns (string memory) {
+        return s_title;
     }
 
     function getMyBets(
         address user
-    ) public view returns (Bet[] memory) {
-        return betsByStakeholder[user];
+    ) external view returns (Bet[] memory) {
+        return s_betsByStakeholder[user];
     }
 
-    function getResults() external view returns (string memory) {
-        return consumer.getResponse();
-    }
-
-    function addResults(
-        MatchResult[] calldata _results
-    ) public onlyOwner ifNotClosed {
-        uint256 _resultsLength = _results.length;
-        for (uint8 i; i < _resultsLength; ++i) {
-            matches[_results[i].matchId].result = _results[i].result;
-        }
-
-        sendRewardsToWinners();
-        isClosed = true;
-    }
-
-    function sendRewardsToWinners() private onlyOwner {
-        uint256 stakeholdersLength = stakeholders.length;
-        address[] memory winners = new address[](stakeholders.length);
+    /**
+     * Private functions
+     */
+    function _sendRewardsToWinners() private onlyOwner {
+        uint256 stakeholdersLength = s_stakeholders.length;
+        address[] memory winners = new address[](s_stakeholders.length);
         uint8 winnersCount = 0;
         for (uint8 i; i < stakeholdersLength; ++i) {
-            address currentStakeHolder = stakeholders[i];
-            Bet[] memory allBetsByStakeHolder = betsByStakeholder[currentStakeHolder];
+            address currentStakeHolder = s_stakeholders[i];
+            Bet[] memory allBetsByStakeHolder = s_betsByStakeholder[currentStakeHolder];
             bool allBetsHitted = true;
 
             uint8 j = 0;
@@ -152,7 +186,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
             while (j < allBetsByStakeHolderLength && allBetsHitted == true) {
                 Bet memory betToCompare = allBetsByStakeHolder[j];
 
-                if (matches[betToCompare.matchId].result != betToCompare.result) {
+                if (s_matches[betToCompare.matchId].result != betToCompare.result) {
                     allBetsHitted = false;
                 }
 
@@ -166,54 +200,69 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         }
 
         if (winnersCount > 0) {
-            sendReward(winners, winnersCount);
+            _sendReward(winners, winnersCount);
         }
     }
 
-    function getRewardToSend(
+    function _sendReward(address[] memory to, uint8 winnersCount) private {
+        uint256 reward = _getRewardToSend(winnersCount);
+
+        for (uint32 i; i < winnersCount; ++i) {
+            s_token.transfer(to[i], reward);
+            emit RewardSended(to[i], reward);
+        }
+    }
+
+    function _getRewardToSend(
         uint256 winnersLength
     ) private view returns (uint256) {
-        uint256 currentBalance = token.balanceOf(address(this));
-        uint32 rewardPercentage = 90;
+        uint256 currentBalance = s_token.balanceOf(address(this));
 
-        uint256 reward = currentBalance / 100 * rewardPercentage;
+        uint256 reward = currentBalance / BASE_PERCENTAGE * REWARD_PERCENTAGE;
         uint256 userReward = reward / winnersLength;
 
         return userReward;
     }
 
-    function sendReward(address[] memory to, uint8 winnersCount) private {
-        uint256 reward = getRewardToSend(winnersCount);
-
-        for (uint32 i; i < winnersCount; ++i) {
-            token.transfer(to[i], reward);
-            emit RewardSended(to[i], reward);
+    function _betPayment(
+        address paymentTokenAddress
+    ) private {
+        s_token = IERC20(paymentTokenAddress);
+        uint256 allowedAmountToTransfer = s_token.allowance(msg.sender, address(this)) * DECIMALS;
+        if (AMOUNT_TO_BET > allowedAmountToTransfer) {
+            revert MatchWeek__NotEnoughTokenAllowance();
         }
+        s_token.transferFrom(msg.sender, address(this), AMOUNT_TO_BET);
     }
 
-    function withdrawFunds() external onlyOwner {
-        require(isClosed == true, "This is not closed yet!");
+    function _storeBets(
+        Bet[] calldata bets
+    ) private {
+        uint256 betsLength = bets.length;
+        for (uint8 i; i < betsLength; ++i) {
+            uint32 matchId = bets[i].matchId;
+            Result result = bets[i].result;
 
-        address owner = owner();
-        uint256 balance = token.balanceOf(address(this));
-        token.transfer(owner, balance);
-    }
-
-    function refundToStakeholders() external onlyOwner {
-        uint256 stakeholdersLength = stakeholders.length;
-        uint256 amount = 5 * (10 ** 18);
-        for (uint32 i; i < stakeholdersLength; i++) {
-            address to = stakeholders[i];
-            token.transfer(to, amount);
-            emit RefundSent(to, amount);
+            s_betsByStakeholder[msg.sender].push(Bet(matchId, result));
         }
+        s_stakeholders.push(msg.sender);
+        emit BetAdded(msg.sender, AMOUNT_TO_BET, s_betsByStakeholder[msg.sender]);
     }
 
-    /*
-    * Modifiers
-    */
-    modifier ifNotClosed() {
-        require(isClosed == false, "This matchweek is already closed.");
+    /**
+     * Modifiers
+     */
+    modifier onlyOpen() {
+        if (s_isClosed == true) {
+            revert MatchWeek__AlreadyClosed();
+        }
+        _;
+    }
+
+    modifier onlyOwnerOrFactory() {
+        if (msg.sender != s_factoryAddress && msg.sender != owner()) {
+            revert MatchWeek__OnlyFactoryOrOwnerAllowed();
+        }
         _;
     }
 }
