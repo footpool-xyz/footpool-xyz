@@ -3,6 +3,12 @@ src = 'contracts'
 out = 'out'
 libs = ['lib']
 fs_permissions = [{ access = "read-write", path = "./" }]
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+    "@chainlink/contracts/=lib/chainlink/contracts/",
+    "forge-std/=lib/forge-std/src/",
+]
 
 [rpc_endpoints]
 localhost = "http://127.0.0.1:8545"
@@ -34,7 +40,7 @@ sepolia = { key = "${ETHERSCAN_API_KEY}" }
 
 [fmt]
 multiline_func_header = "params_first"
-line_length = 80
+line_length = 100
 tab_width = 4
 quote_style = "double"
 bracket_spacing = true
