@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 
 type MatchWeekCardProps = {
@@ -46,7 +47,10 @@ const MatchWeekCard = ({ title, season, stakeholdersCount, amountIn }: MatchWeek
           </div>
 
           <div className="flex justify-center">
-            <button className="bg-secondary font-bold py-2 px-4 rounded-xl">Bet now!</button>
+            <Link className="bg-secondary font-bold py-2 px-4 rounded-xl" href={"/matchweeks/0xaaaaaaa"}>
+              {" "}
+              Bet now!!
+            </Link>
           </div>
         </div>
       </div>
