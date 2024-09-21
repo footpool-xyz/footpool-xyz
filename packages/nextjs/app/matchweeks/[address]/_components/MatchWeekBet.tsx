@@ -14,14 +14,26 @@ const MatchWeekBet = ({ match }: MatchWeekBetProps) => {
     >
       <div className="flex justify-between items-center w-full mb-2">
         <div className="flex flex-col items-center">
-          <Image src={match.homeLogo} alt={`${match.homeTeam} logo`} className="w-12 h-12 object-cover mb-1" />
+          <Image
+            src={match.homeLogo}
+            alt={`${match.homeTeam} logo`}
+            width={60}
+            height={60}
+            className="w-12 h-12 object-cover mb-1"
+          />
           <span className="font-bold text-lg">{match.homeTeam}</span>
         </div>
 
         <div className="text-center font-semibold text-gray-500 text-xl">vs</div>
 
         <div className="flex flex-col items-center">
-          <Image src={match.awayLogo} alt={`${match.awayTeam} logo`} className="w-12 h-12 object-cover mb-1" />
+          <Image
+            src={match.awayLogo}
+            alt={`${match.awayTeam} logo`}
+            width={60}
+            height={60}
+            className="w-12 h-12 object-cover mb-1"
+          />
           <span className="font-bold text-lg">{match.awayTeam}</span>
         </div>
       </div>
