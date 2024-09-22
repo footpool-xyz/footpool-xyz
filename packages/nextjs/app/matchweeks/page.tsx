@@ -2,7 +2,7 @@ import BannerTitle from "./_components/BannerTitle";
 import MatchWeekCard from "./_components/MatchWeekCard";
 import type { NextPage } from "next";
 
-const MatchWeekPage: NextPage = () => {
+const MatchWeeksPage: NextPage = () => {
   const title = "On going Match Weeks";
   const subtitle = "Compete with Footpool users to find the best bettor and win cash prizes.";
 
@@ -12,11 +12,10 @@ const MatchWeekPage: NextPage = () => {
 
       <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
         <MatchWeekCard title="MatchWeek 1" season="Season 2024/2025" stakeholdersCount={350} amountIn={15000} />
-        {/* <MatchWeekCard /> */}
-        {/* <MatchWeekCard /> */}
+        <MatchWeekCard title="MatchWeek 2" season="Season 2024/2025" stakeholdersCount={200} amountIn={1000} />
       </div>
     </div>
   );
 };
 
-export default MatchWeekPage;
+export default MatchWeeksPage;

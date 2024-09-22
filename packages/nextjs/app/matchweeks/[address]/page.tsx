@@ -1,5 +1,5 @@
 import BannerTitle from "../_components/BannerTitle";
-import MatchWeekBet from "./_components/MatchWeekBet";
+import MatchBet from "./_components/MatchBet";
 import type { NextPage } from "next";
 import { Match } from "~~/types/match";
 
@@ -39,7 +39,7 @@ const MatchListPage: NextPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6 mx-4">
         {matches.map(match => (
           <div className="col-span-1" key={match.id}>
-            <MatchWeekBet match={match} />
+            <MatchBet match={match} />
           </div>
         ))}
       </div>
