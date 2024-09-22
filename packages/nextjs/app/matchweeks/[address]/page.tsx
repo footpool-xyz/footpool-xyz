@@ -36,12 +36,12 @@ const MatchListPage: NextPage = () => {
     <div className="flex items-center flex-col flex-grow pt-10">
       <BannerTitle title={title} subtitle={subtitle} />
 
-      <div className="flex-grow bg-base-300 w-full mt-16 px-36 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12 justify-center mx-36">
-          {matches.map(match => (
-            <MatchWeekBet key={match.id} match={match} />
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6 mx-4">
+        {matches.map(match => (
+          <div className="col-span-1" key={match.id}>
+            <MatchWeekBet match={match} />
+          </div>
+        ))}
       </div>
     </div>
   );
