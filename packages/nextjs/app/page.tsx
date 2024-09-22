@@ -1,3 +1,4 @@
+import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
 import BannerTitle from "./matchweeks/_components/BannerTitle";
 import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
 import type { NextPage } from "next";
@@ -11,6 +12,8 @@ const MatchWeeksPage: NextPage = () => {
       <BannerTitle title={title} subtitle={subtitle} />
 
       <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
+        <AddMatchWeek />
+
         <MatchWeekCard title="MatchWeek 1" season="Season 2024/2025" stakeholdersCount={350} amountIn={15000} />
         <MatchWeekCard title="MatchWeek 2" season="Season 2024/2025" stakeholdersCount={200} amountIn={1000} />
       </div>
