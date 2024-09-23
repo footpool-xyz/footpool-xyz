@@ -1,11 +1,18 @@
+"use client";
+
+import { useState } from "react";
+import BetButton from "./BetButton";
 import Team from "./Team";
-import { Match } from "~~/types/match";
+import { Bet, Match } from "~~/types/match";
 
 type MatchBetProps = {
   match: Match;
+  handleBet: (bet: Bet) => void;
 };
 
-const MatchBet = ({ match }: MatchBetProps) => {
+const MatchBet = ({ match, handleBet }: MatchBetProps) => {
+  const [selectedBet, setSelectedBet] = useState<number>();
+
   return (
     <div
       key={match.id}
@@ -25,9 +32,33 @@ const MatchBet = ({ match }: MatchBetProps) => {
       </div>
 
       <div className="flex justify-center mt-2 gap-3 w-full">
-        <button className="btn btn-secondary font-bold py-2 px-6 rounded-xl flex-grow">1</button>
-        <button className="btn btn-secondary font-bold py-2 px-6 rounded-xl flex-grow">X</button>
-        <button className="btn btn-secondary font-bold py-2 px-6 rounded-xl flex-grow">2</button>
+        <BetButton
+          matchId={match.id}
+          result={0}
+          selectedBet={selectedBet}
+          handleBet={handleBet}
+          setSelectedBet={setSelectedBet}
+        >
+          1
+        </BetButton>
+        <BetButton
+          matchId={match.id}
+          result={1}
+          selectedBet={selectedBet}
+          handleBet={handleBet}
+          setSelectedBet={setSelectedBet}
+        >
+          X
+        </BetButton>
+        <BetButton
+          matchId={match.id}
+          result={2}
+          selectedBet={selectedBet}
+          handleBet={handleBet}
+          setSelectedBet={setSelectedBet}
+        >
+          2
+        </BetButton>
       </div>
     </div>
   );

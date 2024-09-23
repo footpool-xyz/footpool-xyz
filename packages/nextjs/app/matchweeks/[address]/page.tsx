@@ -1,8 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
 import type { NextPage } from "next";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { Match } from "~~/types/match";
+import { Bet, Match } from "~~/types/match";
 
 // Simulated data for matches
 const matches: Match[] = [
@@ -40,6 +43,16 @@ const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
 const MatchListPage: NextPage = () => {
+  const [bets, setBets] = useState<Bet[]>([]);
+
+  const handleBet = (bet: Bet) => {
+    setBets(prev => ({
+      ...prev,
+      [bet.matchId]: bet,
+    }));
+    console.log(bets);
+  };
+
   return (
     <>
       <BannerTitle title={title} subtitle={subtitle} />
@@ -61,7 +74,7 @@ const MatchListPage: NextPage = () => {
       <div className="flex flex-wrap justify-center items-center bg-base-300">
         {matches.map(match => (
           <div className="w-full sm:w-full md:w-1/2 lg:w-1/3 p-4" key={match.id}>
-            <MatchBet match={match} />
+            <MatchBet match={match} handleBet={handleBet} />
           </div>
         ))}
       </div>
