@@ -5,7 +5,9 @@ import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
 import type { NextPage } from "next";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { useMatchWeekState } from "~~/services/store/matchWeek";
 import { Bet, Match } from "~~/types/match";
+import { displayMatchResultGivenId } from "~~/utils/footpool";
 
 // Simulated data for matches
 const matches: Match[] = [
@@ -45,6 +47,7 @@ const subtitle = "Choose your bet for each match";
 const MatchListPage: NextPage = () => {
   const [bets, setBets] = useState<Bet[]>([]);
   const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
+  const { addBets } = useMatchWeekState();
 
   const handleBet = (bet: Bet) => {
     setBets(prev => ({
@@ -55,6 +58,7 @@ const MatchListPage: NextPage = () => {
 
   const handleSubmitBet = () => {
     // Save bets.
+    addBets(Object.values(bets));
     setIsBetSubmitted(true);
   };
 
@@ -97,8 +101,13 @@ const MatchListPage: NextPage = () => {
           </div>
         </>
       ) : (
-        <div className="flex justify-center items-center bg-base-300">
+        <div className="flex flex-col justify-center items-center bg-base-300">
           <p>Your bets has been submitted successfully! 😚 </p>
+          {Object.values(bets).map((bet, i) => (
+            <div key={i} className="text-center">
+              <span>MatchId: {bet.matchId}</span> - <span>Result: {displayMatchResultGivenId(bet.result)}</span>
+            </div>
+          ))}
         </div>
       )}
     </>
