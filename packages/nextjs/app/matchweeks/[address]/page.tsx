@@ -1,7 +1,7 @@
 import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
 import type { NextPage } from "next";
-import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import { Match } from "~~/types/match";
 
 // Simulated data for matches
@@ -45,15 +45,15 @@ const MatchListPage: NextPage = () => {
       <BannerTitle title={title} subtitle={subtitle} />
       <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
         <button className="btn btn-secondary text-xl text-center">
-          <PlusCircleIcon className="h-8 w-8" />
+          <PlusCircleIcon className="h-6 w-6" />
           Add matches
         </button>
         <button className="btn btn-secondary text-xl text-center">
-          <PlusCircleIcon className="h-8 w-8" />
-          Add results
+          <RocketLaunchIcon className="h-6 w-6" />
+          End Match Week
         </button>
         <button className="btn btn-secondary text-xl text-center">
-          <BanknotesIcon className="h-8 w-8" />
+          <BanknotesIcon className="h-6 w-6" />
           Withdraw
         </button>
       </div>
