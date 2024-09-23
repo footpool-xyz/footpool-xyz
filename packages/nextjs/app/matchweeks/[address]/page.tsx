@@ -44,12 +44,18 @@ const subtitle = "Choose your bet for each match";
 
 const MatchListPage: NextPage = () => {
   const [bets, setBets] = useState<Bet[]>([]);
+  const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
 
   const handleBet = (bet: Bet) => {
     setBets(prev => ({
       ...prev,
       [bet.matchId]: bet,
     }));
+  };
+
+  const handleSubmitBet = () => {
+    // Save bets.
+    setIsBetSubmitted(true);
   };
 
   return (
@@ -70,19 +76,31 @@ const MatchListPage: NextPage = () => {
         </button>
       </div>
 
-      <div className="flex flex-wrap justify-center items-center bg-base-300">
-        {matches.map(match => (
-          <div className="w-full sm:w-full md:w-1/2 lg:w-1/3 p-4" key={match.id}>
-            <MatchBet match={match} handleBet={handleBet} />
+      {!isBetSubmitted ? (
+        <>
+          <div className="flex flex-wrap justify-center items-center bg-base-300">
+            {matches.map(match => (
+              <div className="w-full sm:w-full md:w-1/2 lg:w-1/3 p-4" key={match.id}>
+                <MatchBet match={match} handleBet={handleBet} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
-        <button className="btn btn-secondary text-xl text-center" disabled={Object.keys(bets).length < matches.length}>
-          <CurrencyDollarIcon className="h-8 w-8" />
-          Bet
-        </button>
-      </div>
+          <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
+            <button
+              onClick={handleSubmitBet}
+              className="btn btn-secondary text-xl text-center"
+              disabled={Object.keys(bets).length < matches.length}
+            >
+              <CurrencyDollarIcon className="h-8 w-8" />
+              Bet
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="flex justify-center items-center bg-base-300">
+          <p>Your bets has been submitted successfully! 😚 </p>
+        </div>
+      )}
     </>
   );
 };
