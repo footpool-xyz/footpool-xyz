@@ -586,9 +586,12 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        owner: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
-        renounceOwnership: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
-        transferOwnership: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
+        owner:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
       },
     },
     MatchWeekFactory: {
@@ -861,8 +864,10 @@ const deployedContracts = {
       ],
       inheritedFunctions: {
         owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },
