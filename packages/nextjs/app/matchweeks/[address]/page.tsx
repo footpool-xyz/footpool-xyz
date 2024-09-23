@@ -50,7 +50,6 @@ const MatchListPage: NextPage = () => {
       ...prev,
       [bet.matchId]: bet,
     }));
-    console.log(bets);
   };
 
   return (
@@ -79,7 +78,7 @@ const MatchListPage: NextPage = () => {
         ))}
       </div>
       <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
-        <button className="btn btn-secondary text-xl text-center">
+        <button className="btn btn-secondary text-xl text-center" disabled={Object.keys(bets).length < matches.length}>
           <CurrencyDollarIcon className="h-8 w-8" />
           Bet
         </button>
