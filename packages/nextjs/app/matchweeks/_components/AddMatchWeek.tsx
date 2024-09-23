@@ -3,9 +3,25 @@
 import { useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { InputBase } from "~~/components/scaffold-eth";
+import { useMatchWeekState } from "~~/services/store/matchWeek";
 
 const AddMatchWeek = () => {
   const [name, setName] = useState("");
+  const { addMatchWeek } = useMatchWeekState();
+
+  const handleAddMatchWeek = () => {
+    if (name == "") {
+      console.log("Add a valid name");
+      return;
+    }
+
+    addMatchWeek(name);
+    setName("");
+    const checkbox = document.getElementById("add-match-week-modal") as HTMLInputElement;
+    if (checkbox) {
+      checkbox.checked = false;
+    }
+  };
 
   return (
     <div>
@@ -38,7 +54,7 @@ const AddMatchWeek = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-3">
-              <button className="h-10 btn btn-primary btn-sm px-2 rounded-full">
+              <button onClick={handleAddMatchWeek} className="h-10 btn btn-primary btn-sm px-2 rounded-full">
                 <span>Create</span>
               </button>
             </div>

@@ -24,9 +24,8 @@ const MatchWeekCard = ({ title, season, stakeholdersCount, amountIn }: MatchWeek
         </div>
 
         <div className="flex flex-col justify-center text-center sm:text-left sm:ml-10">
-          <h2 className="text-2xl font-bold">
-            {title} - {season}
-          </h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
+          <p className="text-pretty text-sm mt-0">{season}</p>
           <div className="flex items-center justify-center sm:justify-start mt-2">
             <UserGroupIcon className="w-6 h-6 text-gray-500 mr-2" />
             <p>
