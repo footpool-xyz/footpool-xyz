@@ -3,19 +3,33 @@
 import { useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { InputBase } from "~~/components/scaffold-eth";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useMatchWeekState } from "~~/services/store/matchWeek";
 
 const AddMatchWeek = () => {
   const [name, setName] = useState("");
   const { addMatchWeek } = useMatchWeekState();
+  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract("MatchWeekFactory");
 
-  const handleAddMatchWeek = () => {
+  const storeMatchWeekInContract = async (name: string) => {
+    try {
+      await writeFactoryContract({
+        functionName: "createMatchWeek",
+        args: [name],
+      });
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+  };
+
+  const handleAddMatchWeek = async () => {
     if (name == "") {
       console.log("Add a valid name");
       return;
     }
 
     addMatchWeek(name);
+    await storeMatchWeekInContract(name);
     setName("");
     const checkbox = document.getElementById("add-match-week-modal") as HTMLInputElement;
     if (checkbox) {

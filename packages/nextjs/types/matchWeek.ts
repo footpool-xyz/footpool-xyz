@@ -1,3 +1,4 @@
+import { AddressType } from "./abitype/abi";
 import { Match } from "./match";
 
 export type MatchWeek = {
@@ -8,4 +9,5 @@ export type MatchWeek = {
   stakeholdersCounter: number;
   pricePool: number;
   matches: Match[];
+  address?: AddressType;
 };

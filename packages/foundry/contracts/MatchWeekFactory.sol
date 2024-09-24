@@ -11,7 +11,7 @@ import "./MatchWeek.sol";
  * and closing/enabling them also.
  */
 contract MatchWeekFactory is Ownable {
-    event MatchWeekCreated(address addr, string name);
+    event MatchWeekCreated(uint256 id, address addr, string name);
     event MatchWeekEnabled(uint256 id);
     event MatchWeekClosed(uint256 id);
     event MatchWeekClonableAddressChanged(address cloneAddr);
@@ -38,10 +38,10 @@ contract MatchWeekFactory is Ownable {
         uint256 newId = s_matchWeeksIds.length + 1;
 
         MatchWeek newMatchWeek = MatchWeek(Clones.clone(s_matchWeekAddress));
-        newMatchWeek.initialize(s_matchWeeksIds.length + 1, name, msg.sender, s_consumerAddress);
+        newMatchWeek.initialize(newId, name, msg.sender, s_consumerAddress);
         s_matchWeeks[newId] = newMatchWeek;
         s_matchWeeksIds.push(newId);
-        emit MatchWeekCreated(address(newMatchWeek), name);
+        emit MatchWeekCreated(newId, address(newMatchWeek), name);
 
         return newMatchWeek;
     }
