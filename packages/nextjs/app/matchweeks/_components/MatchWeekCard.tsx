@@ -43,6 +43,7 @@ const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWe
 
       updateMatchWeek(updatedMatchWeek);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [summary, isSummaryLoading]);
 
   return (
