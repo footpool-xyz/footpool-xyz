@@ -5,7 +5,7 @@ import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
 import BannerTitle from "./matchweeks/_components/BannerTitle";
 import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
 import type { NextPage } from "next";
-import { useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
+import { useScaffoldEventHistory, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useMatchWeekState } from "~~/services/store/matchWeek";
 import { AddressType } from "~~/types/abitype/abi";
 import { MatchWeek } from "~~/types/matchWeek";
@@ -15,6 +15,7 @@ const subtitle = "Compete with Footpool users to find the best bettor and win ca
 
 const MatchWeeksPage: NextPage = () => {
   const { matchWeeks, setMatchWeeks } = useMatchWeekState();
+  const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
 
   const { data: events, isLoading: isLoadingEvents } = useScaffoldEventHistory({
     contractName: "MatchWeekFactory",
@@ -29,6 +30,8 @@ const MatchWeeksPage: NextPage = () => {
   useEffect(() => {
     if (!isLoadingEvents && events) {
       const matchWeeksFromEvents: MatchWeek[] = events.map(event => {
+        // TODO: Retrieve contract info by id to get latest data.
+
         return {
           id: Number(event.args.id),
           name: event.args.name as string,
@@ -45,6 +48,28 @@ const MatchWeeksPage: NextPage = () => {
     }
   }, [events, isLoadingEvents, setMatchWeeks]);
 
+  const handleEnable = async (id: number) => {
+    try {
+      await writeMatchWeekFactoryAsync({
+        functionName: "enableMatchWeekById",
+        args: [BigInt(id)],
+      });
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+  };
+
+  const handleClose = async (id: number) => {
+    try {
+      await writeMatchWeekFactoryAsync({
+        functionName: "closeMatchWeekById",
+        args: [BigInt(id)],
+      });
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+  };
+
   return (
     <>
       <BannerTitle title={title} subtitle={subtitle} />
@@ -54,10 +79,10 @@ const MatchWeeksPage: NextPage = () => {
           {matchWeeks.map(matchWeek => (
             <MatchWeekCard
               key={matchWeek.id}
-              title={matchWeek.name}
+              matchWeek={matchWeek}
               season="Season 2024/2025"
-              stakeholdersCount={matchWeek.stakeholdersCounter}
-              amountIn={matchWeek.pricePool}
+              handleEnable={handleEnable}
+              handleClose={handleClose}
             />
           ))}
         </div>
