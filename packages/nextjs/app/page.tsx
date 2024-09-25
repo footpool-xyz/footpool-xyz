@@ -46,7 +46,7 @@ const MatchWeeksPage: NextPage = () => {
 
       setMatchWeeks(matchWeeksFromEvents);
     }
-  }, [events, isLoadingEvents]);
+  }, [events, isLoadingEvents, setMatchWeeks]);
 
   const handleEnable = async (matchWeek: MatchWeek) => {
     try {
