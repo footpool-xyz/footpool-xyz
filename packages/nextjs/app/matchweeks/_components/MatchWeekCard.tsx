@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useAccount } from "wagmi";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
+import { useOnlyOwner } from "~~/hooks/footpool";
 import { MatchWeek } from "~~/types/matchWeek";
 
 type MatchWeekCardProps = {
@@ -11,6 +13,9 @@ type MatchWeekCardProps = {
 };
 
 const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWeekCardProps) => {
+  const { address: connectedAddress } = useAccount();
+  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeek.address || "", "MatchWeekFactory");
+
   return (
     <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-5">
       <div className="flex flex-col sm:flex-row bg-base-100 px-10 py-10 max-w-4xl rounded-3xl">
@@ -51,25 +56,27 @@ const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWe
               className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${!matchWeek.isEnabled ? "btn-disabled" : ""}`}
               href={"/matchweeks/" + matchWeek.address}
             >
-              Bet now!!
+              {matchWeek.isEnabled ? "Bet now!!" : "Coming soon..."}
             </Link>
           </div>
-          <div className="flex justify-center mt-2">
-            <button
-              disabled={matchWeek.isEnabled}
-              className="btn btn-success btn-xs rounded-xl"
-              onClick={() => handleEnable(matchWeek.id)}
-            >
-              Enable
-            </button>
-            <button
-              disabled={matchWeek.isClosed}
-              className="btn btn-error btn-xs rounded-xl"
-              onClick={() => handleClose(matchWeek.id)}
-            >
-              Close
-            </button>
-          </div>
+          {isOwner && !isOwnerLoading && (
+            <div className="flex justify-center mt-2">
+              <button
+                disabled={matchWeek.isEnabled}
+                className="btn btn-success btn-xs rounded-xl"
+                onClick={() => handleEnable(matchWeek.id)}
+              >
+                Enable
+              </button>
+              <button
+                disabled={matchWeek.isClosed}
+                className="btn btn-error btn-xs rounded-xl"
+                onClick={() => handleClose(matchWeek.id)}
+              >
+                Close
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
