@@ -12,8 +12,8 @@ import { MatchWeek } from "~~/types/matchWeek";
 type MatchWeekCardProps = {
   matchWeek: MatchWeek;
   season: string;
-  handleEnable: (id: number) => void;
-  handleClose: (id: number) => void;
+  handleEnable: (matchWeek: MatchWeek) => void;
+  handleClose: (matchWeek: MatchWeek) => void;
 };
 
 const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWeekCardProps) => {
@@ -83,10 +83,12 @@ const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWe
 
           <div className="flex justify-center">
             <Link
-              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${!matchWeek.isEnabled ? "btn-disabled" : ""}`}
+              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
+                matchWeek.isEnabled || matchWeek.isClosed ? "btn-disabled" : ""
+              }`}
               href={"/matchweeks/" + matchWeek.address}
             >
-              {matchWeek.isEnabled ? "Bet now!!" : "Coming soon..."}
+              {matchWeek.isEnabled && !matchWeek.isClosed ? "Bet now!!" : "Coming soon..."}
             </Link>
           </div>
           {isOwner && !isOwnerLoading && (
@@ -94,14 +96,14 @@ const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWe
               <button
                 disabled={matchWeek.isEnabled}
                 className="btn btn-success btn-xs rounded-xl"
-                onClick={() => handleEnable(matchWeek.id)}
+                onClick={() => handleEnable(matchWeek)}
               >
                 Enable
               </button>
               <button
                 disabled={matchWeek.isClosed}
                 className="btn btn-error btn-xs rounded-xl"
-                onClick={() => handleClose(matchWeek.id)}
+                onClick={() => handleClose(matchWeek)}
               >
                 Close
               </button>

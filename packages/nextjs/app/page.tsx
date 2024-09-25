@@ -14,7 +14,7 @@ const title = "On going Match Weeks";
 const subtitle = "Compete with Footpool users to find the best bettor and win cash prizes.";
 
 const MatchWeeksPage: NextPage = () => {
-  const { matchWeeks, setMatchWeeks } = useMatchWeekState();
+  const { matchWeeks, setMatchWeeks, updateMatchWeek } = useMatchWeekState();
   const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
 
   const { data: events, isLoading: isLoadingEvents } = useScaffoldEventHistory({
@@ -31,7 +31,7 @@ const MatchWeeksPage: NextPage = () => {
     if (!isLoadingEvents && events) {
       const matchWeeksFromEvents: MatchWeek[] = events.map(event => {
         // TODO: Retrieve contract info by id to get latest data.
-
+        // Hay un bug. Siempre machaca esta inicialización. Habrá que pasarlo a zustand.
         return {
           id: Number(event.args.id),
           name: event.args.name as string,
@@ -46,28 +46,30 @@ const MatchWeeksPage: NextPage = () => {
 
       setMatchWeeks(matchWeeksFromEvents);
     }
-  }, [events, isLoadingEvents, setMatchWeeks]);
+  }, [events, isLoadingEvents]);
 
-  const handleEnable = async (id: number) => {
+  const handleEnable = async (matchWeek: MatchWeek) => {
     try {
       await writeMatchWeekFactoryAsync({
         functionName: "enableMatchWeekById",
-        args: [BigInt(id)],
+        args: [BigInt(matchWeek.id)],
       });
     } catch (e) {
       console.error("Error setting greeting:", e);
     }
+    updateMatchWeek({ ...matchWeek, isEnabled: true });
   };
 
-  const handleClose = async (id: number) => {
+  const handleClose = async (matchWeek: MatchWeek) => {
     try {
       await writeMatchWeekFactoryAsync({
         functionName: "closeMatchWeekById",
-        args: [BigInt(id)],
+        args: [BigInt(matchWeek.id)],
       });
     } catch (e) {
       console.error("Error setting greeting:", e);
     }
+    updateMatchWeek({ ...matchWeek, isClosed: true });
   };
 
   return (
