@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAccount } from "wagmi";
+import { useReadContract } from "wagmi";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { useOnlyOwner } from "~~/hooks/footpool";
+import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { useMatchWeekState } from "~~/services/store/matchWeek";
 import { MatchWeek } from "~~/types/matchWeek";
 
 type MatchWeekCardProps = {
@@ -15,6 +19,31 @@ type MatchWeekCardProps = {
 const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWeekCardProps) => {
   const { address: connectedAddress } = useAccount();
   const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeek.address || "", "MatchWeekFactory");
+  const { updateMatchWeek } = useMatchWeekState();
+
+  const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
+
+  const { data: summary, isLoading: isSummaryLoading } = useReadContract({
+    abi: deployedContractData?.abi,
+    address: matchWeek.address,
+    functionName: "summary",
+  });
+
+  useEffect(() => {
+    if (!isSummaryLoading && Array.isArray(summary)) {
+      const [name, isEnabled, isClosed, stakeholdersCounter] = summary;
+
+      const updatedMatchWeek: MatchWeek = {
+        ...matchWeek, // Propiedades existentes del objeto original
+        name, // Actualiza el campo 'name' con el nuevo título
+        isEnabled, // Actualiza 'isEnabled'
+        isClosed, // Actualiza 'isClosed'
+        stakeholdersCounter, // Actualiza 'stakeholdersCounter'
+      };
+
+      updateMatchWeek(updatedMatchWeek);
+    }
+  }, [summary, isSummaryLoading]);
 
   return (
     <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-5">

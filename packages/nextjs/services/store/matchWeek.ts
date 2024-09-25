@@ -6,6 +6,7 @@ type MatchWeekState = {
   matchWeeks: MatchWeek[];
   bets: Bet[];
   setMatchWeeks: (matchWeeks: MatchWeek[]) => void;
+  updateMatchWeek: (matchWeek: MatchWeek) => void;
   addMatchWeek: (name: string) => void;
   addBets: (bets: Bet[]) => void;
 };
@@ -15,6 +16,13 @@ export const useMatchWeekState = create<MatchWeekState>((set, get) => ({
   bets: [],
   setMatchWeeks: (newMatchWeeks: MatchWeek[]) => {
     set(() => ({ matchWeeks: [...newMatchWeeks] }));
+  },
+  updateMatchWeek: (updatedMatchWeek: MatchWeek) => {
+    set(state => ({
+      matchWeeks: state.matchWeeks.map(matchWeek =>
+        matchWeek.id === updatedMatchWeek.id ? updatedMatchWeek : matchWeek,
+      ),
+    }));
   },
   addMatchWeek: (name: string) => {
     const newMatchWeek: MatchWeek = {
