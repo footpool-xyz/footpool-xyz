@@ -27,7 +27,7 @@ const MatchWeeksPage: NextPage = () => {
         args: [name],
       });
       if (newMatchWeekAddress) {
-        setMatchWeeksAddresses(prevAddresses => [...prevAddresses, newMatchWeekAddress]);
+        setMatchWeeksAddresses(prevAddresses => [newMatchWeekAddress, ...prevAddresses]);
       }
     } catch (e) {
       console.error("Error setting greeting:", e);

@@ -123,7 +123,7 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
           <div className="flex justify-center">
             <Link
               className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
-                matchWeek.isEnabled || matchWeek.isClosed ? "btn-disabled" : ""
+                !matchWeek.isEnabled || matchWeek.isClosed ? "btn-disabled" : ""
               }`}
               href={"/matchweeks/" + matchWeek.address}
             >
