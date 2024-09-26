@@ -1,50 +1,89 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { useReadContract } from "wagmi";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { useOnlyOwner } from "~~/hooks/footpool";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
-import { useMatchWeekState } from "~~/services/store/matchWeek";
-import { MatchWeek } from "~~/types/matchWeek";
+import { useDeployedContractInfo, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { AddressType } from "~~/types/abitype/abi";
+import { MatchWeekSummary } from "~~/types/matchWeek";
 
 type MatchWeekCardProps = {
-  matchWeek: MatchWeek;
+  matchWeekAddr: AddressType;
   season: string;
-  handleEnable: (matchWeek: MatchWeek) => void;
-  handleClose: (matchWeek: MatchWeek) => void;
 };
 
-const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWeekCardProps) => {
-  const { address: connectedAddress } = useAccount();
-  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeek.address || "", "MatchWeekFactory");
-  const { updateMatchWeek } = useMatchWeekState();
+const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
+  const [matchWeek, setMatchWeek] = useState<MatchWeekSummary>();
 
+  const { address: connectedAddress } = useAccount();
+  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeekAddr || "", "MatchWeekFactory");
+  const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
   const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
 
-  const { data: summary, isLoading: isSummaryLoading } = useReadContract({
+  const { data: summary } = useReadContract({
     abi: deployedContractData?.abi,
-    address: matchWeek.address,
+    address: matchWeekAddr,
     functionName: "summary",
   });
+  const { data: amountToBet } = useReadContract({
+    abi: deployedContractData?.abi,
+    address: matchWeekAddr,
+    functionName: "AMOUNT_TO_BET",
+  });
+
+  const handleEnable = async (matchWeek: MatchWeekSummary) => {
+    try {
+      await writeMatchWeekFactoryAsync({
+        functionName: "enableMatchWeekById",
+        args: [BigInt(matchWeek.id)],
+      });
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+    setMatchWeek({ ...matchWeek, isEnabled: true });
+  };
+
+  const handleClose = async (matchWeek: MatchWeekSummary) => {
+    try {
+      await writeMatchWeekFactoryAsync({
+        functionName: "closeMatchWeekById",
+        args: [BigInt(matchWeek.id)],
+      });
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+    setMatchWeek({ ...matchWeek, isClosed: true });
+  };
 
   useEffect(() => {
-    if (!isSummaryLoading && Array.isArray(summary)) {
-      const [name, isEnabled, isClosed, stakeholdersCounter] = summary;
+    if (Array.isArray(summary) && amountToBet) {
+      const [name, isEnabled, isClosed, stakeholdersCounter, id] = summary;
+      const amountToBetPerStakeholder: number = Number(amountToBet) / 1e18;
 
-      const updatedMatchWeek: MatchWeek = {
-        ...matchWeek, // Propiedades existentes del objeto original
-        name, // Actualiza el campo 'name' con el nuevo título
-        isEnabled, // Actualiza 'isEnabled'
-        isClosed, // Actualiza 'isClosed'
-        stakeholdersCounter, // Actualiza 'stakeholdersCounter'
+      const matchWeek: MatchWeekSummary = {
+        id: id,
+        name: name,
+        isEnabled,
+        isClosed,
+        stakeholdersCounter: Number(stakeholdersCounter),
+        pricePool: amountToBetPerStakeholder * Number(stakeholdersCounter),
+        address: matchWeekAddr,
       };
-
-      updateMatchWeek(updatedMatchWeek);
+      setMatchWeek(matchWeek);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summary, isSummaryLoading]);
+  }, [summary, amountToBet, matchWeekAddr]);
+
+  if (!matchWeek) {
+    return (
+      <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-5">
+        <div className="flex flex-col sm:flex-row bg-base-100 px-10 py-10 max-w-4xl rounded-3xl">
+          <h4>Loading data...</h4>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-5">
@@ -75,7 +114,7 @@ const MatchWeekCard = ({ matchWeek, season, handleEnable, handleClose }: MatchWe
             <div>
               <p className="font-semibold m-0">Amount in play:</p>
               <p className="text-xl flex font-bold m-0">
-                {matchWeek.pricePool.toLocaleString()}
+                {matchWeek.pricePool}
                 <Image src="/usdt.png" className="ml-2" width={28} height={28} alt="USDT image" />
               </p>
             </div>

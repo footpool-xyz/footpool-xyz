@@ -1,76 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
 import BannerTitle from "./matchweeks/_components/BannerTitle";
 import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
 import type { NextPage } from "next";
-import { useScaffoldEventHistory, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { useMatchWeekState } from "~~/services/store/matchWeek";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
-import { MatchWeek } from "~~/types/matchWeek";
 
 const title = "On going Match Weeks";
 const subtitle = "Compete with Footpool users to find the best bettor and win cash prizes.";
 
 const MatchWeeksPage: NextPage = () => {
-  const { matchWeeks, setMatchWeeks, updateMatchWeek } = useMatchWeekState();
-  const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
+  const [matchWeeksAddresses, setMatchWeeksAddresses] = useState<AddressType[]>([]);
 
-  const { data: events, isLoading: isLoadingEvents } = useScaffoldEventHistory({
+  const { data: matchWeeksAddressesFromContract } = useScaffoldReadContract({
     contractName: "MatchWeekFactory",
-    eventName: "MatchWeekCreated",
-    fromBlock: 0n,
-    watch: true,
-    blockData: true,
-    transactionData: true,
-    receiptData: true,
+    functionName: "getMatchWeeks",
   });
 
   useEffect(() => {
-    if (!isLoadingEvents && events) {
-      const matchWeeksFromEvents: MatchWeek[] = events.map(event => {
-        // TODO: Retrieve contract info by id to get latest data.
-        // Hay un bug. Siempre machaca esta inicialización. Habrá que pasarlo a zustand.
-        return {
-          id: Number(event.args.id),
-          name: event.args.name as string,
-          address: event.args.addr as AddressType,
-          isEnabled: false,
-          isClosed: false,
-          stakeholdersCounter: 0,
-          pricePool: 0,
-          matches: [],
-        };
-      });
-
-      setMatchWeeks(matchWeeksFromEvents);
+    if (Array.isArray(matchWeeksAddressesFromContract)) {
+      console.log(matchWeeksAddressesFromContract);
+      setMatchWeeksAddresses(matchWeeksAddressesFromContract);
     }
-  }, [events, isLoadingEvents, setMatchWeeks]);
-
-  const handleEnable = async (matchWeek: MatchWeek) => {
-    try {
-      await writeMatchWeekFactoryAsync({
-        functionName: "enableMatchWeekById",
-        args: [BigInt(matchWeek.id)],
-      });
-    } catch (e) {
-      console.error("Error setting greeting:", e);
-    }
-    updateMatchWeek({ ...matchWeek, isEnabled: true });
-  };
-
-  const handleClose = async (matchWeek: MatchWeek) => {
-    try {
-      await writeMatchWeekFactoryAsync({
-        functionName: "closeMatchWeekById",
-        args: [BigInt(matchWeek.id)],
-      });
-    } catch (e) {
-      console.error("Error setting greeting:", e);
-    }
-    updateMatchWeek({ ...matchWeek, isClosed: true });
-  };
+  }, [matchWeeksAddressesFromContract]);
 
   return (
     <>
@@ -78,14 +32,8 @@ const MatchWeeksPage: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <AddMatchWeek />
-          {matchWeeks.map(matchWeek => (
-            <MatchWeekCard
-              key={matchWeek.id}
-              matchWeek={matchWeek}
-              season="Season 2024/2025"
-              handleEnable={handleEnable}
-              handleClose={handleClose}
-            />
+          {matchWeeksAddresses.map(matchWeekAddress => (
+            <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
           ))}
         </div>
       </div>

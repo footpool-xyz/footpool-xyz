@@ -15,7 +15,7 @@ contract DeployFootPool is ScaffoldETHDeploy {
         factory.setMatchWeekAddress(address(matchWeek));
         // factory.setConsumerAddress();
 
-        factory.transferOwnership(0x97289b9C7AE16114D993057F81f99457224a59b3);
+        factory.transferOwnership(0x27dBc64e6C38633eD526d970258372476BCE58C0);
         console.logString(
             string.concat("MatchWeekFactory deployed at: ", vm.toString(address(factory)))
         );

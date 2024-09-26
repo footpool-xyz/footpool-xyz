@@ -11,3 +11,13 @@ export type MatchWeek = {
   matches: Match[];
   address?: AddressType;
 };
+
+export type MatchWeekSummary = {
+  id: number;
+  name: string;
+  isEnabled: boolean;
+  isClosed: boolean;
+  stakeholdersCounter: number;
+  pricePool: number;
+  address?: AddressType;
+};

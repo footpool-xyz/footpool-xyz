@@ -18,8 +18,8 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
 
+    uint256 public constant AMOUNT_TO_BET = 5 * DECIMALS;
     uint256 private constant DECIMALS = 1e18;
-    uint256 private constant AMOUNT_TO_BET = 5 * DECIMALS;
     uint256 private constant REWARD_PERCENTAGE = 90;
     uint256 private constant BASE_PERCENTAGE = 91000;
 

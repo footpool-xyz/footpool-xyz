@@ -9,6 +9,7 @@ type MatchWeekState = {
   updateMatchWeek: (matchWeek: MatchWeek) => void;
   addMatchWeek: (name: string) => void;
   addBets: (bets: Bet[]) => void;
+  initializeMatchWeeks: () => void;
 };
 
 export const useMatchWeekState = create<MatchWeekState>((set, get) => ({
@@ -38,5 +39,24 @@ export const useMatchWeekState = create<MatchWeekState>((set, get) => ({
   },
   addBets: (newBets: Bet[]) => {
     set(() => ({ bets: [...newBets] }));
+  },
+  initializeMatchWeeks: async () => {
+    // const { data: events, isLoading: isLoadingEvents } = useScaffoldEventHistory({
+    //   contractName: "MatchWeekFactory",
+    //   eventName: "MatchWeekCreated",
+    //   fromBlock: 0n,
+    //   watch: true,
+    //   blockData: true,
+    //   transactionData: true,
+    //   receiptData: true,
+    // });
+    // console.log(events)
+    // const { matchWeeks, loading, error } = useSmartContractData();
+    // if (loading) return; // Maneja el loading si es necesario
+    // if (error) {
+    //   console.error("Error fetching match weeks:", error);
+    //   return;
+    // }
+    // set({ matchWeeks }); // Establece el estado con los datos del smart contract
   },
 }));
