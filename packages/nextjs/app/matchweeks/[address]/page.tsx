@@ -5,7 +5,6 @@ import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
 import type { NextPage } from "next";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { useMatchWeekState } from "~~/services/store/matchWeek";
 import { Bet, Match } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -47,7 +46,6 @@ const subtitle = "Choose your bet for each match";
 const MatchListPage: NextPage = () => {
   const [bets, setBets] = useState<Bet[]>([]);
   const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
-  const { addBets } = useMatchWeekState();
 
   const handleBet = (bet: Bet) => {
     setBets(prev => ({
@@ -58,7 +56,7 @@ const MatchListPage: NextPage = () => {
 
   const handleSubmitBet = () => {
     // Save bets.
-    addBets(Object.values(bets));
+    // addBets(Object.values(bets));
     setIsBetSubmitted(true);
   };
 
