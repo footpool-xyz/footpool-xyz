@@ -5,7 +5,7 @@ import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
 import BannerTitle from "./matchweeks/_components/BannerTitle";
 import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
 import type { NextPage } from "next";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 
 const title = "On going Match Weeks";
@@ -18,6 +18,30 @@ const MatchWeeksPage: NextPage = () => {
     contractName: "MatchWeekFactory",
     functionName: "getMatchWeeks",
   });
+  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract("MatchWeekFactory");
+
+  const storeMatchWeekInContract = async (name: string) => {
+    try {
+      const newMatchWeekAddress = await writeFactoryContract({
+        functionName: "createMatchWeek",
+        args: [name],
+      });
+      if (newMatchWeekAddress) {
+        setMatchWeeksAddresses(prevAddresses => [...prevAddresses, newMatchWeekAddress]);
+      }
+    } catch (e) {
+      console.error("Error setting greeting:", e);
+    }
+  };
+
+  const handleAddMatchWeek = async (name: string) => {
+    if (name == "") {
+      console.log("Add a valid name");
+      return;
+    }
+
+    await storeMatchWeekInContract(name);
+  };
 
   useEffect(() => {
     if (Array.isArray(matchWeeksAddressesFromContract)) {
@@ -31,7 +55,7 @@ const MatchWeeksPage: NextPage = () => {
       <BannerTitle title={title} subtitle={subtitle} />
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <AddMatchWeek />
+          <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />
           {matchWeeksAddresses.map(matchWeekAddress => (
             <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
           ))}
