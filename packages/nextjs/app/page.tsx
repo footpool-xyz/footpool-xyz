@@ -45,7 +45,6 @@ const MatchWeeksPage: NextPage = () => {
 
   useEffect(() => {
     if (Array.isArray(matchWeeksAddressesFromContract)) {
-      console.log(matchWeeksAddressesFromContract);
       setMatchWeeksAddresses(matchWeeksAddressesFromContract);
     }
   }, [matchWeeksAddressesFromContract]);
