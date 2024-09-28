@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 import { Test, console } from "forge-std/Test.sol";
 import { MatchWeek } from "../contracts/MatchWeek.sol";
-import { MockFunctionsConsumer } from "./mock/MockFunctionsConsumer.sol";
+import { MockMatchesDataConsumer } from "./mock/MockMatchesDataConsumer.sol";
 import { MockUsdtToken } from "./mock/MockUsdtToken.sol";
 import { OwnableUpgradeable } from
     "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -13,7 +13,7 @@ contract MatchWeekTest is Test {
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
 
-    MockFunctionsConsumer consumer;
+    MockMatchesDataConsumer consumer;
     MatchWeek.Match[] matchesToAdd;
     MatchWeek.Bet[] betsToAdd;
     MockUsdtToken token;
@@ -22,7 +22,7 @@ contract MatchWeekTest is Test {
     address USER = makeAddr("user");
 
     function setUp() public {
-        consumer = new MockFunctionsConsumer();
+        consumer = new MockMatchesDataConsumer();
 
         token = new MockUsdtToken();
     }

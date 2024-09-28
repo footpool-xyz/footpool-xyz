@@ -14,6 +14,9 @@ const nextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  env: {
+    FOOTBALL_API_KEY: process.env.FOOTBALL_API_KEY || "",
+  }
 };
 
 module.exports = nextConfig;

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MatchWeek: {
-      address: "0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d",
+      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
       abi: [
         {
           type: "function",
@@ -604,8 +604,347 @@ const deployedContracts = {
         transferOwnership: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
       },
     },
+    MockMatchesDataConsumer: {
+      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
+      abi: [
+        {
+          type: "constructor",
+          inputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "RANDOM_ROUTER",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "acceptOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getResponse",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "handleOracleFulfillment",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+            {
+              name: "response",
+              type: "bytes",
+              internalType: "bytes",
+            },
+            {
+              name: "err",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastError",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastRequestId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastResponse",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "sendRequest",
+          inputs: [
+            {
+              name: "source",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "encryptedSecretsUrls",
+              type: "bytes",
+              internalType: "bytes",
+            },
+            {
+              name: "donHostedSecretsSlotID",
+              type: "uint8",
+              internalType: "uint8",
+            },
+            {
+              name: "donHostedSecretsVersion",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "args",
+              type: "string[]",
+              internalType: "string[]",
+            },
+            {
+              name: "bytesArgs",
+              type: "bytes[]",
+              internalType: "bytes[]",
+            },
+            {
+              name: "subscriptionId",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "gasLimit",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "jobId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          outputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setResponse",
+          inputs: [
+            {
+              name: "_data",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferRequested",
+          inputs: [
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "RequestFulfilled",
+          inputs: [
+            {
+              name: "id",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "RequestSent",
+          inputs: [
+            {
+              name: "id",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "Response",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+            {
+              name: "response",
+              type: "bytes",
+              indexed: false,
+              internalType: "bytes",
+            },
+            {
+              name: "err",
+              type: "bytes",
+              indexed: false,
+              internalType: "bytes",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "error",
+          name: "EmptyArgs",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "EmptySecrets",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "EmptySource",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "NoInlineSecrets",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "OnlyRouterCanFulfill",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "UnexpectedRequestID",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+        },
+      ],
+      inheritedFunctions: {
+        acceptOwnership: "contracts/FunctionsConsumer.sol",
+        getResponse: "contracts/FunctionsConsumer.sol",
+        handleOracleFulfillment: "contracts/FunctionsConsumer.sol",
+        owner: "contracts/FunctionsConsumer.sol",
+        s_lastError: "contracts/FunctionsConsumer.sol",
+        s_lastRequestId: "contracts/FunctionsConsumer.sol",
+        s_lastResponse: "contracts/FunctionsConsumer.sol",
+        sendRequest: "contracts/FunctionsConsumer.sol",
+        transferOwnership: "contracts/FunctionsConsumer.sol",
+      },
+    },
     MatchWeekFactory: {
-      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
+      address: "0x8ce361602b935680e8dec218b820ff5056beb7af",
       abi: [
         {
           type: "constructor",

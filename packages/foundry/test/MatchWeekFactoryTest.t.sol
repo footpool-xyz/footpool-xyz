@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import { Test, console } from "forge-std/Test.sol";
 import { MatchWeekFactory } from "../contracts/MatchWeekFactory.sol";
 import { MatchWeek } from "../contracts/MatchWeek.sol";
-import { MockFunctionsConsumer } from "./mock/MockFunctionsConsumer.sol";
+import { MockMatchesDataConsumer } from "./mock/MockMatchesDataConsumer.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MatchWeekFactoryTest is Test {
@@ -21,7 +21,7 @@ contract MatchWeekFactoryTest is Test {
 
     function setUp() public {
         vm.startPrank(OWNER);
-        MockFunctionsConsumer consumer = new MockFunctionsConsumer();
+        MockMatchesDataConsumer consumer = new MockMatchesDataConsumer();
         MatchWeek matchWeek = new MatchWeek();
         factory = new MatchWeekFactory(OWNER);
 
@@ -104,7 +104,7 @@ contract MatchWeekFactoryTest is Test {
     }
 
     function testCanChangeConsumerAddress() public {
-        MockFunctionsConsumer newConsumer = new MockFunctionsConsumer();
+        MockMatchesDataConsumer newConsumer = new MockMatchesDataConsumer();
         vm.prank(OWNER);
         vm.expectEmit(true, false, false, true);
         emit ConsumerAddressChanged(address(newConsumer));
