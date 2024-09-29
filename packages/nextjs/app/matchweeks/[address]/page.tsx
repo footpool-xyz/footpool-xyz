@@ -3,8 +3,9 @@
 import { useState } from "react";
 import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
+import { useAccount } from "wagmi";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { useMatches } from "~~/hooks/footpool";
+import { useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { Bet } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -15,6 +16,9 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { matches, addMatchesFromConsumer } = useMatches(params.address);
   const [bets, setBets] = useState<Bet[]>([]);
   const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
+
+  const { address: connectedAddress } = useAccount();
+  const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
 
   const handleBet = (bet: Bet) => {
     setBets(prev => ({
@@ -30,20 +34,22 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   return (
     <>
       <BannerTitle title={title} subtitle={subtitle} />
-      <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
-        <button className="btn btn-secondary text-xl text-center" onClick={addMatchesFromConsumer}>
-          <PlusCircleIcon className="h-6 w-6" />
-          Add matches
-        </button>
-        <button className="btn btn-secondary text-xl text-center">
-          <RocketLaunchIcon className="h-6 w-6" />
-          End Match Week
-        </button>
-        <button className="btn btn-secondary text-xl text-center">
-          <BanknotesIcon className="h-6 w-6" />
-          Withdraw
-        </button>
-      </div>
+      {isOwner && (
+        <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
+          <button className="btn btn-secondary text-xl text-center" onClick={addMatchesFromConsumer}>
+            <PlusCircleIcon className="h-6 w-6" />
+            Add matches
+          </button>
+          <button className="btn btn-secondary text-xl text-center">
+            <RocketLaunchIcon className="h-6 w-6" />
+            End Match Week
+          </button>
+          <button className="btn btn-secondary text-xl text-center">
+            <BanknotesIcon className="h-6 w-6" />
+            Withdraw
+          </button>
+        </div>
+      )}
 
       {!isBetSubmitted ? (
         <>

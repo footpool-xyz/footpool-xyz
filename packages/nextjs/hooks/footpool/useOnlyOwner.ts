@@ -4,7 +4,11 @@ import { useReadContract } from "wagmi";
 import { AddressType } from "~~/types/abitype/abi";
 import { ContractName } from "~~/utils/scaffold-eth/contract";
 
-export const useOnlyOwner = (userAddress: AddressType, contractAddress: AddressType, contractName: ContractName) => {
+export const useOnlyOwner = (
+  userAddress: AddressType | undefined,
+  contractAddress: AddressType,
+  contractName: ContractName,
+) => {
   const [isOwner, setIsOwner] = useState<boolean>(false);
 
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
@@ -15,7 +19,9 @@ export const useOnlyOwner = (userAddress: AddressType, contractAddress: AddressT
   });
 
   useEffect(() => {
-    if (!isOwnerLoading) {
+    if (!userAddress) {
+      setIsOwner(false);
+    } else if (!isOwnerLoading) {
       setIsOwner(userAddress === owner);
     }
   }, [userAddress, owner, isOwnerLoading]);
