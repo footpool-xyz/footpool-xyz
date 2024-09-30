@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import BannerTitle from "../_components/BannerTitle";
 import MatchBet from "./_components/MatchBet";
 import { useAccount } from "wagmi";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import { useMatches, useOnlyOwner } from "~~/hooks/footpool";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useBets, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { Bet } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -14,32 +12,18 @@ const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
 const MatchListPage = ({ params }: { params: { address: string } }) => {
-  const { matches, addMatchesFromConsumer } = useMatches(params.address);
-  const [bets, setBets] = useState<Bet[]>([]);
-  const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
-
-  // Bets stuff
-  const { writeContractAsync: writeYourContractAsync } = useScaffoldWriteContract("MockUsdtToken");
+  const { matches, addMatchesFromConsumer } = useMatches(params.address);
+  const { addBet, submitBetsToContract, bets } = useBets(params.address, matches);
 
   const handleBet = (bet: Bet) => {
-    setBets(prev => ({
-      ...prev,
-      [bet.match.id]: bet,
-    }));
+    addBet(bet);
   };
 
   const handleSubmitBet = async () => {
-    // Allow to pay with USDT.
-    await writeYourContractAsync({
-      functionName: "approve",
-      args: [params.address, BigInt(5 * 1e18)],
-    });
-    // Write addBets.
-    setIsBetSubmitted(true);
+    submitBetsToContract();
   };
-  // Bets stuff
 
   return (
     <>
@@ -61,7 +45,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
         </div>
       )}
 
-      {!isBetSubmitted ? (
+      {bets.length > 0 ? (
         <>
           <div className="flex flex-wrap justify-center items-center bg-base-300">
             {matches.map(match => (
