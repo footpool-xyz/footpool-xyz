@@ -1,19 +1,20 @@
 import React, { ReactNode } from "react";
+import { Bet, Match } from "~~/types/match";
 
 interface BetButtonProps {
-  matchId: number;
+  match: Match;
   result: number;
   selectedBet: number | undefined;
-  handleBet: (bet: { matchId: number; result: number }) => void;
+  handleBet: (bet: Bet) => void;
   setSelectedBet: (bet: number) => void;
   children: ReactNode;
 }
 
-const BetButton: React.FC<BetButtonProps> = ({ matchId, result, selectedBet, handleBet, setSelectedBet, children }) => {
+const BetButton: React.FC<BetButtonProps> = ({ match, result, selectedBet, handleBet, setSelectedBet, children }) => {
   return (
     <button
       onClick={() => {
-        handleBet({ matchId, result });
+        handleBet({ match, result });
         setSelectedBet(result);
       }}
       className={`btn btn-secondary font-bold py-2 px-6 rounded-xl flex-grow ${

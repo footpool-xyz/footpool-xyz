@@ -6,6 +6,7 @@ import MatchBet from "./_components/MatchBet";
 import { useAccount } from "wagmi";
 import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import { useMatches, useOnlyOwner } from "~~/hooks/footpool";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { Bet } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -16,20 +17,29 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { matches, addMatchesFromConsumer } = useMatches(params.address);
   const [bets, setBets] = useState<Bet[]>([]);
   const [isBetSubmitted, setIsBetSubmitted] = useState<boolean>(false);
-
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
+
+  // Bets stuff
+  const { writeContractAsync: writeYourContractAsync } = useScaffoldWriteContract("MockUsdtToken");
 
   const handleBet = (bet: Bet) => {
     setBets(prev => ({
       ...prev,
-      [bet.matchId]: bet,
+      [bet.match.id]: bet,
     }));
   };
 
-  const handleSubmitBet = () => {
+  const handleSubmitBet = async () => {
+    // Allow to pay with USDT.
+    await writeYourContractAsync({
+      functionName: "approve",
+      args: [params.address, BigInt(5 * 1e18)],
+    });
+    // Write addBets.
     setIsBetSubmitted(true);
   };
+  // Bets stuff
 
   return (
     <>
@@ -78,7 +88,10 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
           <p>Your bets has been submitted successfully! 😚 </p>
           {Object.values(bets).map((bet, i) => (
             <div key={i} className="text-center">
-              <span>MatchId: {bet.matchId}</span> - <span>Result: {displayMatchResultGivenId(bet.result)}</span>
+              <span>
+                {bet.match.homeTeam} vs {bet.match.awayTeam}{" "}
+              </span>{" "}
+              - <span>Result: {displayMatchResultGivenId(bet.result)}</span>
             </div>
           ))}
         </div>

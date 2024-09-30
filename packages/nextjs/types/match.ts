@@ -8,7 +8,7 @@ export type Match = {
 };
 
 export type Bet = {
-  matchId: number;
+  match: Match;
   result: number; // 0 -> 1, 1 -> X, 2 -> 2
 };
 

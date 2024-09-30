@@ -33,7 +33,7 @@ const MatchBet = ({ match, handleBet }: MatchBetProps) => {
 
       <div className="flex justify-center mt-2 gap-3 w-full">
         <BetButton
-          matchId={match.id}
+          match={match}
           result={0}
           selectedBet={selectedBet}
           handleBet={handleBet}
@@ -42,7 +42,7 @@ const MatchBet = ({ match, handleBet }: MatchBetProps) => {
           1
         </BetButton>
         <BetButton
-          matchId={match.id}
+          match={match}
           result={1}
           selectedBet={selectedBet}
           handleBet={handleBet}
@@ -51,7 +51,7 @@ const MatchBet = ({ match, handleBet }: MatchBetProps) => {
           X
         </BetButton>
         <BetButton
-          matchId={match.id}
+          match={match}
           result={2}
           selectedBet={selectedBet}
           handleBet={handleBet}
