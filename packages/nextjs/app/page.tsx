@@ -55,9 +55,12 @@ const MatchWeeksPage: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />
-          {matchWeeksAddresses.map(matchWeekAddress => (
-            <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
-          ))}
+          {matchWeeksAddresses
+            .slice()
+            .reverse()
+            .map(matchWeekAddress => (
+              <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
+            ))}
         </div>
       </div>
     </>

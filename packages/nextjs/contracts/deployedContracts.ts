@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MatchWeek: {
-      address: "0xf1078fd568ad76e49e6f88d1ff485402a086976b",
+      address: "0x6379ebd504941f50d5bfde9348b37593bd29c835",
       abi: [
         {
           type: "function",
@@ -605,7 +605,7 @@ const deployedContracts = {
       },
     },
     MockMatchesDataConsumer: {
-      address: "0xe8f76a822b57b973c7a89006092364fff8f69040",
+      address: "0x5b3120d0da5fdcba7aef87a9c3c64829c1c0d76b",
       abi: [
         {
           type: "constructor",
@@ -944,7 +944,7 @@ const deployedContracts = {
       },
     },
     MatchWeekFactory: {
-      address: "0x4d8e02bbfcf205828a8352af4376b165e123d7b0",
+      address: "0x19a1c09fe3399c4daaa2c98b936a8e460fc5eaa4",
       abi: [
         {
           type: "constructor",
@@ -1224,7 +1224,7 @@ const deployedContracts = {
       },
     },
     MockUsdtToken: {
-      address: "0xe8ecf644d9a3432dab3a0725308f265990eedca9",
+      address: "0xf56aa3aceddf88ab12e494d0b96da3c09a5d264e",
       abi: [
         {
           type: "constructor",

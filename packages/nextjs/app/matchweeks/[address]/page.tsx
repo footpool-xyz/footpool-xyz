@@ -15,19 +15,22 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
   const { matches, addMatchesFromConsumer } = useMatches(params.address);
-  const { addBet, submitBetsToContract, bets } = useBets(params.address, matches);
+  const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
 
   const handleBet = (bet: Bet) => {
     addBet(bet);
   };
 
   const handleSubmitBet = async () => {
-    submitBetsToContract();
+    await submitBetsToContract();
   };
+
+  const betsLength = Object.keys(bets).length;
 
   return (
     <>
       <BannerTitle title={title} subtitle={subtitle} />
+
       {isOwner && (
         <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
           <button className="btn btn-secondary text-xl text-center" onClick={addMatchesFromConsumer}>
@@ -45,7 +48,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
         </div>
       )}
 
-      {bets.length > 0 ? (
+      {!betsSubmitted ? (
         <>
           <div className="flex flex-wrap justify-center items-center bg-base-300">
             {matches.map(match => (
@@ -54,12 +57,13 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
               </div>
             ))}
           </div>
+
           {matches.length > 0 && (
             <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
               <button
                 onClick={handleSubmitBet}
                 className="btn btn-secondary text-xl text-center"
-                disabled={Object.keys(bets).length < matches.length}
+                disabled={betsLength < matches.length}
               >
                 <CurrencyDollarIcon className="h-8 w-8" />
                 Bet
@@ -69,7 +73,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
         </>
       ) : (
         <div className="flex flex-col justify-center items-center bg-base-300">
-          <p>Your bets has been submitted successfully! 😚 </p>
+          <p>Your bets have been submitted successfully! 😚</p>
           {Object.values(bets).map((bet, i) => (
             <div key={i} className="text-center">
               <span>
