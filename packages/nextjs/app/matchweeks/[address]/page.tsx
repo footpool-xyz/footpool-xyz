@@ -11,10 +11,53 @@ import { displayMatchResultGivenId } from "~~/utils/footpool";
 const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
+const fakeResults = [
+  {
+    matchId: 1038022,
+    result: 1,
+  },
+  {
+    matchId: 1038023,
+    result: 0,
+  },
+  {
+    matchId: 1038024,
+    result: 0,
+  },
+  {
+    matchId: 1038025,
+    result: 0,
+  },
+  {
+    matchId: 1038026,
+    result: 1,
+  },
+  {
+    matchId: 1038027,
+    result: 2,
+  },
+  {
+    matchId: 1038028,
+    result: 2,
+  },
+  {
+    matchId: 1038029,
+    result: 0,
+  },
+  {
+    matchId: 1038030,
+    result: 0,
+  },
+  {
+    matchId: 1038031,
+    result: 1,
+  },
+];
+
 const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
-  const { matches, addMatchesFromConsumer } = useMatches(params.address);
+  const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
 
   const handleBet = (bet: Bet) => {
@@ -23,6 +66,14 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
 
   const handleSubmitBet = async () => {
     await submitBetsToContract();
+  };
+
+  const endMatchWeek = async () => {
+    await addResultsFromConsumer(fakeResults);
+  };
+
+  const withdrawFunds = () => {
+    //TODO: withdraw funds
   };
 
   const betsLength = Object.keys(bets).length;
@@ -37,11 +88,11 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
             <PlusCircleIcon className="h-6 w-6" />
             Add matches
           </button>
-          <button className="btn btn-secondary text-xl text-center">
+          <button className="btn btn-secondary text-xl text-center" onClick={endMatchWeek}>
             <RocketLaunchIcon className="h-6 w-6" />
             End Match Week
           </button>
-          <button className="btn btn-secondary text-xl text-center">
+          <button className="btn btn-secondary text-xl text-center" onClick={withdrawFunds}>
             <BanknotesIcon className="h-6 w-6" />
             Withdraw
           </button>

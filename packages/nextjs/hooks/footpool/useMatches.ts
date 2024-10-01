@@ -70,6 +70,17 @@ export const useMatches = (contractAddress: string) => {
     setMatches(matchesFromApi); // Update state with matches from API
   };
 
+  const addResultsFromConsumer = async (results: { matchId: number; result: number }[]) => {
+    if (deployedContractData) {
+      writeContract({
+        abi: deployedContractData.abi,
+        address: contractAddress,
+        functionName: "addResults",
+        args: [results],
+      });
+    }
+  };
+
   // Effect to update the matchesIds and matches state from the contract
   useEffect(() => {
     if (matchesIdsFromContract) {
@@ -91,5 +102,6 @@ export const useMatches = (contractAddress: string) => {
   return {
     matches,
     addMatchesFromConsumer,
+    addResultsFromConsumer,
   };
 };
