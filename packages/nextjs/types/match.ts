@@ -4,6 +4,7 @@ export type Match = {
   homeLogo: string;
   awayTeam: string;
   awayLogo: string;
+  result?: number;
 };
 
 export type Bet = {

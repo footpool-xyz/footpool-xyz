@@ -4,6 +4,7 @@ import BannerTitle from "../_components/BannerTitle";
 import { ActionsButtons } from "./_components/ActionsButtons";
 import { BetsSubmitted } from "./_components/BetsSubmitted";
 import MatchBet from "./_components/MatchBet";
+import { MatchResults } from "./_components/MatchResults";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
@@ -56,11 +57,12 @@ const fakeResults = [
 ];
 
 const MatchListPage = ({ params }: { params: { address: string } }) => {
-  const { address: connectedAddress } = useAccount();
-  const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
   const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
   const { matchWeek } = useMatchWeekData(params.address);
+
+  const { address: connectedAddress } = useAccount();
+  const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
 
   const handleBet = (bet: Bet) => {
     addBet(bet);
@@ -91,8 +93,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
             withdrawFunds={withdrawFunds}
           />
         )}
-        <p>Show results</p>
-        {/* // TODO: Display results from contract. */}
+        <MatchResults matches={matches} />
       </>
     );
   }

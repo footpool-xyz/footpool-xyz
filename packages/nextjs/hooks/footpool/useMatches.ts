@@ -13,6 +13,8 @@ export const useMatches = (contractAddress: string) => {
     contractName: "MockMatchesDataConsumer",
     functionName: "getResponse",
   });
+
+  // Fetch matches from contract
   const { data: matchesFromContract } = useReadContract({
     abi: deployedContractData?.abi,
     address: contractAddress,
@@ -94,6 +96,7 @@ export const useMatches = (contractAddress: string) => {
           homeLogo: `/teams/${match.localTeam}.png`,
           awayTeam: match.awayTeam,
           awayLogo: `/teams/${match.awayTeam}.png`,
+          result: match.result,
         })),
       );
     }
