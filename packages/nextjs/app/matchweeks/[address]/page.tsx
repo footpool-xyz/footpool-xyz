@@ -57,9 +57,9 @@ const fakeResults = [
 ];
 
 const MatchListPage = ({ params }: { params: { address: string } }) => {
+  const { matchWeek, close } = useMatchWeekData(params.address);
   const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
-  const { matchWeek } = useMatchWeekData(params.address);
 
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
@@ -74,6 +74,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
 
   const endMatchWeek = async () => {
     await addResultsFromConsumer(fakeResults);
+    close();
   };
 
   const withdrawFunds = () => {

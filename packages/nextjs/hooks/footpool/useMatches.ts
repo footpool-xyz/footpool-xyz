@@ -90,7 +90,7 @@ export const useMatches = (contractAddress: string) => {
     }
     if (matchesFromContract) {
       setMatches(
-        matchesFromContract.map((match: any) => ({
+        matchesFromContract.map((match: MatchContract) => ({
           id: match.id,
           homeTeam: match.localTeam,
           homeLogo: `/teams/${match.localTeam}.png`,

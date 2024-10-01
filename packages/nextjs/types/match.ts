@@ -17,6 +17,7 @@ export type MatchConsumer = {
   w?: number;
 };
 
+// This type only used in useMatches.
 export type MatchContract = {
   id: number;
   localTeam: string;
