@@ -2,12 +2,12 @@
 
 import BannerTitle from "../_components/BannerTitle";
 import { ActionsButtons } from "./_components/ActionsButtons";
+import { BetsSubmitted } from "./_components/BetsSubmitted";
 import MatchBet from "./_components/MatchBet";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { Bet } from "~~/types/match";
-import { displayMatchResultGivenId } from "~~/utils/footpool";
 
 const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
@@ -91,7 +91,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
             withdrawFunds={withdrawFunds}
           />
         )}
-
+        <p>Show results</p>
         {/* // TODO: Display results from contract. */}
       </>
     );
@@ -129,17 +129,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
           )}
         </>
       ) : (
-        <div className="flex flex-col justify-center items-center bg-base-300">
-          <p>Your bets have been submitted successfully! 😚</p>
-          {Object.values(bets).map((bet, i) => (
-            <div key={i} className="text-center">
-              <span>
-                {bet.match.homeTeam} vs {bet.match.awayTeam}{" "}
-              </span>{" "}
-              - <span>Result: {displayMatchResultGivenId(bet.result)}</span>
-            </div>
-          ))}
-        </div>
+        <BetsSubmitted bets={Object.values(bets)} />
       )}
     </>
   );
