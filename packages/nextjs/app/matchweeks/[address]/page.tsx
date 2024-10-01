@@ -1,9 +1,10 @@
 "use client";
 
 import BannerTitle from "../_components/BannerTitle";
+import { ActionsButtons } from "./_components/ActionsButtons";
 import MatchBet from "./_components/MatchBet";
 import { useAccount } from "wagmi";
-import { BanknotesIcon, CurrencyDollarIcon, PlusCircleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { Bet } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
@@ -84,20 +85,11 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
       <>
         <BannerTitle title={title} subtitle={subtitle} />
         {isOwner && (
-          <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
-            <button className="btn btn-secondary text-xl text-center" onClick={addMatchesFromConsumer}>
-              <PlusCircleIcon className="h-6 w-6" />
-              Add matches
-            </button>
-            <button className="btn btn-secondary text-xl text-center" onClick={endMatchWeek}>
-              <RocketLaunchIcon className="h-6 w-6" />
-              End Match Week
-            </button>
-            <button className="btn btn-secondary text-xl text-center" onClick={withdrawFunds}>
-              <BanknotesIcon className="h-6 w-6" />
-              Withdraw
-            </button>
-          </div>
+          <ActionsButtons
+            addMatches={addMatchesFromConsumer}
+            endMatchWeek={endMatchWeek}
+            withdrawFunds={withdrawFunds}
+          />
         )}
 
         {/* // TODO: Display results from contract. */}
@@ -110,20 +102,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
       <BannerTitle title={title} subtitle={subtitle} />
 
       {isOwner && (
-        <div className="flex flex-row flex-wrap justify-center pt-10 bg-base-300 w-full mt-16 px-8 py-12 gap-2">
-          <button className="btn btn-secondary text-xl text-center" onClick={addMatchesFromConsumer}>
-            <PlusCircleIcon className="h-6 w-6" />
-            Add matches
-          </button>
-          <button className="btn btn-secondary text-xl text-center" onClick={endMatchWeek}>
-            <RocketLaunchIcon className="h-6 w-6" />
-            End Match Week
-          </button>
-          <button className="btn btn-secondary text-xl text-center" onClick={withdrawFunds}>
-            <BanknotesIcon className="h-6 w-6" />
-            Withdraw
-          </button>
-        </div>
+        <ActionsButtons addMatches={addMatchesFromConsumer} endMatchWeek={endMatchWeek} withdrawFunds={withdrawFunds} />
       )}
 
       {!betsSubmitted ? (
