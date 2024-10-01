@@ -8,6 +8,7 @@ import { MatchResults } from "./_components/MatchResults";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
+import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
 import { Bet } from "~~/types/match";
 
 const title = "Match Week 1 - Season 2024/2025";
@@ -60,6 +61,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { matchWeek, close } = useMatchWeekData(params.address);
   const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
+  const { withdrawFunds } = useWithdrawFunds(params.address);
 
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
@@ -72,13 +74,13 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
     await submitBetsToContract();
   };
 
-  const endMatchWeek = async () => {
+  const handleEndMatchWeek = async () => {
     await addResultsFromConsumer(fakeResults);
     close();
   };
 
-  const withdrawFunds = () => {
-    //TODO: withdraw funds
+  const handleWithdrawFunds = async () => {
+    withdrawFunds();
   };
 
   const betsLength = Object.keys(bets).length;
@@ -90,8 +92,8 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
         {isOwner && (
           <ActionsButtons
             addMatches={addMatchesFromConsumer}
-            endMatchWeek={endMatchWeek}
-            withdrawFunds={withdrawFunds}
+            endMatchWeek={handleEndMatchWeek}
+            withdrawFunds={handleWithdrawFunds}
           />
         )}
         <MatchResults matches={matches} />
@@ -104,7 +106,11 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
       <BannerTitle title={title} subtitle={subtitle} />
 
       {isOwner && (
-        <ActionsButtons addMatches={addMatchesFromConsumer} endMatchWeek={endMatchWeek} withdrawFunds={withdrawFunds} />
+        <ActionsButtons
+          addMatches={addMatchesFromConsumer}
+          endMatchWeek={handleEndMatchWeek}
+          withdrawFunds={handleWithdrawFunds}
+        />
       )}
 
       {!betsSubmitted ? (
