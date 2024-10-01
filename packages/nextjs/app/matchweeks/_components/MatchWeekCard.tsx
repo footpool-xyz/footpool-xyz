@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAccount } from "wagmi";
-import { useReadContract } from "wagmi";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { useOnlyOwner } from "~~/hooks/footpool";
-import { useDeployedContractInfo, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useMatchWeekData } from "~~/hooks/footpool";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 import { MatchWeekSummary } from "~~/types/matchWeek";
 
@@ -15,23 +14,11 @@ type MatchWeekCardProps = {
 };
 
 const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
-  const [matchWeek, setMatchWeek] = useState<MatchWeekSummary>();
+  const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
 
   const { address: connectedAddress } = useAccount();
   const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeekAddr || "", "MatchWeekFactory");
   const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
-  const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
-
-  const { data: summary } = useReadContract({
-    abi: deployedContractData?.abi,
-    address: matchWeekAddr,
-    functionName: "summary",
-  });
-  const { data: amountToBet } = useReadContract({
-    abi: deployedContractData?.abi,
-    address: matchWeekAddr,
-    functionName: "AMOUNT_TO_BET",
-  });
 
   const handleEnable = async (matchWeek: MatchWeekSummary) => {
     try {
@@ -39,10 +26,10 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
         functionName: "enableMatchWeekById",
         args: [BigInt(matchWeek.id)],
       });
+      enable();
     } catch (e) {
       console.error("Error setting greeting:", e);
     }
-    setMatchWeek({ ...matchWeek, isEnabled: true });
   };
 
   const handleClose = async (matchWeek: MatchWeekSummary) => {
@@ -51,29 +38,11 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
         functionName: "closeMatchWeekById",
         args: [BigInt(matchWeek.id)],
       });
+      close();
     } catch (e) {
       console.error("Error setting greeting:", e);
     }
-    setMatchWeek({ ...matchWeek, isClosed: true });
   };
-
-  useEffect(() => {
-    if (Array.isArray(summary) && amountToBet) {
-      const [name, isEnabled, isClosed, stakeholdersCounter, id] = summary;
-      const amountToBetPerStakeholder: number = Number(amountToBet) / 1e18;
-
-      const matchWeek: MatchWeekSummary = {
-        id: id,
-        name: name,
-        isEnabled,
-        isClosed,
-        stakeholdersCounter: Number(stakeholdersCounter),
-        pricePool: amountToBetPerStakeholder * Number(stakeholdersCounter),
-        address: matchWeekAddr,
-      };
-      setMatchWeek(matchWeek);
-    }
-  }, [summary, amountToBet, matchWeekAddr]);
 
   if (!matchWeek) {
     return (
@@ -83,6 +52,15 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
         </div>
       </div>
     );
+  }
+
+  let buttonTextDisplay = "";
+  if (matchWeek.isEnabled && !matchWeek.isClosed) {
+    buttonTextDisplay = "Bet now!";
+  } else if (matchWeek.isEnabled && matchWeek.isClosed) {
+    buttonTextDisplay = "See results";
+  } else if (!matchWeek.isEnabled) {
+    buttonTextDisplay = "Cooming soon...";
   }
 
   return (
@@ -122,12 +100,10 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
 
           <div className="flex justify-center">
             <Link
-              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
-                !matchWeek.isEnabled || matchWeek.isClosed ? "btn-disabled" : ""
-              }`}
+              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${!matchWeek.isEnabled ? "btn-disabled" : ""}`}
               href={"/matchweeks/" + matchWeek.address}
             >
-              {matchWeek.isEnabled && !matchWeek.isClosed ? "Bet now!!" : "Coming soon..."}
+              {buttonTextDisplay}
             </Link>
           </div>
           {isOwner && !isOwnerLoading && (
