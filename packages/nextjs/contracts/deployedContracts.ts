@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MatchWeek: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
+      address: "0x90bb87c6258ad0d309d2f3a263d3bc7b0b9f522d",
       abi: [
         {
           type: "function",
@@ -604,627 +604,8 @@ const deployedContracts = {
         transferOwnership: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
       },
     },
-    MockMatchesDataConsumer: {
-      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
-      abi: [
-        {
-          type: "constructor",
-          inputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "RANDOM_ROUTER",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "acceptOwnership",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "getResponse",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "handleOracleFulfillment",
-          inputs: [
-            {
-              name: "requestId",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "response",
-              type: "bytes",
-              internalType: "bytes",
-            },
-            {
-              name: "err",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "s_lastError",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "s_lastRequestId",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "s_lastResponse",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "sendRequest",
-          inputs: [
-            {
-              name: "source",
-              type: "string",
-              internalType: "string",
-            },
-            {
-              name: "encryptedSecretsUrls",
-              type: "bytes",
-              internalType: "bytes",
-            },
-            {
-              name: "donHostedSecretsSlotID",
-              type: "uint8",
-              internalType: "uint8",
-            },
-            {
-              name: "donHostedSecretsVersion",
-              type: "uint64",
-              internalType: "uint64",
-            },
-            {
-              name: "args",
-              type: "string[]",
-              internalType: "string[]",
-            },
-            {
-              name: "bytesArgs",
-              type: "bytes[]",
-              internalType: "bytes[]",
-            },
-            {
-              name: "subscriptionId",
-              type: "uint64",
-              internalType: "uint64",
-            },
-            {
-              name: "gasLimit",
-              type: "uint32",
-              internalType: "uint32",
-            },
-            {
-              name: "jobId",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          outputs: [
-            {
-              name: "requestId",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "setResponse",
-          inputs: [
-            {
-              name: "_data",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "transferOwnership",
-          inputs: [
-            {
-              name: "to",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "event",
-          name: "OwnershipTransferRequested",
-          inputs: [
-            {
-              name: "from",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "to",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "OwnershipTransferred",
-          inputs: [
-            {
-              name: "from",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "to",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RequestFulfilled",
-          inputs: [
-            {
-              name: "id",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RequestSent",
-          inputs: [
-            {
-              name: "id",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "Response",
-          inputs: [
-            {
-              name: "requestId",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "response",
-              type: "bytes",
-              indexed: false,
-              internalType: "bytes",
-            },
-            {
-              name: "err",
-              type: "bytes",
-              indexed: false,
-              internalType: "bytes",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "error",
-          name: "EmptyArgs",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "EmptySecrets",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "EmptySource",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "NoInlineSecrets",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "OnlyRouterCanFulfill",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "UnexpectedRequestID",
-          inputs: [
-            {
-              name: "requestId",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-        },
-      ],
-      inheritedFunctions: {
-        acceptOwnership: "contracts/FunctionsConsumer.sol",
-        getResponse: "contracts/FunctionsConsumer.sol",
-        handleOracleFulfillment: "contracts/FunctionsConsumer.sol",
-        owner: "contracts/FunctionsConsumer.sol",
-        s_lastError: "contracts/FunctionsConsumer.sol",
-        s_lastRequestId: "contracts/FunctionsConsumer.sol",
-        s_lastResponse: "contracts/FunctionsConsumer.sol",
-        sendRequest: "contracts/FunctionsConsumer.sol",
-        transferOwnership: "contracts/FunctionsConsumer.sol",
-      },
-    },
-    MatchWeekFactory: {
-      address: "0x8ce361602b935680e8dec218b820ff5056beb7af",
-      abi: [
-        {
-          type: "constructor",
-          inputs: [
-            {
-              name: "initialOwner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "closeMatchWeekById",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "createMatchWeek",
-          inputs: [
-            {
-              name: "name",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract MatchWeek",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "enableMatchWeekById",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "getMatchWeeks",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address[]",
-              internalType: "contract MatchWeek[]",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "renounceOwnership",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "s_matchWeeks",
-          inputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract MatchWeek",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "setConsumerAddress",
-          inputs: [
-            {
-              name: "consumerAddress",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "setMatchWeekAddress",
-          inputs: [
-            {
-              name: "matchWeekAddress",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "transferOwnership",
-          inputs: [
-            {
-              name: "newOwner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "event",
-          name: "ConsumerAddressChanged",
-          inputs: [
-            {
-              name: "consumerAddr",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "MatchWeekClonableAddressChanged",
-          inputs: [
-            {
-              name: "cloneAddr",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "MatchWeekClosed",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "MatchWeekCreated",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-            {
-              name: "addr",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "name",
-              type: "string",
-              indexed: false,
-              internalType: "string",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "MatchWeekEnabled",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "OwnershipTransferred",
-          inputs: [
-            {
-              name: "previousOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "newOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "error",
-          name: "ERC1167FailedCreateClone",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "OwnableInvalidOwner",
-          inputs: [
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "OwnableUnauthorizedAccount",
-          inputs: [
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-      ],
-      inheritedFunctions: {
-        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-      },
-    },
     MockUsdtToken: {
-      address: "0xed1db453c3156ff3155a97ad217b3087d5dc5f6e",
+      address: "0x38381d63418ff752dba93ee018e36a6814388fa7",
       abi: [
         {
           type: "constructor",
@@ -1563,6 +944,625 @@ const deployedContracts = {
         totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
         transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+      },
+    },
+    MockMatchesDataConsumer: {
+      address: "0x45b0bbaceedcfbae96aec2d2ffef70777b0b3ae3",
+      abi: [
+        {
+          type: "constructor",
+          inputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "RANDOM_ROUTER",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "acceptOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getResponse",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "handleOracleFulfillment",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+            {
+              name: "response",
+              type: "bytes",
+              internalType: "bytes",
+            },
+            {
+              name: "err",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastError",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastRequestId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_lastResponse",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes",
+              internalType: "bytes",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "sendRequest",
+          inputs: [
+            {
+              name: "source",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "encryptedSecretsUrls",
+              type: "bytes",
+              internalType: "bytes",
+            },
+            {
+              name: "donHostedSecretsSlotID",
+              type: "uint8",
+              internalType: "uint8",
+            },
+            {
+              name: "donHostedSecretsVersion",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "args",
+              type: "string[]",
+              internalType: "string[]",
+            },
+            {
+              name: "bytesArgs",
+              type: "bytes[]",
+              internalType: "bytes[]",
+            },
+            {
+              name: "subscriptionId",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "gasLimit",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "jobId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          outputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setResponse",
+          inputs: [
+            {
+              name: "_data",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferRequested",
+          inputs: [
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "RequestFulfilled",
+          inputs: [
+            {
+              name: "id",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "RequestSent",
+          inputs: [
+            {
+              name: "id",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "Response",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              indexed: true,
+              internalType: "bytes32",
+            },
+            {
+              name: "response",
+              type: "bytes",
+              indexed: false,
+              internalType: "bytes",
+            },
+            {
+              name: "err",
+              type: "bytes",
+              indexed: false,
+              internalType: "bytes",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "error",
+          name: "EmptyArgs",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "EmptySecrets",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "EmptySource",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "NoInlineSecrets",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "OnlyRouterCanFulfill",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "UnexpectedRequestID",
+          inputs: [
+            {
+              name: "requestId",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+        },
+      ],
+      inheritedFunctions: {
+        acceptOwnership: "contracts/FunctionsConsumer.sol",
+        getResponse: "contracts/FunctionsConsumer.sol",
+        handleOracleFulfillment: "contracts/FunctionsConsumer.sol",
+        owner: "contracts/FunctionsConsumer.sol",
+        s_lastError: "contracts/FunctionsConsumer.sol",
+        s_lastRequestId: "contracts/FunctionsConsumer.sol",
+        s_lastResponse: "contracts/FunctionsConsumer.sol",
+        sendRequest: "contracts/FunctionsConsumer.sol",
+        transferOwnership: "contracts/FunctionsConsumer.sol",
+      },
+    },
+    MatchWeekFactory: {
+      address: "0x67f65b834aaac92c15c2eba9ff7e81f2d33a1cfd",
+      abi: [
+        {
+          type: "constructor",
+          inputs: [
+            {
+              name: "initialOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "closeMatchWeekById",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "createMatchWeek",
+          inputs: [
+            {
+              name: "name",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "contract MatchWeek",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "enableMatchWeekById",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getMatchWeeks",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "contract MatchWeek[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "s_matchWeeks",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "contract MatchWeek",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "setConsumerAddress",
+          inputs: [
+            {
+              name: "consumerAddress",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setMatchWeekAddress",
+          inputs: [
+            {
+              name: "matchWeekAddress",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "ConsumerAddressChanged",
+          inputs: [
+            {
+              name: "consumerAddr",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "MatchWeekClonableAddressChanged",
+          inputs: [
+            {
+              name: "cloneAddr",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "MatchWeekClosed",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "MatchWeekCreated",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "addr",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "name",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "MatchWeekEnabled",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "error",
+          name: "ERC1167FailedCreateClone",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+      ],
+      inheritedFunctions: {
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },
