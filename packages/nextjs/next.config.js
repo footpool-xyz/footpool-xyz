@@ -16,7 +16,7 @@ const nextConfig = {
   },
   env: {
     FOOTBALL_API_KEY: process.env.FOOTBALL_API_KEY || "",
-  }
+  },
 };
 
 module.exports = nextConfig;
