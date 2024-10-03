@@ -10,7 +10,7 @@ const selectedContractStorageKey = "scaffoldEth2.selectedContractClone";
 
 const DebugClones: NextPage = () => {
   const { data: contractsData = [] } = useScaffoldReadContract({
-    contractName: "MatchWeekFactory",
+    contractName: "FootPool",
     functionName: "getMatchWeeks",
   });
 

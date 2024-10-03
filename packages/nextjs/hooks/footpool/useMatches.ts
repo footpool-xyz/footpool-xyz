@@ -64,7 +64,8 @@ export const useMatches = (contractAddress: string) => {
   };
 
   // Handler to fetch and store matches from the API
-  const addMatchesFromConsumer = async () => {
+  const addMatchesFromConsumer = async (round: number, season: string) => {
+    console.log(round, season);
     const matchesFromApi = await fetchMatchesFromApi();
     if (deployedContractData) {
       storeMatchesInContract(matchesFromApi);

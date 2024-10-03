@@ -2,19 +2,19 @@
 pragma solidity ^0.8.19;
 
 import { Test, console } from "forge-std/Test.sol";
-import { MatchWeekFactory } from "../contracts/MatchWeekFactory.sol";
+import { FootPool } from "../contracts/FootPool.sol";
 import { MatchWeek } from "../contracts/MatchWeek.sol";
 import { MockMatchesDataConsumer } from "./mock/MockMatchesDataConsumer.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MatchWeekFactoryTest is Test {
+contract FootPoolTest is Test {
     event MatchWeekCreated();
     //event MatchWeekEnabled(uint256 id);
     event MatchWeekClosed(uint256 id);
     event MatchWeekClonableAddressChanged(address cloneAddr);
     event ConsumerAddressChanged(address consumerAddr);
 
-    MatchWeekFactory factory;
+    FootPool factory;
 
     address public OWNER = makeAddr("owner");
     address public USER = makeAddr("user");
@@ -23,7 +23,7 @@ contract MatchWeekFactoryTest is Test {
         vm.startPrank(OWNER);
         MockMatchesDataConsumer consumer = new MockMatchesDataConsumer();
         MatchWeek matchWeek = new MatchWeek();
-        factory = new MatchWeekFactory(OWNER);
+        factory = new FootPool(OWNER);
 
         factory.setConsumerAddress(address(consumer));
         factory.setMatchWeekAddress(address(matchWeek));

@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./MatchWeek.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
+import { MatchWeek } from "./MatchWeek.sol";
 
 /**
  * @title Match Week Factory.
  * @notice This contract is the manager of match weeks, creating new ones
  * and closing/enabling them also.
  */
-contract MatchWeekFactory is Ownable {
+contract FootPool is Ownable {
     event MatchWeekCreated(uint256 id, address addr, string name);
     event MatchWeekEnabled(uint256 id);
     event MatchWeekClosed(uint256 id);

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MockUsdtToken: {
-      address: "0xc8c25aab3eea991e083d2d0240ee4d693c59bdac",
+      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
       abi: [
         {
           type: "constructor",
@@ -349,7 +349,7 @@ const deployedContracts = {
       },
     },
     MatchWeek: {
-      address: "0xdc88b5feffd566bfa016b6b9268ea29929e7adf1",
+      address: "0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf",
       abi: [
         {
           type: "function",
@@ -947,7 +947,7 @@ const deployedContracts = {
       },
     },
     MockMatchesDataConsumer: {
-      address: "0x25c74b7124bae93364213a6124a5e45bb0e98889",
+      address: "0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc",
       abi: [
         {
           type: "constructor",
@@ -1274,19 +1274,19 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        acceptOwnership: "contracts/FunctionsConsumer.sol",
-        getResponse: "contracts/FunctionsConsumer.sol",
-        handleOracleFulfillment: "contracts/FunctionsConsumer.sol",
-        owner: "contracts/FunctionsConsumer.sol",
-        s_lastError: "contracts/FunctionsConsumer.sol",
-        s_lastRequestId: "contracts/FunctionsConsumer.sol",
-        s_lastResponse: "contracts/FunctionsConsumer.sol",
-        sendRequest: "contracts/FunctionsConsumer.sol",
-        transferOwnership: "contracts/FunctionsConsumer.sol",
+        acceptOwnership: "contracts/MatchesDataConsumer.sol",
+        getResponse: "contracts/MatchesDataConsumer.sol",
+        handleOracleFulfillment: "contracts/MatchesDataConsumer.sol",
+        owner: "contracts/MatchesDataConsumer.sol",
+        s_lastError: "contracts/MatchesDataConsumer.sol",
+        s_lastRequestId: "contracts/MatchesDataConsumer.sol",
+        s_lastResponse: "contracts/MatchesDataConsumer.sol",
+        sendRequest: "contracts/MatchesDataConsumer.sol",
+        transferOwnership: "contracts/MatchesDataConsumer.sol",
       },
     },
-    MatchWeekFactory: {
-      address: "0xe61a6e7442ce84072db14423ffbbe2609908ee38",
+    FootPool: {
+      address: "0x2a264f26859166c5bf3868a54593ee716aebc848",
       abi: [
         {
           type: "constructor",

@@ -4,10 +4,10 @@ pragma solidity ^0.8.19;
 import "./DeployHelpers.s.sol";
 import { Constants } from "./Constants.sol";
 import { MatchWeek } from "../contracts/MatchWeek.sol";
-import { MatchWeekFactory } from "../contracts/MatchWeekFactory.sol";
+import { FootPool } from "../contracts/FootPool.sol";
 import { MockMatchesDataConsumer } from "../test/mock/MockMatchesDataConsumer.sol";
 import { MockUsdtToken } from "../test/mock/MockUsdtToken.sol";
-import { FunctionsConsumer } from "../contracts/FunctionsConsumer.sol";
+import { MatchesDataConsumer } from "../contracts/MatchesDataConsumer.sol";
 
 contract DeployFakeUsdtToken is ScaffoldETHDeploy {
     // use `deployer` from `ScaffoldETHDeploy`

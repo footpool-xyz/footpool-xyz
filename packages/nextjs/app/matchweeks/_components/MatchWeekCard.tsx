@@ -17,8 +17,8 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
   const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
 
   const { address: connectedAddress } = useAccount();
-  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeekAddr || "", "MatchWeekFactory");
-  const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("MatchWeekFactory");
+  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeekAddr || "", "FootPool");
+  const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("FootPool");
 
   const handleEnable = async (matchWeek: MatchWeekSummary) => {
     try {

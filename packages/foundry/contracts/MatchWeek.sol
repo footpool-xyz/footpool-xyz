@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./FunctionsConsumer.sol";
+import { MatchesDataConsumer } from "./MatchesDataConsumer.sol";
 
 contract MatchWeek is Initializable, OwnableUpgradeable {
     error MatchWeek__AlreadyClosed();
@@ -61,7 +61,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     address private s_factoryAddress;
 
     IERC20 s_token;
-    FunctionsConsumer s_consumer;
+    MatchesDataConsumer s_consumer;
 
     function initialize(
         uint256 id,
@@ -74,7 +74,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         s_isEnabled = false;
         s_title = _title;
         s_isClosed = false;
-        s_consumer = FunctionsConsumer(consumer);
+        s_consumer = MatchesDataConsumer(consumer);
         s_factoryAddress = msg.sender;
     }
 

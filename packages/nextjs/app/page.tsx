@@ -15,10 +15,10 @@ const MatchWeeksPage: NextPage = () => {
   const [matchWeeksAddresses, setMatchWeeksAddresses] = useState<AddressType[]>([]);
 
   const { data: matchWeeksAddressesFromContract } = useScaffoldReadContract({
-    contractName: "MatchWeekFactory",
+    contractName: "FootPool",
     functionName: "getMatchWeeks",
   });
-  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract("MatchWeekFactory");
+  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract("FootPool");
 
   const storeMatchWeekInContract = async (name: string) => {
     try {
