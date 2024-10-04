@@ -12,11 +12,7 @@ import { MatchesDataConsumer } from "../contracts/MatchesDataConsumer.sol";
 contract DeployDataConsumer is ScaffoldETHDeploy {
     // use `deployer` from `ScaffoldETHDeploy`
     function run() external ScaffoldEthDeployerRunner returns (address) {
-        if (getChain().chainId == 31337) {
-            return _deployMatchesDataConsumer();
-        } else {
-            return 0x47462Fc9F041763b47549DEf683DD785BbCFC313;
-        }
+        return _deployMatchesDataConsumer();
     }
 
     function _deployMatchesDataConsumer() private returns (address) {

@@ -12,9 +12,7 @@ import { MatchesDataConsumer } from "../contracts/MatchesDataConsumer.sol";
 contract DeployFakeUsdtToken is ScaffoldETHDeploy {
     // use `deployer` from `ScaffoldETHDeploy`
     function run() external ScaffoldEthDeployerRunner {
-        if (getChain().chainId == 31337) {
-            _deployFakeUsdt();
-        }
+        _deployFakeUsdt();
     }
 
     function _deployFakeUsdt() private returns (address) {
