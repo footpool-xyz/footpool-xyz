@@ -4198,6 +4198,7 @@ __metadata:
     "@chainlink/contracts": ^0.8.0
     "@chainlink/functions-toolkit": ^0.2.5
     commander: ^11.1.0
+    dotenv: ^16.4.5
     ethers: ^5.7.2
   languageName: unknown
   linkType: soft
@@ -4921,6 +4922,13 @@ __metadata:
   dependencies:
     esutils: ^2.0.2
   checksum: fd7673ca77fe26cd5cba38d816bc72d641f500f1f9b25b83e8ce28827fe2da7ad583a8da26ab6af85f834138cf8dae9f69b0cd6ab925f52ddab1754db44d99ce
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
   languageName: node
   linkType: hard
 

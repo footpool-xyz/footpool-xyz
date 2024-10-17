@@ -10,7 +10,7 @@ export const useMatches = (contractAddress: string) => {
   const { writeContract } = useWriteContract();
   const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
   const { data: matchesIdsFromContract } = useScaffoldReadContract({
-    contractName: "MockMatchesDataConsumer",
+    contractName: "MatchesDataConsumer",
     functionName: "getResponse",
   });
 

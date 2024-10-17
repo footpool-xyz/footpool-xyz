@@ -9,35 +9,34 @@ const {
   decodeResult,
   FulfillmentCode,
 } = require("@chainlink/functions-toolkit");
-const functionsConsumerAbi = require("../nextjs/src/app/_contracts/contracts/FunctionsConsumer.sol/FunctionsConsumer.json");
+const functionsConsumerAbi = require("../foundry/out/MatchesDataConsumer.sol/MatchesDataConsumer.json");
 const { ethers, JsonRpcProvider } = require("ethers");
-require("dotenv").config({ path: '../.env' });
+require("dotenv").config({ path: '.env' });
 const { Command, Option } = require('commander');
+const { exit } = require("process");
 const program = new Command();
 
-// Scroll Sepolia = 0xc46938A0f92C7B05bbbC226EE00666f6652b6A93
-
-const consumerAddress = "0xc46938A0f92C7B05bbbC226EE00666f6652b6A93"; // REPLACE this with your Functions consumer address
-const subscriptionId = 1251; // REPLACE this with your subscription ID
+const consumerAddress = "0x7a9828a639d0F54E21b0229Ac40c65317E8516E2"; // REPLACE this with your Functions consumer address
+const subscriptionId = 238; // REPLACE this with your subscription ID
 
 program
   .name('FootPool data fulfillment');
 
 program
-  .addOption(new Option('-s, --source <file>', 'Source file choose').choices(['matches', 'results']).makeOptionMandatory())
+  .addOption(new Option('-s, --source <file>', 'Source file choose').choices(['setMatches', 'setMatchesWithResults']).makeOptionMandatory())
 
 program.parse(process.argv);
 
 const makeRequest = async () => {
-  // Sepolia
-  const routerAddress = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0";
-  const linkTokenAddress = "0x779877A7B0D9E8603169DdbD7836e478b4624789";
-  const donId = "fun-ethereum-sepolia-1";
+  // OP Sepolia
+  const routerAddress = "0xC17094E3A1348E5C7544D4fF8A36c28f2C6AAE28";
+  const linkTokenAddress = "0xE4aB69C077896252FAFBD49EFD26B5D171A32410";
+  const donId = "fun-optimism-sepolia-1";
   const gatewayUrls = [
     "https://01.functions-gateway.testnet.chain.link/",
     "https://02.functions-gateway.testnet.chain.link/",
   ];
-  const explorerUrl = "https://sepolia.etherscan.io/";
+  const explorerUrl = "https://sepolia-optimism.etherscan.io/";
 
   // Initialize functions settings
   const sourceFile = (program.opts()).source;
@@ -46,7 +45,7 @@ const makeRequest = async () => {
     .readFileSync(path.resolve(__dirname, sourceFile + '.js'))
     .toString();
 
-  const args = ["9"];
+  const args = ["9", "140", "2024"];
   const secrets = { apiKey: process.env.FOOTBALL_API_KEY };
   const slotIdNumber = 0; // slot ID where to upload the secrets
   const expirationTimeMinutes = 15; // expiration time in minutes of the secrets
@@ -59,7 +58,7 @@ const makeRequest = async () => {
       "private key not provided - check your environment variables"
     );
 
-  const rpcUrl = "https://sepolia.infura.io/v3/" + process.env.INFURA_API_KEY; // fetch mumbai RPC URL
+  const rpcUrl = "https://optimism-sepolia.infura.io/v3/" + process.env.INFURA_API_KEY; // fetch mumbai RPC URL
 
   if (!rpcUrl)
     throw new Error(`rpcUrl not provided  - check your environment variables`);

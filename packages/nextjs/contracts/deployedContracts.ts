@@ -2448,7 +2448,7 @@ const deployedContracts = {
   },
   11155420: {
     MockUsdtToken: {
-      address: "0x5dbe0095059447256e24533fb3c27862b2eb7b09",
+      address: "0xd42edf484f684e258872f25f527371c67e381489",
       abi: [
         {
           type: "constructor",
@@ -2790,7 +2790,7 @@ const deployedContracts = {
       },
     },
     MatchWeek: {
-      address: "0xe64ec4ee7f0d81ca2d8319d485000d3c3bd9fed5",
+      address: "0xbf1ef3d4641342fc4debd011149430a8ef5fc9b8",
       abi: [
         {
           type: "function",
@@ -3387,26 +3387,19 @@ const deployedContracts = {
         transferOwnership: "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol",
       },
     },
-    MockMatchesDataConsumer: {
-      address: "0x678c90c96ab2bad6407b063a95519c59bd5eec91",
+    MatchesDataConsumer: {
+      address: "0x7a9828a639d0f54e21b0229ac40c65317e8516e2",
       abi: [
         {
           type: "constructor",
-          inputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "RANDOM_ROUTER",
-          inputs: [],
-          outputs: [
+          inputs: [
             {
-              name: "",
+              name: "router",
               type: "address",
               internalType: "address",
             },
           ],
-          stateMutability: "view",
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -3564,19 +3557,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setResponse",
-          inputs: [
-            {
-              name: "_data",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "transferOwnership",
           inputs: [
             {
@@ -3715,19 +3695,14 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        acceptOwnership: "contracts/MatchesDataConsumer.sol",
-        getResponse: "contracts/MatchesDataConsumer.sol",
-        handleOracleFulfillment: "contracts/MatchesDataConsumer.sol",
-        owner: "contracts/MatchesDataConsumer.sol",
-        s_lastError: "contracts/MatchesDataConsumer.sol",
-        s_lastRequestId: "contracts/MatchesDataConsumer.sol",
-        s_lastResponse: "contracts/MatchesDataConsumer.sol",
-        sendRequest: "contracts/MatchesDataConsumer.sol",
-        transferOwnership: "contracts/MatchesDataConsumer.sol",
+        handleOracleFulfillment: "lib/chainlink/contracts/src/v0.8/functions/v1_0_0/FunctionsClient.sol",
+        acceptOwnership: "lib/chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol",
+        owner: "lib/chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol",
+        transferOwnership: "lib/chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol",
       },
     },
     FootPool: {
-      address: "0xb659d538b130166182a7a4ef6530e634f9568c46",
+      address: "0xbfcca487474c674cbb532f4bf32ffae9240330b2",
       abi: [
         {
           type: "constructor",

@@ -13,9 +13,9 @@ contract DeployDataConsumer is ScaffoldETHDeploy {
     // use `deployer` from `ScaffoldETHDeploy`
     function run() external ScaffoldEthDeployerRunner returns (address) {
         if (getChain().chainId == 11155420) {
-            return _deployFakeMatchesDataConsumer();
+            return _deployMatchesDataConsumer();
         }
-        return _deployMatchesDataConsumer();
+        return _deployFakeMatchesDataConsumer();
     }
 
     function _deployFakeMatchesDataConsumer() private returns (address) {
