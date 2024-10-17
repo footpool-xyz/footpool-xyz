@@ -12,16 +12,31 @@ import { MatchesDataConsumer } from "../contracts/MatchesDataConsumer.sol";
 contract DeployDataConsumer is ScaffoldETHDeploy {
     // use `deployer` from `ScaffoldETHDeploy`
     function run() external ScaffoldEthDeployerRunner returns (address) {
+        if (getChain().chainId == 11155420) {
+            return _deployFakeMatchesDataConsumer();
+        }
         return _deployMatchesDataConsumer();
     }
 
-    function _deployMatchesDataConsumer() private returns (address) {
+    function _deployFakeMatchesDataConsumer() private returns (address) {
         string memory fakeMatches = vm.readFile("./matches/fakeMatches.json");
         MockMatchesDataConsumer matchesDataConsumer = new MockMatchesDataConsumer();
         matchesDataConsumer.setResponse(fakeMatches);
         console.logString(
             string.concat(
                 "MockMatchesDataConsumer deployed at: ", vm.toString(address(matchesDataConsumer))
+            )
+        );
+
+        return address(matchesDataConsumer);
+    }
+
+    function _deployMatchesDataConsumer() private returns (address) {
+        MatchesDataConsumer matchesDataConsumer =
+            new MatchesDataConsumer(0xC17094E3A1348E5C7544D4fF8A36c28f2C6AAE28);
+        console.logString(
+            string.concat(
+                "MatchesDataConsumer deployed at: ", vm.toString(address(matchesDataConsumer))
             )
         );
 
