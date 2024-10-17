@@ -13,31 +13,67 @@ const functionsConsumerAbi = require("../foundry/out/MatchesDataConsumer.sol/Mat
 const { ethers, JsonRpcProvider } = require("ethers");
 require("dotenv").config({ path: '.env' });
 const { Command, Option } = require('commander');
-const { exit } = require("process");
+
+//////////////////////////////
+//// Network Configuration
+/////////////////// //////////
+const networks = {
+  opSepolia: {
+    routerAddress: "0xC17094E3A1348E5C7544D4fF8A36c28f2C6AAE28",
+    linkTokenAddress: "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
+    donId: "fun-optimism-sepolia-1",
+    explorerUrl: "https://sepolia-optimism.etherscan.io/",
+    rpcUrl: "https://optimism-sepolia.infura.io/v3/" + process.env.INFURA_API_KEY,
+    consumerAddress: "0x7a9828a639d0F54E21b0229Ac40c65317E8516E2",
+    subscriptionId: 238,
+    gatewayUrls: [
+      "https://01.functions-gateway.testnet.chain.link/",
+      "https://02.functions-gateway.testnet.chain.link/",
+    ],
+  },
+  // Future networks can be added here
+};
+
+///////////////////
+//// Commander
+/////////////////// 
 const program = new Command();
-
-const consumerAddress = "0x7a9828a639d0F54E21b0229Ac40c65317E8516E2"; // REPLACE this with your Functions consumer address
-const subscriptionId = 238; // REPLACE this with your subscription ID
-
 program
-  .name('FootPool data fulfillment');
-
-program
+  .name('FootPool data fulfillment')
   .addOption(new Option('-s, --source <file>', 'Source file choose').choices(['setMatches', 'setMatchesWithResults']).makeOptionMandatory())
+  .requiredOption('-n, --network <network>', 'Network to use (e.g., opSepolia)')
+  .parse(process.argv);
 
-program.parse(process.argv);
+const options = program.opts();
 
+const networkConfig = networks[options.network];
+if (!networkConfig) {
+  console.error(`Network ${options.network} not supported.`);
+  process.exit(1);
+}
+
+const {
+  routerAddress,
+  linkTokenAddress,
+  donId,
+  explorerUrl,
+  rpcUrl,
+  consumerAddress,
+  subscriptionId,
+  gatewayUrls,
+} = networkConfig;
+
+///////////////////
+//// Arguments
+///////////////////
+const round = "9";
+const league = "140";
+const season = "2024";
+
+//////////////////////////////
+//// Request
+/////////////////// //////////
 const makeRequest = async () => {
-  // OP Sepolia
-  const routerAddress = "0xC17094E3A1348E5C7544D4fF8A36c28f2C6AAE28";
-  const linkTokenAddress = "0xE4aB69C077896252FAFBD49EFD26B5D171A32410";
-  const donId = "fun-optimism-sepolia-1";
-  const gatewayUrls = [
-    "https://01.functions-gateway.testnet.chain.link/",
-    "https://02.functions-gateway.testnet.chain.link/",
-  ];
-  const explorerUrl = "https://sepolia-optimism.etherscan.io/";
-
   // Initialize functions settings
   const sourceFile = (program.opts()).source;
 
@@ -45,7 +81,7 @@ const makeRequest = async () => {
     .readFileSync(path.resolve(__dirname, sourceFile + '.js'))
     .toString();
 
-  const args = ["9", "140", "2024"];
+  const args = [round, league, season];
   const secrets = { apiKey: process.env.FOOTBALL_API_KEY };
   const slotIdNumber = 0; // slot ID where to upload the secrets
   const expirationTimeMinutes = 15; // expiration time in minutes of the secrets
@@ -57,11 +93,6 @@ const makeRequest = async () => {
     throw new Error(
       "private key not provided - check your environment variables"
     );
-
-  const rpcUrl = "https://optimism-sepolia.infura.io/v3/" + process.env.INFURA_API_KEY; // fetch mumbai RPC URL
-
-  if (!rpcUrl)
-    throw new Error(`rpcUrl not provided  - check your environment variables`);
 
   const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
