@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useWriteContract } from "wagmi";
 import { useReadContract } from "wagmi";
-import { useDeployedContractInfo, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo, useScaffoldReadContract, useTargetNetwork } from "~~/hooks/scaffold-eth";
 import { Match, MatchConsumer, MatchContract } from "~~/types/match";
 
 export const useMatches = (contractAddress: string) => {
@@ -9,8 +9,12 @@ export const useMatches = (contractAddress: string) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const { writeContract } = useWriteContract();
   const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
+  const { targetNetwork } = useTargetNetwork();
+
+  const consumerContractName = targetNetwork.name == "Foundry" ? "MockMatchesDataConsumer" : "MatchesDataConsumer";
+  // @ts-expect-error
   const { data: matchesIdsFromContract } = useScaffoldReadContract({
-    contractName: "MatchesDataConsumer",
+    contractName: consumerContractName as any,
     functionName: "getResponse",
   });
 

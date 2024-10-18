@@ -59,6 +59,8 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
     buttonTextDisplay = "Bet now!";
   } else if (matchWeek.isEnabled && matchWeek.isClosed) {
     buttonTextDisplay = "See results";
+  } else if (!matchWeek.isEnabled && isOwner) {
+    buttonTextDisplay = "Configure";
   } else if (!matchWeek.isEnabled) {
     buttonTextDisplay = "Cooming soon...";
   }
@@ -100,7 +102,9 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
 
           <div className="flex justify-center">
             <Link
-              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${!matchWeek.isEnabled ? "btn-disabled" : ""}`}
+              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
+                !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
+              }`}
               href={"/matchweeks/" + matchWeek.address}
             >
               {buttonTextDisplay}
