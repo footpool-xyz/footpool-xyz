@@ -8,15 +8,17 @@ import { MatchesDataConsumer } from "./MatchesDataConsumer.sol";
 
 contract MatchWeek is Initializable, OwnableUpgradeable {
     error MatchWeek__AlreadyClosed();
-    error MatchWeek_NotClosedYet();
+    error MatchWeek__NotClosedYet();
     error MatchWeek__OnlyFactoryOrOwnerAllowed();
     error MatchWeek__NotEnoughTokenAllowance();
+    error MatchWeek__RewardsNotBeenSentYet();
 
     event BetAdded(address indexed sender, uint256 amount, Bet[] bets);
     event RewardSended(address indexed to, uint256 reward);
     event RefundSent(address to, uint256 refunded);
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
+    event AddedResults();
 
     uint256 public constant AMOUNT_TO_BET = 5 * DECIMALS;
     uint256 private constant DECIMALS = 1e18;
@@ -52,6 +54,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     string public s_title;
     bool public s_isEnabled;
     bool public s_isClosed;
+    bool public s_rewardsHasBeenSent;
 
     uint256[] private s_matchesIds;
     uint8 private s_numOfMatches;
@@ -74,6 +77,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         s_isEnabled = false;
         s_title = _title;
         s_isClosed = false;
+        s_rewardsHasBeenSent = false;
         s_consumer = MatchesDataConsumer(consumer);
         s_factoryAddress = msg.sender;
     }
@@ -119,21 +123,18 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
 
     function addResults(
         MatchResult[] calldata results
-    ) external onlyOwner onlyOpen {
+    ) external onlyOwner onlyClosed {
         uint256 resultsLength = results.length;
         for (uint8 i = 0; i < resultsLength; ++i) {
             s_matches[results[i].matchId].result = results[i].result;
         }
 
         _sendRewardsToWinners();
-        s_isClosed = true;
+        s_rewardsHasBeenSent = true;
+        emit AddedResults();
     }
 
-    function withdrawFunds() external onlyOwner {
-        if (s_isClosed == false) {
-            revert MatchWeek_NotClosedYet();
-        }
-
+    function withdrawFunds() external onlyOwner onlyAfterRewardsHasBeenSent {
         address owner = owner();
         uint256 balance = s_token.balanceOf(address(this));
         s_token.transfer(owner, balance);
@@ -205,7 +206,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     }
 
     function _sendReward(address[] memory to, uint8 winnersCount) private {
-        uint256 reward = _getRewardToSend(winnersCount);
+        uint256 reward = getRewardToSend(winnersCount);
 
         for (uint32 i; i < winnersCount; ++i) {
             s_token.transfer(to[i], reward);
@@ -213,9 +214,9 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         }
     }
 
-    function _getRewardToSend(
+    function getRewardToSend(
         uint256 winnersLength
-    ) private view returns (uint256) {
+    ) public view returns (uint256) {
         uint256 currentBalance = s_token.balanceOf(address(this));
 
         uint256 reward = currentBalance / BASE_PERCENTAGE * REWARD_PERCENTAGE;
@@ -255,6 +256,20 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     modifier onlyOpen() {
         if (s_isClosed == true) {
             revert MatchWeek__AlreadyClosed();
+        }
+        _;
+    }
+
+    modifier onlyClosed() {
+        if (s_isClosed == false) {
+            revert MatchWeek__NotClosedYet();
+        }
+        _;
+    }
+
+    modifier onlyAfterRewardsHasBeenSent() {
+        if (s_rewardsHasBeenSent == false) {
+            revert MatchWeek__RewardsNotBeenSentYet();
         }
         _;
     }

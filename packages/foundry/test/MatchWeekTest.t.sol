@@ -12,10 +12,13 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract MatchWeekTest is Test {
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
+    event AddedResults();
+    event RewardSended(address indexed to, uint256 reward);
 
     MockMatchesDataConsumer consumer;
     MatchWeek.Match[] matchesToAdd;
     MatchWeek.Bet[] betsToAdd;
+    MatchWeek.MatchResult[] resultsToAdd;
     MockUsdtToken token;
 
     address OWNER = makeAddr("owner");
@@ -27,6 +30,9 @@ contract MatchWeekTest is Test {
         token = new MockUsdtToken();
     }
 
+    /////////////////
+    //// Enabling
+    /////////////////
     function testCanEnableMatchWeek() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         bool previousState = matchWeek.s_isEnabled();
@@ -50,6 +56,9 @@ contract MatchWeekTest is Test {
         matchWeek.enable();
     }
 
+    /////////////////
+    //// Closing
+    /////////////////
     function testCanCloseOnlyWhenIsOpen() public {
         MatchWeek matchWeek = _initializeMatchWeek();
 
@@ -67,6 +76,9 @@ contract MatchWeekTest is Test {
         vm.stopPrank();
     }
 
+    /////////////////
+    //// Add Matches
+    /////////////////
     function testCanAddMatches() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
@@ -105,6 +117,9 @@ contract MatchWeekTest is Test {
         matchWeek.addMatches(matchesToAdd);
     }
 
+    /////////////////
+    //// Add Bets
+    /////////////////
     function testCanAddBets() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
@@ -137,6 +152,84 @@ contract MatchWeekTest is Test {
         matchWeek.addBets(betsToAdd, address(token));
     }
 
+    /////////////////
+    //// Results
+    /////////////////
+    function testOnlyOwnerCanAddResults() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+
+        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
+        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
+
+        vm.prank(USER);
+        vm.expectRevert(
+            abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, USER)
+        );
+        matchWeek.addResults(resultsToAdd);
+    }
+
+    function testRevertsWhenAddingResultsAndIsNoClosed() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+
+        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
+        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
+
+        vm.prank(OWNER);
+        vm.expectRevert(MatchWeek.MatchWeek__NotClosedYet.selector);
+        matchWeek.addResults(resultsToAdd);
+    }
+
+    function testCanAddResults() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+        _populateResultsToAdd();
+
+        vm.prank(OWNER);
+        matchWeek.close();
+
+        vm.prank(OWNER);
+        vm.expectEmit(false, false, false, false);
+        emit AddedResults();
+        matchWeek.addResults(resultsToAdd);
+    }
+
+    function testRewardsAreSentToWinners() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+        _populateBetsToAdd();
+        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
+        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.DRAW));
+
+        token.mint(USER);
+        vm.prank(USER);
+        token.approve(address(matchWeek), 5 * 1e18);
+
+        vm.prank(USER);
+        matchWeek.addBets(betsToAdd, address(token));
+
+        vm.prank(OWNER);
+        matchWeek.close();
+
+        vm.startPrank(OWNER);
+        vm.expectEmit(true, true, false, true);
+        emit RewardSended(USER, matchWeek.getRewardToSend(1));
+        vm.expectEmit(false, false, false, false);
+        emit AddedResults();
+        matchWeek.addResults(resultsToAdd);
+        vm.stopPrank();
+    }
+
+    /////////////////
+    //// Withdraw
+    /////////////////
+    function testOwnerCanWithdrawFunds() public { }
+
+    function testRevertsIfNotOwnerTriesToWithdrawFunds() public { }
+
+    function testReversIfOwnerTriesToWithdrawFundsAndIsNotClosed() public { }
+
     /**
      * Helper functions
      */
@@ -157,5 +250,10 @@ contract MatchWeekTest is Test {
         matchesToAdd.push(MatchWeek.Match(1, "RMadrid", "FCBarcelona", MatchWeek.Result.UNDEFINED));
         matchesToAdd.push(MatchWeek.Match(2, "ATMadrid", "Athletic", MatchWeek.Result.UNDEFINED));
         vm.stopPrank();
+    }
+
+    function _populateResultsToAdd() private {
+        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
+        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
     }
 }
