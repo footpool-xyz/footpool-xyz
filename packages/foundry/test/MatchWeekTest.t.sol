@@ -224,11 +224,19 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Withdraw
     /////////////////
-    function testOwnerCanWithdrawFunds() public { }
+    function testOwnerCanWithdrawFunds() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+
+        vm.prank(USER);
+        vm.expectRevert(
+            abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, USER)
+        );
+        matchWeek.withdrawFunds();
+    }
 
     function testRevertsIfNotOwnerTriesToWithdrawFunds() public { }
 
-    function testReversIfOwnerTriesToWithdrawFundsAndIsNotClosed() public { }
+    function testReversIfOwnerTriesToWithdrawFundsAndRewardsHasNotBeenSentYet() public { }
 
     /**
      * Helper functions
