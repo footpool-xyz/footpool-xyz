@@ -236,7 +236,13 @@ contract MatchWeekTest is Test {
         matchWeek.withdrawFunds();
     }
 
-    function testReversIfOwnerTriesToWithdrawFundsAndRewardsHasNotBeenSentYet() public { }
+    function testReversIfOwnerTriesToWithdrawFundsAndRewardsHasNotBeenSentYet() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+
+        vm.prank(OWNER);
+        vm.expectRevert(MatchWeek.MatchWeek__RewardsNotBeenSentYet.selector);
+        matchWeek.withdrawFunds();
+    }
 
     /**
      * Helper functions
