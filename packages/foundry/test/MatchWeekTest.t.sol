@@ -14,6 +14,7 @@ contract MatchWeekTest is Test {
     event MatchAdded(uint256 id);
     event AddedResults();
     event RewardSended(address indexed to, uint256 reward);
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
     MockMatchesDataConsumer consumer;
     MatchWeek.Match[] matchesToAdd;
@@ -224,9 +225,6 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Withdraw
     /////////////////
-
-    event Transfer(address indexed from, address indexed to, uint256 value);
-
     function testOwnerCanWithdrawFunds() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
@@ -279,16 +277,14 @@ contract MatchWeekTest is Test {
         return matchWeek;
     }
 
+    function _populateMatchesToAdd() private {
+        matchesToAdd.push(MatchWeek.Match(1, "RMadrid", "FCBarcelona", MatchWeek.Result.UNDEFINED));
+        matchesToAdd.push(MatchWeek.Match(2, "ATMadrid", "Athletic", MatchWeek.Result.UNDEFINED));
+    }
+
     function _populateBetsToAdd() private {
         betsToAdd.push(MatchWeek.Bet(1, MatchWeek.Result.LOCAL_WIN));
         betsToAdd.push(MatchWeek.Bet(2, MatchWeek.Result.DRAW));
-    }
-
-    function _populateMatchesToAdd() private {
-        vm.startPrank(OWNER);
-        matchesToAdd.push(MatchWeek.Match(1, "RMadrid", "FCBarcelona", MatchWeek.Result.UNDEFINED));
-        matchesToAdd.push(MatchWeek.Match(2, "ATMadrid", "Athletic", MatchWeek.Result.UNDEFINED));
-        vm.stopPrank();
     }
 
     function _populateResultsToAdd() private {
