@@ -10,6 +10,8 @@ import { OwnableUpgradeable } from
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MatchWeekTest is Test {
+    uint256 constant AMOUNT_TO_BET = 5 * 1e18;
+
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
     event AddedResults();
@@ -124,11 +126,11 @@ contract MatchWeekTest is Test {
     function testCanAddBets() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
-        _populateBetsToAdd();
+        _populateLoseBetsToAdd();
 
         vm.startPrank(USER);
         token.mint(USER);
-        token.approve(address(matchWeek), 5 * 1e18);
+        token.approve(address(matchWeek), AMOUNT_TO_BET);
         matchWeek.addBets(betsToAdd, address(token));
         vm.stopPrank();
 
@@ -138,10 +140,8 @@ contract MatchWeekTest is Test {
     }
 
     function testCantBetWhenNoTokenAllowance() public {
-        MatchWeek matchWeek = new MatchWeek();
-        matchWeek.initialize(1, "First MatchWeek", OWNER, address(consumer));
-        betsToAdd.push(MatchWeek.Bet(1, MatchWeek.Result.LOCAL_WIN));
-        betsToAdd.push(MatchWeek.Bet(2, MatchWeek.Result.DRAW));
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateLoseBetsToAdd();
 
         vm.prank(OWNER);
         matchWeek.addMatches(matchesToAdd);
@@ -159,9 +159,7 @@ contract MatchWeekTest is Test {
     function testOnlyOwnerCanAddResults() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
-
-        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
-        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
+        _populateResultsToAdd();
 
         vm.prank(USER);
         vm.expectRevert(
@@ -173,9 +171,7 @@ contract MatchWeekTest is Test {
     function testRevertsWhenAddingResultsAndIsNoClosed() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
-
-        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
-        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
+        _populateResultsToAdd();
 
         vm.prank(OWNER);
         vm.expectRevert(MatchWeek.MatchWeek__NotClosedYet.selector);
@@ -199,13 +195,12 @@ contract MatchWeekTest is Test {
     function testRewardsAreSentToWinners() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
-        _populateBetsToAdd();
-        resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
-        resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.DRAW));
+        _populateWinnerBetsToAdd();
+        _populateResultsToAdd();
 
         token.mint(USER);
         vm.prank(USER);
-        token.approve(address(matchWeek), 5 * 1e18);
+        token.approve(address(matchWeek), AMOUNT_TO_BET);
 
         vm.prank(USER);
         matchWeek.addBets(betsToAdd, address(token));
@@ -228,11 +223,11 @@ contract MatchWeekTest is Test {
     function testOwnerCanWithdrawFunds() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
-        _populateBetsToAdd();
+        _populateLoseBetsToAdd();
 
         token.mint(USER);
         vm.prank(USER);
-        token.approve(address(matchWeek), 5 * 1e18);
+        token.approve(address(matchWeek), AMOUNT_TO_BET);
 
         vm.prank(USER);
         matchWeek.addBets(betsToAdd, address(token));
@@ -244,7 +239,7 @@ contract MatchWeekTest is Test {
         vm.stopPrank();
 
         vm.expectEmit(true, true, true, true);
-        emit Transfer(address(matchWeek), OWNER, 5 * 1e18);
+        emit Transfer(address(matchWeek), OWNER, AMOUNT_TO_BET);
         vm.prank(OWNER);
         matchWeek.withdrawFunds();
     }
@@ -282,9 +277,14 @@ contract MatchWeekTest is Test {
         matchesToAdd.push(MatchWeek.Match(2, "ATMadrid", "Athletic", MatchWeek.Result.UNDEFINED));
     }
 
-    function _populateBetsToAdd() private {
+    function _populateLoseBetsToAdd() private {
         betsToAdd.push(MatchWeek.Bet(1, MatchWeek.Result.LOCAL_WIN));
         betsToAdd.push(MatchWeek.Bet(2, MatchWeek.Result.DRAW));
+    }
+
+    function _populateWinnerBetsToAdd() private {
+        betsToAdd.push(MatchWeek.Bet(1, MatchWeek.Result.LOCAL_WIN));
+        betsToAdd.push(MatchWeek.Bet(2, MatchWeek.Result.LOCAL_WIN));
     }
 
     function _populateResultsToAdd() private {
