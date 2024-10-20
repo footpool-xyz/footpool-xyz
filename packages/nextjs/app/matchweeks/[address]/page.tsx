@@ -4,7 +4,6 @@ import BannerTitle from "../_components/BannerTitle";
 import { ActionsButtons } from "./_components/ActionsButtons";
 import { BetsSubmitted } from "./_components/BetsSubmitted";
 import MatchBet from "./_components/MatchBet";
-import { MatchResults } from "./_components/MatchResults";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
@@ -96,7 +95,15 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
             withdrawFunds={handleWithdrawFunds}
           />
         )}
-        <MatchResults matches={matches} />
+        {isOwner && (
+          <div className="flex flex-col justify-center items-center bg-base-300 p-4">
+            <p className="mb-4">
+              You owner! This is closed so whenever the match week ends, just click on &quot;End Match Week&quot; to add
+              results and send rewards.
+            </p>
+          </div>
+        )}
+        {!isOwner && <BetsSubmitted bets={Object.values(bets)} />}
       </>
     );
   }

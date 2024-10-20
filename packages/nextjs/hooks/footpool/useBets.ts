@@ -11,7 +11,7 @@ export const useBets = (matchWeekContractAddress: AddressType, matches: Match[])
   const { writeContractAsync: writeUsdtAsync } = useScaffoldWriteContract("MockUsdtToken");
   const { data: mockUsdtContractData } = useDeployedContractInfo("MockUsdtToken");
   const { data: matchWeekContractData } = useDeployedContractInfo("MatchWeek");
-  const { writeContract } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
   const { address: connectedAddress } = useAccount();
 
   const addBet = (bet: Bet) => {
@@ -29,12 +29,17 @@ export const useBets = (matchWeekContractAddress: AddressType, matches: Match[])
     const betsToAddAtContract = Object.values(bets).map(bet => ({ matchId: bet.match.id, result: bet.result }));
 
     if (matchWeekContractData && mockUsdtContractData) {
-      writeContract({
-        abi: matchWeekContractData.abi,
-        address: matchWeekContractAddress,
-        functionName: "addBets",
-        args: [betsToAddAtContract, mockUsdtContractData.address],
-      });
+      try {
+        await writeContractAsync({
+          abi: matchWeekContractData.abi,
+          address: matchWeekContractAddress,
+          functionName: "addBets",
+          args: [betsToAddAtContract, mockUsdtContractData.address],
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
       setBetsSubmitted(true);
     }
   };

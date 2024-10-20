@@ -58,11 +58,11 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
   if (matchWeek.isEnabled && !matchWeek.isClosed) {
     buttonTextDisplay = "Bet now!";
   } else if (matchWeek.isEnabled && matchWeek.isClosed) {
-    buttonTextDisplay = "See results";
+    buttonTextDisplay = "See your bets!";
   } else if (!matchWeek.isEnabled && isOwner) {
     buttonTextDisplay = "Configure";
   } else if (!matchWeek.isEnabled) {
-    buttonTextDisplay = "Cooming soon...";
+    buttonTextDisplay = "Coming soon...";
   }
 
   return (
@@ -100,16 +100,30 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <Link
-              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
-                !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
-              }`}
-              href={"/matchweeks/" + matchWeek.address}
-            >
-              {buttonTextDisplay}
-            </Link>
-          </div>
+          {isOwner ? (
+            <div className="flex justify-center">
+              <Link
+                className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
+                  !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
+                }`}
+                href={"/matchweeks/" + matchWeek.address}
+              >
+                Go in
+              </Link>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <Link
+                className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
+                  !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
+                }`}
+                href={"/matchweeks/" + matchWeek.address}
+              >
+                {buttonTextDisplay}
+              </Link>
+            </div>
+          )}
+
           {isOwner && !isOwnerLoading && (
             <div className="flex justify-center mt-2">
               <button

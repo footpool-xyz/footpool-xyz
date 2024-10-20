@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MockUsdtToken: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
+      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
       abi: [
         {
           type: "constructor",
@@ -349,7 +349,7 @@ const deployedContracts = {
       },
     },
     MatchWeek: {
-      address: "0xb19b36b1456e65e3a6d514d3f715f204bd59f431",
+      address: "0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf",
       abi: [
         {
           type: "function",
@@ -549,6 +549,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getRewardToSend",
+          inputs: [
+            {
+              name: "winnersLength",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "initialize",
           inputs: [
             {
@@ -677,6 +696,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "s_rewardsHasBeenSent",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "s_title",
           inputs: [],
           outputs: [
@@ -753,6 +785,12 @@ const deployedContracts = {
           inputs: [],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "AddedResults",
+          inputs: [],
+          anonymous: false,
         },
         {
           type: "event",
@@ -894,12 +932,12 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "MatchWeek_NotClosedYet",
+          name: "MatchWeek__AlreadyClosed",
           inputs: [],
         },
         {
           type: "error",
-          name: "MatchWeek__AlreadyClosed",
+          name: "MatchWeek__NotClosedYet",
           inputs: [],
         },
         {
@@ -910,6 +948,11 @@ const deployedContracts = {
         {
           type: "error",
           name: "MatchWeek__OnlyFactoryOrOwnerAllowed",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "MatchWeek__RewardsNotBeenSentYet",
           inputs: [],
         },
         {
@@ -947,7 +990,7 @@ const deployedContracts = {
       },
     },
     MockMatchesDataConsumer: {
-      address: "0x8ce361602b935680e8dec218b820ff5056beb7af",
+      address: "0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc",
       abi: [
         {
           type: "constructor",
@@ -1286,7 +1329,7 @@ const deployedContracts = {
       },
     },
     FootPool: {
-      address: "0xe1da8919f262ee86f9be05059c9280142cf23f48",
+      address: "0x2a264f26859166c5bf3868a54593ee716aebc848",
       abi: [
         {
           type: "constructor",
@@ -1768,6 +1811,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getRewardToSend",
+          inputs: [
+            {
+              name: "winnersLength",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "initialize",
           inputs: [
             {
@@ -1896,6 +1958,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "s_rewardsHasBeenSent",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "s_title",
           inputs: [],
           outputs: [
@@ -1972,6 +2047,12 @@ const deployedContracts = {
           inputs: [],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "AddedResults",
+          inputs: [],
+          anonymous: false,
         },
         {
           type: "event",
@@ -2113,12 +2194,12 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "MatchWeek_NotClosedYet",
+          name: "MatchWeek__AlreadyClosed",
           inputs: [],
         },
         {
           type: "error",
-          name: "MatchWeek__AlreadyClosed",
+          name: "MatchWeek__NotClosedYet",
           inputs: [],
         },
         {
@@ -2129,6 +2210,11 @@ const deployedContracts = {
         {
           type: "error",
           name: "MatchWeek__OnlyFactoryOrOwnerAllowed",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "MatchWeek__RewardsNotBeenSentYet",
           inputs: [],
         },
         {
@@ -2990,6 +3076,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getRewardToSend",
+          inputs: [
+            {
+              name: "winnersLength",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "initialize",
           inputs: [
             {
@@ -3118,6 +3223,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "s_rewardsHasBeenSent",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "s_title",
           inputs: [],
           outputs: [
@@ -3194,6 +3312,12 @@ const deployedContracts = {
           inputs: [],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "AddedResults",
+          inputs: [],
+          anonymous: false,
         },
         {
           type: "event",
@@ -3335,12 +3459,12 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "MatchWeek_NotClosedYet",
+          name: "MatchWeek__AlreadyClosed",
           inputs: [],
         },
         {
           type: "error",
-          name: "MatchWeek__AlreadyClosed",
+          name: "MatchWeek__NotClosedYet",
           inputs: [],
         },
         {
@@ -3351,6 +3475,11 @@ const deployedContracts = {
         {
           type: "error",
           name: "MatchWeek__OnlyFactoryOrOwnerAllowed",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "MatchWeek__RewardsNotBeenSentYet",
           inputs: [],
         },
         {
