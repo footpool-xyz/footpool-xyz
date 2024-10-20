@@ -224,7 +224,32 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Withdraw
     /////////////////
-    function testOwnerCanWithdrawFunds() public { }
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    function testOwnerCanWithdrawFunds() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+        _populateBetsToAdd();
+
+        token.mint(USER);
+        vm.prank(USER);
+        token.approve(address(matchWeek), 5 * 1e18);
+
+        vm.prank(USER);
+        matchWeek.addBets(betsToAdd, address(token));
+
+        _populateResultsToAdd();
+        vm.startPrank(OWNER);
+        matchWeek.close();
+        matchWeek.addResults(resultsToAdd);
+        vm.stopPrank();
+
+        vm.expectEmit(true, true, true, true);
+        emit Transfer(address(matchWeek), OWNER, 5 * 1e18);
+        vm.prank(OWNER);
+        matchWeek.withdrawFunds();
+    }
 
     function testRevertsIfNotOwnerTriesToWithdrawFunds() public {
         MatchWeek matchWeek = _initializeMatchWeek();
