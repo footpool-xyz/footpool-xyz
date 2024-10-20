@@ -224,7 +224,9 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Withdraw
     /////////////////
-    function testOwnerCanWithdrawFunds() public {
+    function testOwnerCanWithdrawFunds() public { }
+
+    function testRevertsIfNotOwnerTriesToWithdrawFunds() public {
         MatchWeek matchWeek = _initializeMatchWeek();
 
         vm.prank(USER);
@@ -233,8 +235,6 @@ contract MatchWeekTest is Test {
         );
         matchWeek.withdrawFunds();
     }
-
-    function testRevertsIfNotOwnerTriesToWithdrawFunds() public { }
 
     function testReversIfOwnerTriesToWithdrawFundsAndRewardsHasNotBeenSentYet() public { }
 
