@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { useWriteContract } from "wagmi";
 import { useReadContract } from "wagmi";
-import { useDeployedContractInfo, useScaffoldReadContract, useTargetNetwork } from "~~/hooks/scaffold-eth";
+import {
+  useDeployedContractInfo,
+  useScaffoldReadContract,
+  useTargetNetwork,
+  useTransactor,
+} from "~~/hooks/scaffold-eth";
 import { Match, MatchConsumer, MatchContract } from "~~/types/match";
 
 export const useMatches = (contractAddress: string) => {
   const [matchesIds, setMatchesIds] = useState<MatchConsumer[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
-  const { writeContract } = useWriteContract();
+  const { writeContract, writeContractAsync } = useWriteContract();
   const { data: deployedContractData } = useDeployedContractInfo("MatchWeek");
   const { targetNetwork } = useTargetNetwork();
+  const transactor = useTransactor();
 
   const consumerContractName = targetNetwork.name == "Foundry" ? "MockMatchesDataConsumer" : "MatchesDataConsumer";
   // @ts-expect-error
@@ -78,13 +84,24 @@ export const useMatches = (contractAddress: string) => {
   };
 
   const addResultsFromConsumer = async (results: { matchId: number; result: number }[]) => {
-    if (deployedContractData) {
-      writeContract({
+    if (deployedContractData == undefined) {
+      console.log("Error");
+      return;
+    }
+
+    const writeContractAsyncWithParams = async () => {
+      return await writeContractAsync({
         abi: deployedContractData.abi,
         address: contractAddress,
         functionName: "addResults",
         args: [results],
       });
+    };
+
+    try {
+      await transactor(writeContractAsyncWithParams, { blockConfirmations: 1 });
+    } catch (err) {
+      console.log(err);
     }
   };
 

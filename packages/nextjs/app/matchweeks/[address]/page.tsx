@@ -4,6 +4,7 @@ import BannerTitle from "../_components/BannerTitle";
 import { ActionsButtons } from "./_components/ActionsButtons";
 import { BetsSubmitted } from "./_components/BetsSubmitted";
 import MatchBet from "./_components/MatchBet";
+import { MatchResults } from "./_components/MatchResults";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
@@ -57,7 +58,7 @@ const fakeResults = [
 ];
 
 const MatchListPage = ({ params }: { params: { address: string } }) => {
-  const { matchWeek, close } = useMatchWeekData(params.address);
+  const { matchWeek } = useMatchWeekData(params.address);
   const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
   const { withdrawFunds } = useWithdrawFunds(params.address);
@@ -75,7 +76,6 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
 
   const handleEndMatchWeek = async () => {
     await addResultsFromConsumer(fakeResults);
-    close();
   };
 
   const handleWithdrawFunds = async () => {
@@ -83,6 +83,23 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   };
 
   const betsLength = Object.keys(bets).length;
+
+  if (matchWeek?.rewardsHasBeenSent) {
+    return (
+      <>
+        <BannerTitle title={title} subtitle={subtitle} />
+        {isOwner && (
+          <ActionsButtons
+            addMatches={addMatchesFromConsumer}
+            endMatchWeek={handleEndMatchWeek}
+            withdrawFunds={handleWithdrawFunds}
+          />
+        )}
+
+        <MatchResults matches={matches} bets={Object.values(bets)} />
+      </>
+    );
+  }
 
   if (matchWeek?.isClosed) {
     return (

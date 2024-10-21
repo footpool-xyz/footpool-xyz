@@ -14,6 +14,7 @@ export const useMatchWeekData = (address: AddressType) => {
     address: address,
     functionName: "summary",
   });
+  console.log(summary);
 
   const { data: amountToBet } = useReadContract({
     abi: deployedContractData?.abi,
@@ -35,7 +36,7 @@ export const useMatchWeekData = (address: AddressType) => {
 
   useEffect(() => {
     if (Array.isArray(summary) && amountToBet) {
-      const [name, isEnabled, isClosed, stakeholdersCounter, id] = summary;
+      const [name, isEnabled, isClosed, stakeholdersCounter, id, rewardsHasBeenSent] = summary;
       const amountToBetPerStakeholder: number = Number(amountToBet) / 1e18;
 
       const matchWeekData: MatchWeekSummary = {
@@ -46,6 +47,7 @@ export const useMatchWeekData = (address: AddressType) => {
         stakeholdersCounter: Number(stakeholdersCounter),
         pricePool: amountToBetPerStakeholder * Number(stakeholdersCounter),
         address: address,
+        rewardsHasBeenSent,
       };
       setMatchWeek(matchWeekData);
     }

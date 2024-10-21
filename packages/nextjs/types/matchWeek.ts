@@ -20,4 +20,5 @@ export type MatchWeekSummary = {
   stakeholdersCounter: number;
   pricePool: number;
   address?: AddressType;
+  rewardsHasBeenSent: boolean;
 };

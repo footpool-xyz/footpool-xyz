@@ -87,8 +87,8 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         emit EnabledMatchWeek(s_id);
     }
 
-    function summary() external view returns (string memory, bool, bool, uint256, uint256) {
-        return (s_title, s_isEnabled, s_isClosed, s_stakeholders.length, s_id);
+    function summary() external view returns (string memory, bool, bool, uint256, uint256, bool) {
+        return (s_title, s_isEnabled, s_isClosed, s_stakeholders.length, s_id, s_rewardsHasBeenSent);
     }
 
     function close() external onlyOpen {

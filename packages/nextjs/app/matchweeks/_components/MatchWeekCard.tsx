@@ -58,7 +58,7 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
   if (matchWeek.isEnabled && !matchWeek.isClosed) {
     buttonTextDisplay = "Bet now!";
   } else if (matchWeek.isEnabled && matchWeek.isClosed) {
-    buttonTextDisplay = "See your bets!";
+    buttonTextDisplay = "Go in";
   } else if (!matchWeek.isEnabled && isOwner) {
     buttonTextDisplay = "Configure";
   } else if (!matchWeek.isEnabled) {
@@ -108,7 +108,7 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
                 }`}
                 href={"/matchweeks/" + matchWeek.address}
               >
-                Go in
+                Set it up
               </Link>
             </div>
           ) : (
