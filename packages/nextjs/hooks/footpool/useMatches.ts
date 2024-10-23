@@ -74,8 +74,8 @@ export const useMatches = (contractAddress: string) => {
     const matchesFromApi = await fetchMatchesFromApi();
     if (deployedContractData) {
       storeMatchesInContract(matchesFromApi);
+      setMatches(matchesFromApi); // Update state with matches from API
     }
-    setMatches(matchesFromApi); // Update state with matches from API
   };
 
   const addResultsFromConsumer = async (results: { matchId: number; result: number }[]) => {
