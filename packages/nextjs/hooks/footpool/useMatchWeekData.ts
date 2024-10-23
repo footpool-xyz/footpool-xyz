@@ -14,7 +14,6 @@ export const useMatchWeekData = (address: AddressType) => {
     address: address,
     functionName: "summary",
   });
-  console.log(summary);
 
   const { data: amountToBet } = useReadContract({
     abi: deployedContractData?.abi,

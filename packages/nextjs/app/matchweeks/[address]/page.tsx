@@ -8,60 +8,30 @@ import { MatchResults } from "./_components/MatchResults";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
+import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { Bet } from "~~/types/match";
 
 const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
-const fakeResults = [
-  {
-    matchId: 1038022,
-    result: 1,
-  },
-  {
-    matchId: 1038023,
-    result: 0,
-  },
-  {
-    matchId: 1038024,
-    result: 0,
-  },
-  {
-    matchId: 1038025,
-    result: 0,
-  },
-  {
-    matchId: 1038026,
-    result: 1,
-  },
-  {
-    matchId: 1038027,
-    result: 2,
-  },
-  {
-    matchId: 1038028,
-    result: 2,
-  },
-  {
-    matchId: 1038029,
-    result: 0,
-  },
-  {
-    matchId: 1038030,
-    result: 0,
-  },
-  {
-    matchId: 1038031,
-    result: 1,
-  },
-];
+type ConsumerResultsType = {
+  m: number;
+  w: number;
+};
 
 const MatchListPage = ({ params }: { params: { address: string } }) => {
   const { matchWeek } = useMatchWeekData(params.address);
   const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
   const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
+  const { consumerContractName } = useConsumerContractName();
   const { withdrawFunds } = useWithdrawFunds(params.address);
+  // @ts-expect-error
+  const { data: matchesWithResults } = useScaffoldReadContract({
+    contractName: consumerContractName as any,
+    functionName: "getResponse",
+  });
 
   const { address: connectedAddress } = useAccount();
   const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
@@ -75,7 +45,18 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   };
 
   const handleEndMatchWeek = async () => {
-    await addResultsFromConsumer(fakeResults);
+    if (matchesWithResults == null) {
+      console.error("No response from consumer");
+      return;
+    }
+    const matchesWithResultsObject: ConsumerResultsType[] = JSON.parse(matchesWithResults);
+    const matchesWithResultsReady = matchesWithResultsObject.map((matchWithResultObject: ConsumerResultsType) => {
+      return {
+        matchId: matchWithResultObject.m,
+        result: matchWithResultObject.w,
+      };
+    });
+    await addResultsFromConsumer(matchesWithResultsReady);
   };
 
   const handleWithdrawFunds = async () => {
