@@ -31,9 +31,9 @@ contract DeployDataConsumer is ScaffoldETHDeploy {
         return address(matchesDataConsumer);
     }
 
-    function _deployMatchesDataConsumer() private returns (address) {
+    function _deployMatchesDataConsumer() private view returns (address) {
         MatchesDataConsumer matchesDataConsumer =
-            new MatchesDataConsumer(0xC17094E3A1348E5C7544D4fF8A36c28f2C6AAE28);
+            MatchesDataConsumer(0x7a9828a639d0F54E21b0229Ac40c65317E8516E2);
         console.logString(
             string.concat(
                 "MatchesDataConsumer deployed at: ", vm.toString(address(matchesDataConsumer))

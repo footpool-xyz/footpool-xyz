@@ -54,6 +54,7 @@ const MatchWeeksPage: NextPage = () => {
       <BannerTitle title={title} subtitle={subtitle} />
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
+          {/* TODO: Only owner can Add Match Week */}
           <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />
           {matchWeeksAddresses
             .slice()
