@@ -5,7 +5,6 @@ import { ActionsButtons } from "./_components/ActionsButtons";
 import { BetsSubmitted } from "./_components/BetsSubmitted";
 import MatchBet from "./_components/MatchBet";
 import { MatchResults } from "./_components/MatchResults";
-import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
@@ -33,8 +32,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
     functionName: "getResponse",
   });
 
-  const { address: connectedAddress } = useAccount();
-  const { isOwner } = useOnlyOwner(connectedAddress, params.address, "MatchWeek");
+  const { isOwner } = useOnlyOwner(params.address, "MatchWeek");
 
   const handleBet = (bet: Bet) => {
     addBet(bet);

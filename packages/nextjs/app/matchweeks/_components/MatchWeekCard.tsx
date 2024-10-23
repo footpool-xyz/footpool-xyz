@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useAccount } from "wagmi";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useMatchWeekData } from "~~/hooks/footpool";
@@ -16,8 +15,7 @@ type MatchWeekCardProps = {
 const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
   const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
 
-  const { address: connectedAddress } = useAccount();
-  const { isOwner, isOwnerLoading } = useOnlyOwner(connectedAddress || "", matchWeekAddr || "", "FootPool");
+  const { isOwner, isOwnerLoading } = useOnlyOwner(matchWeekAddr || "", "FootPool");
   const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("FootPool");
 
   const handleEnable = async (matchWeek: MatchWeekSummary) => {
