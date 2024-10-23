@@ -2544,7 +2544,7 @@ const deployedContracts = {
   },
   11155420: {
     MockUsdtToken: {
-      address: "0xd42edf484f684e258872f25f527371c67e381489",
+      address: "0x0d54a621620c5de15dd44f64234da4d77c1a944b",
       abi: [
         {
           type: "constructor",
@@ -2886,7 +2886,7 @@ const deployedContracts = {
       },
     },
     MatchWeek: {
-      address: "0xbf1ef3d4641342fc4debd011149430a8ef5fc9b8",
+      address: "0x4748dab687aa4b558d5c1671a43b4b8b0d47f790",
       abi: [
         {
           type: "function",
@@ -3532,7 +3532,7 @@ const deployedContracts = {
       },
     },
     MatchesDataConsumer: {
-      address: "0x7a9828a639d0f54e21b0229ac40c65317e8516e2",
+      address: "0x2c4edfafcfb660a96c0b4ba06e1a2174df2c8b28",
       abi: [
         {
           type: "constructor",
@@ -3846,7 +3846,7 @@ const deployedContracts = {
       },
     },
     FootPool: {
-      address: "0xbfcca487474c674cbb532f4bf32ffae9240330b2",
+      address: "0x3db89e7a35e34790cec8e37ca1b019b36875b21f",
       abi: [
         {
           type: "constructor",
