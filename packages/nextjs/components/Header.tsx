@@ -21,6 +21,10 @@ export const initialMenuLink: HeaderMenuLink[] = [
     label: "MatchWeeks",
     href: "/",
   },
+  {
+    label: "Faucet",
+    href: "/faucet",
+  },
 ];
 
 export const HeaderMenuLinks = () => {
