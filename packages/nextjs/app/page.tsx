@@ -5,20 +5,24 @@ import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
 import BannerTitle from "./matchweeks/_components/BannerTitle";
 import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
 import type { NextPage } from "next";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useOnlyOwner } from "~~/hooks/footpool";
+import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 
 const title = "On going Match Weeks";
 const subtitle = "Compete with Footpool users to find the best bettor and win cash prizes.";
+const FootPoolContractName = "FootPool";
 
 const MatchWeeksPage: NextPage = () => {
   const [matchWeeksAddresses, setMatchWeeksAddresses] = useState<AddressType[]>([]);
 
   const { data: matchWeeksAddressesFromContract } = useScaffoldReadContract({
-    contractName: "FootPool",
+    contractName: FootPoolContractName,
     functionName: "getMatchWeeks",
   });
-  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract("FootPool");
+  const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract(FootPoolContractName);
+  const { data: footPoolContractData } = useDeployedContractInfo(FootPoolContractName);
+  const { isOwner } = useOnlyOwner(footPoolContractData?.address || "", FootPoolContractName);
 
   const storeMatchWeekInContract = async (name: string) => {
     try {
@@ -49,19 +53,27 @@ const MatchWeeksPage: NextPage = () => {
     }
   }, [matchWeeksAddressesFromContract]);
 
+  const matchWeekCards =
+    matchWeeksAddresses.length > 0 ? (
+      matchWeeksAddresses
+        .slice()
+        .reverse()
+        .map(matchWeekAddress => (
+          <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
+        ))
+    ) : (
+      <div className="flex flex-col justify-center items-center bg-base-300 p-4">
+        <p className="mb-4">No Match Weeks available</p>
+      </div>
+    );
+
   return (
     <>
       <BannerTitle title={title} subtitle={subtitle} />
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {/* TODO: Only owner can Add Match Week */}
-          <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />
-          {matchWeeksAddresses
-            .slice()
-            .reverse()
-            .map(matchWeekAddress => (
-              <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
-            ))}
+          {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
+          {matchWeekCards}
         </div>
       </div>
     </>
