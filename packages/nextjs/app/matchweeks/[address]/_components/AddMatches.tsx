@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { stackoverflowDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { InputBase } from "~~/components/scaffold-eth";
+import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 type AddMatchesProps = {
-  handleAddMatchWeek: (round: number, season: string) => void;
+  handleAddMatchWeek: () => void;
 };
 
 const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
-  const [round, setRound] = useState<number | undefined>();
-  const [season, setSeason] = useState<string | undefined>();
+  const { consumerContractName } = useConsumerContractName();
+  // @ts-expect-error
+  const { data: response } = useScaffoldReadContract({
+    contractName: consumerContractName as any,
+    functionName: "getResponse",
+  });
 
   return (
     <div>
@@ -37,26 +43,19 @@ const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
             ✕
           </label>
           <div className="space-y-3">
-            <div className="flex space-x-4">
-              <div>
-                <InputBase value={round} onChange={newRound => setRound(newRound)} placeholder="Round" />
-              </div>
-            </div>
-            <div className="flex space-x-4">
-              <div>
-                <InputBase value={season} onChange={season => setSeason(season)} placeholder="Season" />
-              </div>
+            <div className="flex flex-col space-y-3">
+              Response from consumer:
+              <SyntaxHighlighter language="json" wrapLines={true} style={stackoverflowDark}>
+                {response || ""}
+              </SyntaxHighlighter>
             </div>
             <div className="flex flex-col space-y-3">
               <button
                 onClick={() => {
-                  if (round && season) {
-                    handleAddMatchWeek(round, season);
-                    setRound(undefined);
-                    const checkbox = document.getElementById("add-match-week-modal") as HTMLInputElement;
-                    if (checkbox) {
-                      checkbox.checked = false;
-                    }
+                  handleAddMatchWeek();
+                  const checkbox = document.getElementById("add-match-week-modal") as HTMLInputElement;
+                  if (checkbox) {
+                    checkbox.checked = false;
                   }
                 }}
                 className="h-10 btn btn-primary btn-sm px-2 rounded-full"

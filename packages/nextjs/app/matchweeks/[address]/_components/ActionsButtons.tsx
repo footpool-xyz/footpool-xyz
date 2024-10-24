@@ -2,7 +2,7 @@ import AddMatches from "./AddMatches";
 import { BanknotesIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 
 interface ActionsButtonsProps {
-  addMatches: (round: number, season: string) => void;
+  addMatches: () => void;
   endMatchWeek: () => void;
   withdrawFunds: () => void;
 }
