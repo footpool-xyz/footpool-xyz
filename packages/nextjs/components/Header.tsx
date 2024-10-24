@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { hardhat } from "viem/chains";
-import { useAccount } from "wagmi";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -18,36 +17,33 @@ type HeaderMenuLink = {
 
 export const initialMenuLink: HeaderMenuLink[] = [
   {
-    label: "MatchWeeks",
+    label: "App",
     href: "/",
   },
   {
     label: "Faucet",
     href: "/faucet",
+    icon: <BanknotesIcon className="h-4 w-4" />,
   },
+  {
+    label: "Docs",
+    href: "https://docs.footpool.xyz",
+    icon: <BookOpenIcon className="h-4 w-4" />,
+  },
+  // Uncomment only on development environment.
+  // {
+  //   label: "Debug Contracts",
+  //   href: "/debug",
+  //   icon: <BugAntIcon className="h-4 w-4" />,
+  // },
 ];
 
 export const HeaderMenuLinks = () => {
   const pathname = usePathname();
-  const { chain: ConnectedChain } = useAccount();
-  const [menuLinks, setMenuLinks] = useState<HeaderMenuLink[]>(initialMenuLink);
-
-  useEffect(() => {
-    if (ConnectedChain?.id == hardhat.id) {
-      setMenuLinks(prevMenuLinks => [
-        ...prevMenuLinks,
-        {
-          label: "Debug Contracts",
-          href: "/debug",
-          icon: <BugAntIcon className="h-4 w-4" />,
-        },
-      ]);
-    }
-  }, [ConnectedChain]);
 
   return (
     <>
-      {menuLinks.map(({ label, href, icon }) => {
+      {initialMenuLink.map(({ label, href, icon }) => {
         const isActive = pathname === href;
         return (
           <li key={href}>
