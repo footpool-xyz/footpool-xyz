@@ -24,7 +24,7 @@ export const BetButton = ({ handleSubmitBet, betsLength, matchesLength }: BetBut
     betButtonMessageErr = "Not enough balance of USDT";
   }
 
-  if (disabledButton) {
+  if (betsLength < matchesLength) {
     betButtonMessageErr = "Place a bet for all matches";
   }
 
