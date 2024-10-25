@@ -8,7 +8,7 @@ type AddMatchWeekProps = {
   handleAddMatchWeek: (name: string) => void;
 };
 
-const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
+export const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
   const [name, setName] = useState("");
 
   return (
@@ -62,5 +62,3 @@ const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
     </div>
   );
 };
-
-export default AddMatchWeek;

@@ -1,6 +1,6 @@
 "use client";
 
-import BannerTitle from "../_components/BannerTitle";
+import { BannerTitle } from "./../_components";
 import { ActionsButtons, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "./_components";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
@@ -8,7 +8,6 @@ import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { Bet } from "~~/types/match";
 
-// const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
 type ConsumerResultsType = {

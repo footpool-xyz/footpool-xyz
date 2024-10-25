@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AddMatchWeek from "./matchweeks/_components/AddMatchWeek";
-import BannerTitle from "./matchweeks/_components/BannerTitle";
-import MatchWeekCard from "./matchweeks/_components/MatchWeekCard";
+import { AddMatchWeek, BannerTitle, MatchWeekCard } from "./matchweeks/_components";
 import type { NextPage } from "next";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";

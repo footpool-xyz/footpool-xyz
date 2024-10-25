@@ -12,7 +12,7 @@ type MatchWeekCardProps = {
   season: string;
 };
 
-const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
+export const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
   const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
 
   const { isOwner, isOwnerLoading } = useOnlyOwner(matchWeekAddr || "", "FootPool");
@@ -145,5 +145,3 @@ const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
     </div>
   );
 };
-
-export default MatchWeekCard;

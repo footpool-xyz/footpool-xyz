@@ -3,7 +3,7 @@ type BannerTitleProps = {
   subtitle: string;
 };
 
-const BannerTitle = ({ title, subtitle }: BannerTitleProps) => {
+export const BannerTitle = ({ title, subtitle }: BannerTitleProps) => {
   return (
     <div className="px-5 flex items-center flex-col pt-10">
       <h1 className="text-center">
@@ -13,5 +13,3 @@ const BannerTitle = ({ title, subtitle }: BannerTitleProps) => {
     </div>
   );
 };
-
-export default BannerTitle;
