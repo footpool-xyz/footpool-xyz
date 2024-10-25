@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
-import { useMatchWeekData, useOnlyOwner } from "~~/hooks/footpool";
+import { useMatchWeekData, useMyBets, useOnlyOwner } from "~~/hooks/footpool";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 import { MatchWeekSummary } from "~~/types/matchWeek";
@@ -13,9 +13,9 @@ type MatchWeekCardProps = {
 
 export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardProps) => {
   const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
-
   const { isOwner, isOwnerLoading } = useOnlyOwner(matchWeekAddr || "", "FootPool");
   const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("FootPool");
+  const { hasBetAlready } = useMyBets(matchWeekAddr);
 
   const handleEnable = async (matchWeek: MatchWeekSummary) => {
     try {
@@ -51,23 +51,22 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
     );
   }
 
-  let buttonTextDisplay = "";
+  let buttonTextDisplay = "Go in!";
   let isEnabled = false;
-  if (isOwner && !matchWeek.isEnabled) {
-    buttonTextDisplay = "Configure";
-  } else if (isOwner && matchWeek.isEnabled) {
-    buttonTextDisplay = "See";
-    isEnabled = true;
-  } else if (matchWeek.isEnabled && !matchWeek.isClosed) {
-    buttonTextDisplay = "Bet now!";
-    isEnabled = true;
-  } else if (matchWeek.isEnabled && matchWeek.isClosed) {
-    buttonTextDisplay = "See your bets";
+  if (matchWeek.rewardsHasBeenSent) {
+    buttonTextDisplay = "See results";
     isEnabled = true;
   } else if (!matchWeek.isEnabled) {
     buttonTextDisplay = "Coming soon...";
+  } else if (matchWeek.isEnabled && !matchWeek.isClosed) {
+    buttonTextDisplay = "Go in!";
+    isEnabled = true;
+  } else if (matchWeek.isEnabled && matchWeek.isClosed && hasBetAlready) {
+    buttonTextDisplay = "See my bets";
+    isEnabled = true;
   }
   if (isOwner) {
+    buttonTextDisplay = "Go in!";
     isEnabled = true;
   }
 
@@ -87,6 +86,20 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
         <div className="flex flex-col justify-center text-center sm:text-left sm:ml-10">
           <h2 className="text-2xl font-bold">{matchWeek.name}</h2>
           <p className="text-pretty text-sm mt-0">{season}</p>
+          <div className="flex items-center justify-center sm:justify-start mt-2">
+            {matchWeek.isClosed && !matchWeek.rewardsHasBeenSent && (
+              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Closed to bet</span>
+            )}
+            {!matchWeek.isClosed && matchWeek.isEnabled && !matchWeek.rewardsHasBeenSent && (
+              <span className="ml-3 bg-success text-xs font-bold px-2 py-1 rounded-full">Open</span>
+            )}
+            {hasBetAlready && !matchWeek.rewardsHasBeenSent && (
+              <span className="ml-3 bg-[#f59e0b] text-xs font-bold px-2 py-1 rounded-full">Current bet</span>
+            )}
+            {matchWeek.rewardsHasBeenSent && (
+              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Finished</span>
+            )}
+          </div>
           <div className="flex items-center justify-center sm:justify-start mt-2">
             <UserGroupIcon className="w-6 h-6 text-gray-500 mr-2" />
             <p>
