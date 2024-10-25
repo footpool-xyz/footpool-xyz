@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { AddMatchWeek, BannerTitle, MatchWeek, MatchWeekCard } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useGlobalState } from "~~/services/store/store";
 import { AddressType } from "~~/types/abitype/abi";
 
 const title = "On going Match Weeks";
@@ -12,8 +13,19 @@ const subtitle = "Compete with Footpool users to find the best bettor and win ca
 const FootPoolContractName = "FootPool";
 
 const MatchWeeksPage: NextPage = () => {
+  //////////////////////////
+  ////// State
+  /////////////////////////
   const [matchWeeksAddresses, setMatchWeeksAddresses] = useState<AddressType[]>([]);
 
+  //////////////////////////
+  ////// Global Store
+  /////////////////////////
+  const { selectedMatchWeek, selectMatchWeek } = useGlobalState();
+
+  //////////////////////////
+  ////// Calls to contracts
+  /////////////////////////
   const { data: matchWeeksAddressesFromContract } = useScaffoldReadContract({
     contractName: FootPoolContractName,
     functionName: "getMatchWeeks",
@@ -21,9 +33,11 @@ const MatchWeeksPage: NextPage = () => {
   const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract(FootPoolContractName);
   const { data: footPoolContractData } = useDeployedContractInfo(FootPoolContractName);
   const { isOwner } = useOnlyOwner(footPoolContractData?.address || "", FootPoolContractName);
-  const [selectedMatchWeek, setSelectedMatchWeek] = useState("");
 
-  const storeMatchWeekInContract = async (name: string) => {
+  //////////////////////////
+  ////// Handling with contracts
+  /////////////////////////
+  const saveCreatedMatchWeekInContract = async (name: string) => {
     try {
       const newMatchWeekAddress = await writeFactoryContract({
         functionName: "createMatchWeek",
@@ -43,15 +57,21 @@ const MatchWeeksPage: NextPage = () => {
       return;
     }
 
-    await storeMatchWeekInContract(name);
+    await saveCreatedMatchWeekInContract(name);
   };
 
+  //////////////////////////
+  ////// Effects
+  /////////////////////////
   useEffect(() => {
     if (Array.isArray(matchWeeksAddressesFromContract)) {
       setMatchWeeksAddresses(matchWeeksAddressesFromContract);
     }
   }, [matchWeeksAddressesFromContract]);
 
+  //////////////////////////
+  ////// Component
+  /////////////////////////
   const matchWeekCards =
     matchWeeksAddresses.length > 0 ? (
       matchWeeksAddresses
@@ -62,7 +82,7 @@ const MatchWeeksPage: NextPage = () => {
             key={matchWeekAddress}
             matchWeekAddr={matchWeekAddress}
             season="Season 2024/2025"
-            click={() => setSelectedMatchWeek(matchWeekAddress)}
+            click={() => selectMatchWeek(matchWeekAddress)}
           />
         ))
     ) : (
@@ -85,7 +105,7 @@ const MatchWeeksPage: NextPage = () => {
         </>
       )}
 
-      {selectedMatchWeek && <MatchWeek address={selectedMatchWeek} />}
+      {selectedMatchWeek && <MatchWeek />}
     </>
   );
 };

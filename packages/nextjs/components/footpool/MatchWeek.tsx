@@ -5,6 +5,7 @@ import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/fo
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useGlobalState } from "~~/services/store/store";
 import { Bet } from "~~/types/match";
 
 const subtitle = "Choose your bet for each match";
@@ -14,22 +15,26 @@ type ConsumerResultsType = {
   w: number;
 };
 
-type MatchWeekProps = {
-  address: string;
-};
+export const MatchWeek = () => {
+  //////////////////////////
+  ////// Global Store
+  /////////////////////////
+  const { selectedMatchWeek } = useGlobalState();
 
-export const MatchWeek = ({ address }: MatchWeekProps) => {
-  const { matchWeek } = useMatchWeekData(address);
-  const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(address);
-  const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(address, matches);
+  //////////////////////////
+  ////// Calls to contracts
+  /////////////////////////
+  const { matchWeek } = useMatchWeekData(selectedMatchWeek);
+  const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(selectedMatchWeek);
+  const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(selectedMatchWeek, matches);
   const { consumerContractName } = useConsumerContractName();
-  const { withdrawFunds } = useWithdrawFunds(address);
+  const { withdrawFunds } = useWithdrawFunds(selectedMatchWeek);
   // @ts-expect-error
   const { data: matchesWithResults } = useScaffoldReadContract({
     contractName: consumerContractName as any,
     functionName: "getResponse",
   });
-  const { isOwner } = useOnlyOwner(address, "MatchWeek");
+  const { isOwner } = useOnlyOwner(selectedMatchWeek, "MatchWeek");
 
   /////////////////////////
   ////// Handle operations
@@ -61,6 +66,9 @@ export const MatchWeek = ({ address }: MatchWeekProps) => {
     withdrawFunds();
   };
 
+  //////////////////////////
+  ////// Component
+  /////////////////////////
   const title = matchWeek?.name || "";
 
   if (matchWeek?.rewardsHasBeenSent) {
