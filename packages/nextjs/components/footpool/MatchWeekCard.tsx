@@ -1,8 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
-import { useOnlyOwner } from "~~/hooks/footpool";
-import { useMatchWeekData } from "~~/hooks/footpool";
+import { useMatchWeekData, useOnlyOwner } from "~~/hooks/footpool";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 import { MatchWeekSummary } from "~~/types/matchWeek";
@@ -10,9 +8,10 @@ import { MatchWeekSummary } from "~~/types/matchWeek";
 type MatchWeekCardProps = {
   matchWeekAddr: AddressType;
   season: string;
+  click: (address: string) => void;
 };
 
-export const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => {
+export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardProps) => {
   const { enable, close, matchWeek } = useMatchWeekData(matchWeekAddr);
 
   const { isOwner, isOwnerLoading } = useOnlyOwner(matchWeekAddr || "", "FootPool");
@@ -100,25 +99,26 @@ export const MatchWeekCard = ({ matchWeekAddr, season }: MatchWeekCardProps) => 
 
           {isOwner ? (
             <div className="flex justify-center">
-              <Link
+              <button
                 className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
                   !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
                 }`}
-                href={"/matchweeks/" + matchWeek.address}
+                onClick={() => click(matchWeek.address || "")}
               >
+                {" "}
                 Set it up
-              </Link>
+              </button>
             </div>
           ) : (
             <div className="flex justify-center">
-              <Link
+              <button
                 className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
                   !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
                 }`}
-                href={"/matchweeks/" + matchWeek.address}
+                onClick={() => click(matchWeek.address || "")}
               >
                 {buttonTextDisplay}
-              </Link>
+              </button>
             </div>
           )}
 

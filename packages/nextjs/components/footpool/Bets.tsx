@@ -1,4 +1,4 @@
-import { BetButton, MatchBet } from "../_components";
+import { BetButton, MatchBet } from "~~/components/footpool";
 import { Bet, Match } from "~~/types/match";
 
 type BetsProps = {

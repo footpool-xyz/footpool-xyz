@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { BannerTitle } from "./../matchweeks/_components";
 import type { NextPage } from "next";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
+import { BannerTitle } from "~~/components/footpool";
 import { AddressInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 

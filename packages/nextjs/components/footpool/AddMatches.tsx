@@ -10,7 +10,7 @@ type AddMatchesProps = {
   handleAddMatchWeek: () => void;
 };
 
-const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
+export const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
   const { consumerContractName } = useConsumerContractName();
   // @ts-expect-error
   const { data: response } = useScaffoldReadContract({
@@ -69,5 +69,3 @@ const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
     </div>
   );
 };
-
-export default AddMatches;

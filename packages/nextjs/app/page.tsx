@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AddMatchWeek, BannerTitle, MatchWeekCard } from "./matchweeks/_components";
 import type { NextPage } from "next";
+import { AddMatchWeek, BannerTitle, MatchWeek, MatchWeekCard } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
@@ -21,6 +21,7 @@ const MatchWeeksPage: NextPage = () => {
   const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract(FootPoolContractName);
   const { data: footPoolContractData } = useDeployedContractInfo(FootPoolContractName);
   const { isOwner } = useOnlyOwner(footPoolContractData?.address || "", FootPoolContractName);
+  const [selectedMatchWeek, setSelectedMatchWeek] = useState("");
 
   const storeMatchWeekInContract = async (name: string) => {
     try {
@@ -57,7 +58,12 @@ const MatchWeeksPage: NextPage = () => {
         .slice()
         .reverse()
         .map(matchWeekAddress => (
-          <MatchWeekCard key={matchWeekAddress} matchWeekAddr={matchWeekAddress} season="Season 2024/2025" />
+          <MatchWeekCard
+            key={matchWeekAddress}
+            matchWeekAddr={matchWeekAddress}
+            season="Season 2024/2025"
+            click={() => setSelectedMatchWeek(matchWeekAddress)}
+          />
         ))
     ) : (
       <div className="flex flex-col justify-center items-center bg-base-300 p-4">
@@ -67,13 +73,19 @@ const MatchWeeksPage: NextPage = () => {
 
   return (
     <>
-      <BannerTitle title={title} subtitle={subtitle} />
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
-          {matchWeekCards}
-        </div>
-      </div>
+      {!selectedMatchWeek && (
+        <>
+          <BannerTitle title={title} subtitle={subtitle} />
+          <div className="flex items-center flex-col flex-grow pt-10">
+            <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
+              {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
+              {matchWeekCards}
+            </div>
+          </div>
+        </>
+      )}
+
+      {selectedMatchWeek && <MatchWeek address={selectedMatchWeek} />}
     </>
   );
 };

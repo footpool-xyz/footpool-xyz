@@ -1,5 +1,5 @@
-import AddMatches from "./AddMatches";
 import { BanknotesIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { AddMatches } from "~~/components/footpool";
 
 interface ActionsButtonsProps {
   addMatches: () => void;

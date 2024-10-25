@@ -1,7 +1,6 @@
 "use client";
 
-import { BannerTitle } from "./../_components";
-import { ActionsButtons, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "./_components";
+import { ActionsButtons, BannerTitle, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "~~/components/footpool";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
@@ -15,18 +14,22 @@ type ConsumerResultsType = {
   w: number;
 };
 
-const MatchListPage = ({ params }: { params: { address: string } }) => {
-  const { matchWeek } = useMatchWeekData(params.address);
-  const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(params.address);
-  const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(params.address, matches);
+type MatchWeekProps = {
+  address: string;
+};
+
+export const MatchWeek = ({ address }: MatchWeekProps) => {
+  const { matchWeek } = useMatchWeekData(address);
+  const { matches, addMatchesFromConsumer, addResultsFromConsumer } = useMatches(address);
+  const { addBet, submitBetsToContract, bets, betsSubmitted } = useBets(address, matches);
   const { consumerContractName } = useConsumerContractName();
-  const { withdrawFunds } = useWithdrawFunds(params.address);
+  const { withdrawFunds } = useWithdrawFunds(address);
   // @ts-expect-error
   const { data: matchesWithResults } = useScaffoldReadContract({
     contractName: consumerContractName as any,
     functionName: "getResponse",
   });
-  const { isOwner } = useOnlyOwner(params.address, "MatchWeek");
+  const { isOwner } = useOnlyOwner(address, "MatchWeek");
 
   /////////////////////////
   ////// Handle operations
@@ -119,5 +122,3 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
     </>
   );
 };
-
-export default MatchListPage;
