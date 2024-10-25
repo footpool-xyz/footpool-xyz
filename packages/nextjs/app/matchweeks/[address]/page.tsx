@@ -8,7 +8,7 @@ import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { Bet } from "~~/types/match";
 
-const title = "Match Week 1 - Season 2024/2025";
+// const title = "Match Week 1 - Season 2024/2025";
 const subtitle = "Choose your bet for each match";
 
 type ConsumerResultsType = {
@@ -58,6 +58,8 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const handleWithdrawFunds = async () => {
     withdrawFunds();
   };
+
+  const title = matchWeek?.name || "";
 
   if (matchWeek?.rewardsHasBeenSent) {
     return (
