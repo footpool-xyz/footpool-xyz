@@ -1,5 +1,4 @@
-import { MatchBet } from "../_components";
-import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import { BetButton, MatchBet } from "../_components";
 import { Bet, Match } from "~~/types/match";
 
 type BetsProps = {
@@ -21,15 +20,8 @@ export const Bets = ({ matches, handleBet, handleSubmitBet, betsLength }: BetsPr
       </div>
 
       {matches.length > 0 && (
-        <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
-          <button
-            onClick={handleSubmitBet}
-            className="btn btn-secondary text-xl text-center"
-            disabled={betsLength < matches.length}
-          >
-            <CurrencyDollarIcon className="h-8 w-8" />
-            Bet
-          </button>
+        <div className="flex flex-col items-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
+          <BetButton handleSubmitBet={handleSubmitBet} betsLength={betsLength} matchesLength={matches.length} />
         </div>
       )}
     </>
