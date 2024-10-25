@@ -10,7 +10,7 @@ type MatchBetProps = {
   handleBet: (bet: Bet) => void;
 };
 
-const MatchBet = ({ match, handleBet }: MatchBetProps) => {
+export const MatchBet = ({ match, handleBet }: MatchBetProps) => {
   const [selectedBet, setSelectedBet] = useState<number>();
 
   return (
@@ -63,5 +63,3 @@ const MatchBet = ({ match, handleBet }: MatchBetProps) => {
     </div>
   );
 };
-
-export default MatchBet;

@@ -1,11 +1,7 @@
 "use client";
 
 import BannerTitle from "../_components/BannerTitle";
-import { ActionsButtons } from "./_components/ActionsButtons";
-import { BetsSubmitted } from "./_components/BetsSubmitted";
-import MatchBet from "./_components/MatchBet";
-import { MatchResults } from "./_components/MatchResults";
-import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import { ActionsButtons, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "./_components";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
@@ -31,9 +27,11 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
     contractName: consumerContractName as any,
     functionName: "getResponse",
   });
-
   const { isOwner } = useOnlyOwner(params.address, "MatchWeek");
 
+  /////////////////////////
+  ////// Handle operations
+  /////////////////////////
   const handleBet = (bet: Bet) => {
     addBet(bet);
   };
@@ -60,8 +58,6 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
   const handleWithdrawFunds = async () => {
     withdrawFunds();
   };
-
-  const betsLength = Object.keys(bets).length;
 
   if (matchWeek?.rewardsHasBeenSent) {
     return (
@@ -91,14 +87,7 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
             withdrawFunds={handleWithdrawFunds}
           />
         )}
-        {isOwner && (
-          <div className="flex flex-col justify-center items-center bg-base-300 p-4">
-            <p className="mb-4">
-              You owner! This is closed so whenever the match week ends, just click on &quot;End Match Week&quot; to add
-              results and send rewards.
-            </p>
-          </div>
-        )}
+        {isOwner && <ClosedMatch />}
         {!isOwner && <BetsSubmitted bets={Object.values(bets)} />}
       </>
     );
@@ -117,28 +106,12 @@ const MatchListPage = ({ params }: { params: { address: string } }) => {
       )}
 
       {!betsSubmitted ? (
-        <>
-          <div className="flex flex-wrap justify-center items-center bg-base-300">
-            {matches.map(match => (
-              <div className="w-full sm:w-full md:w-1/2 lg:w-1/3 p-4" key={match.id}>
-                <MatchBet match={match} handleBet={handleBet} />
-              </div>
-            ))}
-          </div>
-
-          {matches.length > 0 && (
-            <div className="flex justify-center pt-10 bg-base-300 w-full px-8 py-12 gap-2">
-              <button
-                onClick={handleSubmitBet}
-                className="btn btn-secondary text-xl text-center"
-                disabled={betsLength < matches.length}
-              >
-                <CurrencyDollarIcon className="h-8 w-8" />
-                Bet
-              </button>
-            </div>
-          )}
-        </>
+        <Bets
+          matches={matches}
+          handleBet={handleBet}
+          handleSubmitBet={handleSubmitBet}
+          betsLength={Object.keys(bets).length}
+        />
       ) : (
         <BetsSubmitted bets={Object.values(bets)} />
       )}
