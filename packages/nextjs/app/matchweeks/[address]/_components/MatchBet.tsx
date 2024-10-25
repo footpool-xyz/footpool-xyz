@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import BetButton from "./BetButton";
+import { MatchBetButton } from "./";
 import Team from "./Team";
 import { Bet, Match } from "~~/types/match";
 
@@ -32,7 +32,7 @@ export const MatchBet = ({ match, handleBet }: MatchBetProps) => {
       </div>
 
       <div className="flex justify-center mt-2 gap-3 w-full">
-        <BetButton
+        <MatchBetButton
           match={match}
           result={0}
           selectedBet={selectedBet}
@@ -40,8 +40,8 @@ export const MatchBet = ({ match, handleBet }: MatchBetProps) => {
           setSelectedBet={setSelectedBet}
         >
           1
-        </BetButton>
-        <BetButton
+        </MatchBetButton>
+        <MatchBetButton
           match={match}
           result={1}
           selectedBet={selectedBet}
@@ -49,8 +49,8 @@ export const MatchBet = ({ match, handleBet }: MatchBetProps) => {
           setSelectedBet={setSelectedBet}
         >
           X
-        </BetButton>
-        <BetButton
+        </MatchBetButton>
+        <MatchBetButton
           match={match}
           result={2}
           selectedBet={selectedBet}
@@ -58,7 +58,7 @@ export const MatchBet = ({ match, handleBet }: MatchBetProps) => {
           setSelectedBet={setSelectedBet}
         >
           2
-        </BetButton>
+        </MatchBetButton>
       </div>
     </div>
   );

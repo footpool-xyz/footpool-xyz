@@ -10,7 +10,14 @@ interface BetButtonProps {
   children: ReactNode;
 }
 
-const BetButton: React.FC<BetButtonProps> = ({ match, result, selectedBet, handleBet, setSelectedBet, children }) => {
+export const MatchBetButton: React.FC<BetButtonProps> = ({
+  match,
+  result,
+  selectedBet,
+  handleBet,
+  setSelectedBet,
+  children,
+}) => {
   return (
     <button
       onClick={() => {
@@ -25,5 +32,3 @@ const BetButton: React.FC<BetButtonProps> = ({ match, result, selectedBet, handl
     </button>
   );
 };
-
-export default BetButton;
