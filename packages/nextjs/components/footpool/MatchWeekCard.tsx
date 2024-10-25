@@ -52,14 +52,23 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
   }
 
   let buttonTextDisplay = "";
-  if (matchWeek.isEnabled && !matchWeek.isClosed) {
-    buttonTextDisplay = "Bet now!";
-  } else if (matchWeek.isEnabled && matchWeek.isClosed) {
-    buttonTextDisplay = "Go in";
-  } else if (!matchWeek.isEnabled && isOwner) {
+  let isEnabled = false;
+  if (isOwner && !matchWeek.isEnabled) {
     buttonTextDisplay = "Configure";
+  } else if (isOwner && matchWeek.isEnabled) {
+    buttonTextDisplay = "See";
+    isEnabled = true;
+  } else if (matchWeek.isEnabled && !matchWeek.isClosed) {
+    buttonTextDisplay = "Bet now!";
+    isEnabled = true;
+  } else if (matchWeek.isEnabled && matchWeek.isClosed) {
+    buttonTextDisplay = "See your bets";
+    isEnabled = true;
   } else if (!matchWeek.isEnabled) {
     buttonTextDisplay = "Coming soon...";
+  }
+  if (isOwner) {
+    isEnabled = true;
   }
 
   return (
@@ -97,30 +106,14 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
             </div>
           </div>
 
-          {isOwner ? (
-            <div className="flex justify-center">
-              <button
-                className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
-                  !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
-                }`}
-                onClick={() => click(matchWeek.address || "")}
-              >
-                {" "}
-                Set it up
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <button
-                className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${
-                  !matchWeek.isEnabled && !isOwner ? "btn-disabled" : ""
-                }`}
-                onClick={() => click(matchWeek.address || "")}
-              >
-                {buttonTextDisplay}
-              </button>
-            </div>
-          )}
+          <div className="flex justify-center">
+            <button
+              className={`btn btn-primary font-bold py-2 px-4 rounded-xl ${isEnabled ? "" : "btn-disabled"}`}
+              onClick={() => click(matchWeek.address || "")}
+            >
+              {buttonTextDisplay}
+            </button>
+          </div>
 
           {isOwner && !isOwnerLoading && (
             <div className="flex justify-center mt-2">
