@@ -49,7 +49,7 @@ export function useWinners(contractAddress: `0x${string}`, contractName: Contrac
     };
 
     fetchEvents();
-  }, [contractAddress, fromBlock, publicClient, isContractAddressAndClientReady]);
+  }, [contractAddress, fromBlock, publicClient, isContractAddressAndClientReady, deployedContractData?.abi]);
 
   return { events };
 }
