@@ -114,7 +114,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
               <p className="font-semibold m-0">Amount in play:</p>
               <p className="text-xl flex font-bold m-0">
                 {matchWeek.pricePool}
-                <Image src="/usdt.png" className="ml-2" width={28} height={28} alt="USDT image" />
+                <Image src="/tokens/usdt.png" className="ml-2" width={28} height={28} alt="USDT image" />
               </p>
             </div>
           </div>
