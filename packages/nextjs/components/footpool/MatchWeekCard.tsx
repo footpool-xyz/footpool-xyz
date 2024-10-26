@@ -75,7 +75,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
       <div className="flex flex-col sm:flex-row bg-base-100 px-10 py-10 max-w-4xl rounded-3xl">
         <div className="flex items-center justify-center">
           <Image
-            src="/laliga.png"
+            src="/leagues/laliga.png"
             alt="Liga Española"
             className="w-32 h-32 object-cover rounded-xl"
             width={150}
