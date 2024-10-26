@@ -23,7 +23,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     uint256 public constant AMOUNT_TO_BET = 5 * DECIMALS;
     uint256 private constant DECIMALS = 1e18;
     uint256 private constant REWARD_PERCENTAGE = 90;
-    uint256 private constant BASE_PERCENTAGE = 91000;
+    uint256 private constant BASE_PERCENTAGE = 100;
 
     struct Bet {
         uint32 matchId;
@@ -218,8 +218,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         uint256 winnersLength
     ) public view returns (uint256) {
         uint256 currentBalance = s_token.balanceOf(address(this));
-
-        uint256 reward = currentBalance / BASE_PERCENTAGE * REWARD_PERCENTAGE;
+        uint256 reward = (currentBalance * REWARD_PERCENTAGE) / BASE_PERCENTAGE;
         uint256 userReward = reward / winnersLength;
 
         return userReward;

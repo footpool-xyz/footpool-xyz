@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { UserGroupIcon } from "@heroicons/react/24/solid";
-import { useMatchWeekData, useMyBets, useOnlyOwner } from "~~/hooks/footpool";
+import { TrophyIcon, UserGroupIcon } from "@heroicons/react/24/solid";
+import { useMatchWeekData, useMyBets, useOnlyOwner, useWinners } from "~~/hooks/footpool";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { AddressType } from "~~/types/abitype/abi";
 import { MatchWeekSummary } from "~~/types/matchWeek";
@@ -16,6 +16,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
   const { isOwner, isOwnerLoading } = useOnlyOwner(matchWeekAddr || "", "FootPool");
   const { writeContractAsync: writeMatchWeekFactoryAsync } = useScaffoldWriteContract("FootPool");
   const { hasBetAlready } = useMyBets(matchWeekAddr);
+  const { events: winners } = useWinners(matchWeekAddr as `0x${string}`, "MatchWeek");
 
   const handleEnable = async (matchWeek: MatchWeekSummary) => {
     try {
@@ -70,6 +71,8 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
     isEnabled = true;
   }
 
+  console.log(winners);
+
   return (
     <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-5">
       <div className="flex flex-col sm:flex-row bg-base-100 px-10 py-10 max-w-4xl rounded-3xl">
@@ -111,11 +114,23 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
         <div className="flex flex-col justify-between sm:ml-10 mt-6 sm:mt-0">
           <div className="flex items-center mb-4">
             <div>
-              <p className="font-semibold m-0">Amount in play:</p>
-              <p className="text-xl flex font-bold m-0">
-                {matchWeek.pricePool}
-                <Image src="/tokens/usdt.png" className="ml-2" width={28} height={28} alt="USDT image" />
-              </p>
+              {!winners ? (
+                <>
+                  <p className="font-semibold m-0">Amount in play:</p>
+                  <p className="text-xl flex font-bold m-0">
+                    {matchWeek.pricePool}
+                    <Image src="/tokens/usdt.png" className="ml-2" width={28} height={28} alt="USDT image" />
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold m-0">Winners:</p>
+                  <p className="text-xl flex font-bold m-0">
+                    {winners.length}
+                    <TrophyIcon className="h-7 w-7" />
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
