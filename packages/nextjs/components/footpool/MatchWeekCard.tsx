@@ -114,7 +114,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
         <div className="flex flex-col justify-between sm:ml-10 mt-6 sm:mt-0">
           <div className="flex items-center mb-4">
             <div>
-              {!winners ? (
+              {!matchWeek.rewardsHasBeenSent ? (
                 <>
                   <p className="font-semibold m-0">Amount in play:</p>
                   <p className="text-xl flex font-bold m-0">
