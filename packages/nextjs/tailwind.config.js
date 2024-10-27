@@ -9,21 +9,21 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#6A8752",
-          "primary-content": "#263655",
-          secondary: "#EDBF53",
-          "secondary-content": "#263655",
-          accent: "#6A8752",
-          "accent-content": "#263655",
-          neutral: "#263655",
-          "neutral-content": "#ffffff",
-          "base-100": "#ffffff",
+          primary: "#4CAF50",            // Verde principal del logo
+          "primary-content": "#1C1B29",   // Para contrastar
+          secondary: "#FFC107",           // Amarillo del logo
+          "secondary-content": "#1C1B29", // Contraste para el amarillo
+          accent: "#FFC107",              // Amarillo de acento
+          "accent-content": "#1C1B29",
+          neutral: "#263655",             // Azul oscuro para el fondo
+          "neutral-content": "#FFFFFF",
+          "base-100": "#FFFFFF",
           "base-200": "#f3f3f3",
           "base-300": "#E0E0E0",
           "base-content": "#263655",
-          info: "#6A8752",               // Verde para mensajes de info
-          success: "#34EEB6",
-          warning: "#EDBF53",
+          info: "#4CAF50",                // Verde para mensajes de info
+          success: "#34EEB6",             // Verde brillante para éxito
+          warning: "#FFC107",             // Amarillo de advertencia
           error: "#FF8863",
 
           "--rounded-btn": "9999rem",
@@ -42,20 +42,20 @@ module.exports = {
       {
         dark: {
           primary: "#4CAF50",
-          "primary-content": "#263655",
-          secondary: "#EDBF53",
-          "secondary-content": "#1B2733",
-          accent: "#EDBF53",
-          "accent-content": "#F9FBFF",
+          "primary-content": "#FFFFFF",
+          secondary: "#FFC107",
+          "secondary-content": "#1C1B29",
+          accent: "#FFC107",
+          "accent-content": "#FFFFFF",
           neutral: "#263655",
-          "neutral-content": "#FFFFFF",
-          "base-100": "#3c2580",
-          "base-200": "#1E1538",
-          "base-300": "#2A3655",
+          "neutral-content": "#F9FBFF",
+          "base-100": "#1C1B29",          // Fondo oscuro para modo oscuro
+          "base-200": "#2A2A37",
+          "base-300": "#3A3A4A",
           "base-content": "#F9FBFF",
-          info: "#6A8752",
+          info: "#4CAF50",
           success: "#34EEB6",
-          warning: "#FFCF72",
+          warning: "#FFC107",
           error: "#FF8863",
 
           "--rounded-btn": "9999rem",
