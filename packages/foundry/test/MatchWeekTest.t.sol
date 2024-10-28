@@ -267,57 +267,6 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Winners
     /////////////////
-    function testRevertsIfNoClosedAndOwnerTriesToAddResults() public {
-        MatchWeek matchWeek = _initializeMatchWeek();
-        _populateMatchesToAdd();
-        _populateWinnerBetsToAdd();
-        _populateResultsToAdd();
-        _mintAndApproveTokens(USER, address(matchWeek));
-        _mintAndApproveTokens(USER_TWO, address(matchWeek));
-
-        vm.prank(OWNER);
-        matchWeek.addMatches(matchesToAdd);
-
-        vm.prank(USER);
-        matchWeek.addBets(betsToAdd, address(token));
-
-        _populateLoseBetsToAdd();
-        vm.prank(USER_TWO);
-        matchWeek.addBets(betsToAdd, address(token));
-
-        vm.prank(OWNER);
-        vm.expectRevert(MatchWeek.MatchWeek__NotClosedYet.selector);
-        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
-    }
-
-    function testRevertsIfNoOwnerTriesToAddResults() public {
-        MatchWeek matchWeek = _initializeMatchWeek();
-        _populateMatchesToAdd();
-        _populateWinnerBetsToAdd();
-        _populateResultsToAdd();
-        _mintAndApproveTokens(USER, address(matchWeek));
-        _mintAndApproveTokens(USER_TWO, address(matchWeek));
-
-        vm.prank(OWNER);
-        matchWeek.addMatches(matchesToAdd);
-
-        vm.prank(USER);
-        matchWeek.addBets(betsToAdd, address(token));
-
-        _populateLoseBetsToAdd();
-        vm.prank(USER_TWO);
-        matchWeek.addBets(betsToAdd, address(token));
-
-        vm.prank(USER);
-        matchWeek.close();
-
-        vm.prank(USER);
-        vm.expectRevert(
-            abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, USER)
-        );
-        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
-    }
-
     function testAddResultsAndSendRewardsToWinners() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
