@@ -10,7 +10,8 @@ import { OwnableUpgradeable } from
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MatchWeekTest is Test {
-    uint256 constant AMOUNT_TO_BET = 5 * 1e18;
+    uint256 constant DECIMALS = 1e18;
+    uint256 constant AMOUNT_TO_BET = 5 * DECIMALS;
 
     event EnabledMatchWeek(uint256 id);
     event MatchAdded(uint256 id);
@@ -26,6 +27,7 @@ contract MatchWeekTest is Test {
 
     address OWNER = makeAddr("owner");
     address USER = makeAddr("user");
+    address USER_TWO = makeAddr("userTwo");
 
     function setUp() public {
         consumer = new MockMatchesDataConsumer();
@@ -165,7 +167,7 @@ contract MatchWeekTest is Test {
         vm.expectRevert(
             abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, USER)
         );
-        matchWeek.addResults(resultsToAdd);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
     }
 
     function testRevertsWhenAddingResultsAndIsNoClosed() public {
@@ -175,7 +177,7 @@ contract MatchWeekTest is Test {
 
         vm.prank(OWNER);
         vm.expectRevert(MatchWeek.MatchWeek__NotClosedYet.selector);
-        matchWeek.addResults(resultsToAdd);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
     }
 
     function testCanAddResults() public {
@@ -189,7 +191,7 @@ contract MatchWeekTest is Test {
         vm.prank(OWNER);
         vm.expectEmit(false, false, false, false);
         emit AddedResults();
-        matchWeek.addResults(resultsToAdd);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
     }
 
     function testRewardsAreSentToWinners() public {
@@ -213,7 +215,7 @@ contract MatchWeekTest is Test {
         emit RewardSended(USER, matchWeek.getRewardToSend(1));
         vm.expectEmit(false, false, false, false);
         emit AddedResults();
-        matchWeek.addResults(resultsToAdd);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
         vm.stopPrank();
     }
 
@@ -235,7 +237,7 @@ contract MatchWeekTest is Test {
         _populateResultsToAdd();
         vm.startPrank(OWNER);
         matchWeek.close();
-        matchWeek.addResults(resultsToAdd);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
         vm.stopPrank();
 
         vm.expectEmit(true, true, true, true);
@@ -262,9 +264,43 @@ contract MatchWeekTest is Test {
         matchWeek.withdrawFunds();
     }
 
-    /**
-     * Helper functions
-     */
+    /////////////////
+    //// Winners
+    /////////////////
+    function testRevertsIfNoOwnerTriesToAddResults() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+        _populateWinnerBetsToAdd();
+        _populateResultsToAdd();
+        _mintAndApproveTokens(USER, address(matchWeek));
+        _mintAndApproveTokens(USER_TWO, address(matchWeek));
+
+        vm.prank(OWNER);
+        matchWeek.addMatches(matchesToAdd);
+
+        vm.prank(USER);
+        matchWeek.addBets(betsToAdd, address(token));
+
+        _populateLoseBetsToAdd();
+        vm.prank(USER_TWO);
+        matchWeek.addBets(betsToAdd, address(token));
+
+        vm.prank(USER);
+        matchWeek.close();
+
+        vm.expectEmit(true, true, false, true);
+        emit RewardSended(USER, 9 * DECIMALS);
+        vm.prank(OWNER);
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
+    }
+
+    function testRevertsIfNoClosedAndOwnerTriesToAddResults() public { }
+
+    function testAddResultsAndSendRewardsToWinners() public { }
+
+    /////////////////////////////
+    //// Helper Functions
+    /////////////////////////////
     function _initializeMatchWeek() private returns (MatchWeek) {
         MatchWeek matchWeek = new MatchWeek();
         matchWeek.initialize(1, "First MatchWeek", OWNER, address(consumer));
@@ -290,5 +326,11 @@ contract MatchWeekTest is Test {
     function _populateResultsToAdd() private {
         resultsToAdd.push(MatchWeek.MatchResult(1, MatchWeek.Result.LOCAL_WIN));
         resultsToAdd.push(MatchWeek.MatchResult(2, MatchWeek.Result.LOCAL_WIN));
+    }
+
+    function _mintAndApproveTokens(address to, address contractTo) private {
+        token.mint(to);
+        vm.prank(to);
+        token.approve(contractTo, AMOUNT_TO_BET);
     }
 }

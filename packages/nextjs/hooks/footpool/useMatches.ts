@@ -87,7 +87,7 @@ export const useMatches = (contractAddress: string) => {
       return await writeContractAsync({
         abi: deployedContractData.abi,
         address: contractAddress,
-        functionName: "addResults",
+        functionName: "addResultsAndSendRewardsToWinners",
         args: [results],
       });
     };

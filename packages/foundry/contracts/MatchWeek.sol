@@ -121,7 +121,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         _storeBets(bets);
     }
 
-    function addResults(
+    function addResultsAndSendRewardsToWinners(
         MatchResult[] calldata results
     ) external onlyOwner onlyClosed {
         uint256 resultsLength = results.length;
