@@ -333,7 +333,7 @@ contract MatchWeekTest is Test {
     /////////////////////////////
     function _initializeMatchWeek() private returns (MatchWeek) {
         MatchWeek matchWeek = new MatchWeek();
-        matchWeek.initialize(1, "First MatchWeek", OWNER, address(consumer));
+        matchWeek.initialize(1, "First MatchWeek", OWNER, address(consumer), 140);
 
         return matchWeek;
     }

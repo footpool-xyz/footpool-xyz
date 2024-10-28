@@ -55,6 +55,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
     bool public s_isEnabled;
     bool public s_isClosed;
     bool public s_rewardsHasBeenSent;
+    uint256 public s_leagueId;
 
     uint256[] private s_matchesIds;
     uint8 private s_numOfMatches;
@@ -70,7 +71,8 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         uint256 id,
         string memory _title,
         address owner,
-        address consumer
+        address consumer,
+        uint256 leagueId
     ) public initializer {
         __Ownable_init(owner);
         s_id = id;
@@ -80,6 +82,7 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         s_rewardsHasBeenSent = false;
         s_consumer = MatchesDataConsumer(consumer);
         s_factoryAddress = msg.sender;
+        s_leagueId = leagueId;
     }
 
     function enable() external onlyOwnerOrFactory {
@@ -87,8 +90,20 @@ contract MatchWeek is Initializable, OwnableUpgradeable {
         emit EnabledMatchWeek(s_id);
     }
 
-    function summary() external view returns (string memory, bool, bool, uint256, uint256, bool) {
-        return (s_title, s_isEnabled, s_isClosed, s_stakeholders.length, s_id, s_rewardsHasBeenSent);
+    function summary()
+        external
+        view
+        returns (string memory, bool, bool, uint256, uint256, bool, uint256)
+    {
+        return (
+            s_title,
+            s_isEnabled,
+            s_isClosed,
+            s_stakeholders.length,
+            s_id,
+            s_rewardsHasBeenSent,
+            s_leagueId
+        );
     }
 
     function close() external onlyOpen {
