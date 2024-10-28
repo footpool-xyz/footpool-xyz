@@ -45,7 +45,7 @@ export const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
               <select
                 value={leagueId}
                 onChange={e => setLeagueId(parseInt(e.target.value))}
-                className="flex items-center h-[2.2rem] min-h-[2.2rem] px-4 border-2 border-base-300 bg-base-200 rounded-full text-gray-400 font-medium placeholder:text-accent/50 focus:outline-none focus-within:border-transparent focus:bg-transparent focus:text-gray-400 w-full"
+                className="flex items-center h-[2.2rem] min-h-[2.2rem] px-4 border-2 border-base-300 bg-base-200 rounded-full text-gray-400 font-medium placeholder:text-accent/50 focus-within:border-transparent focus:bg-transparent focus:text-gray-400 w-full"
               >
                 <option value={0} disabled>
                   Select League
