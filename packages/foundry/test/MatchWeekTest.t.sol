@@ -267,7 +267,11 @@ contract MatchWeekTest is Test {
     /////////////////
     //// Winners
     /////////////////
-    function testRevertsIfNoOwnerTriesToAddResults() public {
+    function testRevertsIfNoOwnerTriesToAddResults() public { }
+
+    function testRevertsIfNoClosedAndOwnerTriesToAddResults() public { }
+
+    function testAddResultsAndSendRewardsToWinners() public {
         MatchWeek matchWeek = _initializeMatchWeek();
         _populateMatchesToAdd();
         _populateWinnerBetsToAdd();
@@ -293,10 +297,6 @@ contract MatchWeekTest is Test {
         vm.prank(OWNER);
         matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
     }
-
-    function testRevertsIfNoClosedAndOwnerTriesToAddResults() public { }
-
-    function testAddResultsAndSendRewardsToWinners() public { }
 
     /////////////////////////////
     //// Helper Functions
