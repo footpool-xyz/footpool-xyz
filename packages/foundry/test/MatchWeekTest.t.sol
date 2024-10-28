@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import { Test, console } from "forge-std/Test.sol";
+import { Test, console, Vm } from "forge-std/Test.sol";
 import { MatchWeek } from "../contracts/MatchWeek.sol";
 import { MockMatchesDataConsumer } from "./mock/MockMatchesDataConsumer.sol";
 import { MockUsdtToken } from "./mock/MockUsdtToken.sol";
@@ -292,6 +292,40 @@ contract MatchWeekTest is Test {
         emit RewardSended(USER, 9 * DECIMALS);
         vm.prank(OWNER);
         matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
+    }
+
+    function testWithdrawAllIfZeroWinners() public {
+        MatchWeek matchWeek = _initializeMatchWeek();
+        _populateMatchesToAdd();
+        _populateLoseBetsToAdd();
+        _populateResultsToAdd();
+        _mintAndApproveTokens(USER, address(matchWeek));
+        _mintAndApproveTokens(USER_TWO, address(matchWeek));
+
+        vm.prank(OWNER);
+        matchWeek.addMatches(matchesToAdd);
+
+        vm.prank(USER);
+        matchWeek.addBets(betsToAdd, address(token));
+        vm.prank(USER_TWO);
+        matchWeek.addBets(betsToAdd, address(token));
+
+        vm.prank(USER);
+        matchWeek.close();
+
+        vm.prank(OWNER);
+        vm.recordLogs();
+        matchWeek.addResultsAndSendRewardsToWinners(resultsToAdd);
+
+        Vm.Log[] memory logs = vm.getRecordedLogs();
+        for (uint256 i = 0; i < logs.length; i++) {
+            assert(logs[i].topics[0] != keccak256("RewardSended(address,uint256)"));
+        }
+
+        vm.expectEmit(true, true, true, true);
+        emit Transfer(address(matchWeek), OWNER, 10 * DECIMALS);
+        vm.prank(OWNER);
+        matchWeek.withdrawFunds();
     }
 
     /////////////////////////////
