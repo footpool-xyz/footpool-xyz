@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MockUsdtToken: {
-      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
+      address: "0x6379ebd504941f50d5bfde9348b37593bd29c835",
       abi: [
         {
           type: "constructor",
@@ -349,7 +349,7 @@ const deployedContracts = {
       },
     },
     MatchWeek: {
-      address: "0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf",
+      address: "0x33b1b5aa9aa4da83a332f0bc5cac6a903fde5d92",
       abi: [
         {
           type: "function",
@@ -590,6 +590,11 @@ const deployedContracts = {
               type: "address",
               internalType: "address",
             },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
+            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
@@ -656,6 +661,19 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_leagueId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -754,6 +772,11 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -995,7 +1018,7 @@ const deployedContracts = {
       },
     },
     MockMatchesDataConsumer: {
-      address: "0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc",
+      address: "0x19a1c09fe3399c4daaa2c98b936a8e460fc5eaa4",
       abi: [
         {
           type: "constructor",
@@ -1334,7 +1357,7 @@ const deployedContracts = {
       },
     },
     FootPool: {
-      address: "0x2a264f26859166c5bf3868a54593ee716aebc848",
+      address: "0x067c804bb006836469379d4a2a69a81803bd1f45",
       abi: [
         {
           type: "constructor",
@@ -1368,6 +1391,11 @@ const deployedContracts = {
               name: "name",
               type: "string",
               internalType: "string",
+            },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [
@@ -1857,6 +1885,11 @@ const deployedContracts = {
               type: "address",
               internalType: "address",
             },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
+            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
@@ -1923,6 +1956,19 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_leagueId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -2021,6 +2067,11 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -2296,6 +2347,11 @@ const deployedContracts = {
               name: "name",
               type: "string",
               internalType: "string",
+            },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [
@@ -3127,6 +3183,11 @@ const deployedContracts = {
               type: "address",
               internalType: "address",
             },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
+            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
@@ -3193,6 +3254,19 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "s_leagueId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -3291,6 +3365,11 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -3566,6 +3645,11 @@ const deployedContracts = {
               name: "name",
               type: "string",
               internalType: "string",
+            },
+            {
+              name: "leagueId",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [

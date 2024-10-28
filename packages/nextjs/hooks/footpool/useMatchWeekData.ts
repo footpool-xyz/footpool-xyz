@@ -35,12 +35,13 @@ export const useMatchWeekData = (address: AddressType) => {
 
   useEffect(() => {
     if (Array.isArray(summary) && amountToBet) {
-      const [name, isEnabled, isClosed, stakeholdersCounter, id, rewardsHasBeenSent] = summary;
+      const [name, isEnabled, isClosed, stakeholdersCounter, id, rewardsHasBeenSent, leagueId] = summary;
       const amountToBetPerStakeholder: number = Number(amountToBet) / 1e18;
 
       const matchWeekData: MatchWeekSummary = {
         id: id,
         name: name,
+        leagueId: Number(leagueId),
         isEnabled,
         isClosed,
         stakeholdersCounter: Number(stakeholdersCounter),

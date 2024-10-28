@@ -15,6 +15,7 @@ export type MatchWeek = {
 export type MatchWeekSummary = {
   id: number;
   name: string;
+  leagueId: number;
   isEnabled: boolean;
   isClosed: boolean;
   stakeholdersCounter: number;

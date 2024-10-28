@@ -40,11 +40,11 @@ export const MatchWeekList = () => {
   //////////////////////////
   ////// Handling with contracts
   /////////////////////////
-  const saveCreatedMatchWeekInContract = async (name: string) => {
+  const saveCreatedMatchWeekInContract = async (name: string, leagueId: number) => {
     try {
       const newMatchWeekAddress = await writeFactoryContract({
         functionName: "createMatchWeek",
-        args: [name],
+        args: [name, BigInt(leagueId)],
       });
       if (newMatchWeekAddress) {
         setMatchWeeksAddresses(prevAddresses => [newMatchWeekAddress, ...prevAddresses]);
@@ -54,13 +54,13 @@ export const MatchWeekList = () => {
     }
   };
 
-  const handleAddMatchWeek = async (name: string) => {
-    if (name == "") {
-      console.log("Add a valid name");
+  const handleAddMatchWeek = async (name: string, leagueId: number) => {
+    if (name == "" || leagueId == 0) {
+      console.error("Add a valid name and league");
       return;
     }
 
-    await saveCreatedMatchWeekInContract(name);
+    await saveCreatedMatchWeekInContract(name, leagueId);
   };
 
   //////////////////////////

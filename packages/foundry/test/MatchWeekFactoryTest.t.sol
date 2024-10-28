@@ -32,7 +32,7 @@ contract FootPoolTest is Test {
 
     function testCanCreateANewMatchWeek() public {
         vm.prank(OWNER);
-        MatchWeek matchWeekCreated = factory.createMatchWeek("The one");
+        MatchWeek matchWeekCreated = factory.createMatchWeek("The one", 140);
 
         assertEq("The one", matchWeekCreated.title());
     }
@@ -40,7 +40,7 @@ contract FootPoolTest is Test {
     function testRevertsIfNoOwnerCreateMatchWeek() public {
         vm.prank(USER);
         vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, USER));
-        factory.createMatchWeek("A new one");
+        factory.createMatchWeek("A new one", 140);
     }
 
     function testCanRetrieveMatchWeeks() public feedMultipleMatchWeeks {
@@ -113,16 +113,16 @@ contract FootPoolTest is Test {
 
     modifier feedMultipleMatchWeeks() {
         vm.startPrank(OWNER);
-        factory.createMatchWeek("One");
-        factory.createMatchWeek("Two");
-        factory.createMatchWeek("Three");
+        factory.createMatchWeek("One", 140);
+        factory.createMatchWeek("Two", 140);
+        factory.createMatchWeek("Three", 140);
         vm.stopPrank();
         _;
     }
 
     modifier feedSingleMatchWeek() {
         vm.startPrank(OWNER);
-        factory.createMatchWeek("Single");
+        factory.createMatchWeek("Single", 140);
         vm.stopPrank();
         _;
     }

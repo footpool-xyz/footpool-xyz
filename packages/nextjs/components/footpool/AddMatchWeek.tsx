@@ -3,7 +3,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { InputBase } from "~~/components/scaffold-eth";
 
 type AddMatchWeekProps = {
-  handleAddMatchWeek: (name: string) => void;
+  handleAddMatchWeek: (name: string, leagueId: number) => void;
 };
 
 export const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
@@ -50,16 +50,17 @@ export const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
                 <option value={0} disabled>
                   Select League
                 </option>
-                <option value={1}>Premier League</option>
-                <option value={2}>La Liga</option>
-                <option value={3}>Bundesliga</option>
+                <option value={39}>Premier League</option>
+                <option value={140}>La Liga</option>
+                <option value={78}>Bundesliga</option>
               </select>
             </div>
             <div className="flex flex-col space-y-3">
               <button
                 onClick={() => {
-                  handleAddMatchWeek(name);
+                  handleAddMatchWeek(name, leagueId);
                   setName("");
+                  setLeagueId(0);
                   const checkbox = document.getElementById("add-match-week-modal") as HTMLInputElement;
                   if (checkbox) {
                     checkbox.checked = false;

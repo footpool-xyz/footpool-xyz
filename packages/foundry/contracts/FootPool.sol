@@ -33,12 +33,13 @@ contract FootPool is Ownable {
      * @dev Only owner can create new match weeks.
      */
     function createMatchWeek(
-        string memory name
+        string memory name,
+        uint256 leagueId
     ) external onlyOwner returns (MatchWeek) {
         uint256 newId = s_matchWeeksIds.length + 1;
 
         MatchWeek newMatchWeek = MatchWeek(Clones.clone(s_matchWeekAddress));
-        newMatchWeek.initialize(newId, name, msg.sender, s_consumerAddress);
+        newMatchWeek.initialize(newId, name, msg.sender, s_consumerAddress, leagueId);
         s_matchWeeks[newId] = newMatchWeek;
         s_matchWeeksIds.push(newId);
         emit MatchWeekCreated(newId, address(newMatchWeek), name);
