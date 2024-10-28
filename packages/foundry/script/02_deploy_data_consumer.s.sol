@@ -19,7 +19,7 @@ contract DeployDataConsumer is ScaffoldETHDeploy {
     }
 
     function _deployFakeMatchesDataConsumer() private returns (address) {
-        string memory fakeMatches = vm.readFile("./matches/fakeMatches.json");
+        string memory fakeMatches = vm.readFile("./matches/fakeBundesligaMatches.json");
         MockMatchesDataConsumer matchesDataConsumer = new MockMatchesDataConsumer();
         matchesDataConsumer.setResponse(fakeMatches);
         console.logString(

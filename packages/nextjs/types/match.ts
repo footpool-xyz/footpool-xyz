@@ -5,6 +5,7 @@ export type Match = {
   awayTeam: string;
   awayLogo: string;
   result?: number;
+  leagueId: number;
 };
 
 export type Bet = {
@@ -23,4 +24,5 @@ export type MatchContract = {
   localTeam: string;
   awayTeam: string;
   result: number;
+  leagueId: number;
 };

@@ -26,6 +26,12 @@ export const useMatches = (contractAddress: string) => {
     functionName: "getMatches",
   }) as { data: MatchContract[] };
 
+  const { data: leagueId } = useReadContract({
+    abi: deployedContractData?.abi,
+    address: contractAddress,
+    functionName: "s_leagueId",
+  });
+
   // Fetch matches from the API
   const fetchMatchesFromApi = async (): Promise<Match[]> => {
     const matchesIdsJoined = matchesIds.map(match => match.m).join("-");
@@ -46,6 +52,7 @@ export const useMatches = (contractAddress: string) => {
       homeLogo: `/teams/${matchInfo.teams.home.name}.png`,
       awayTeam: matchInfo.teams.away.name,
       awayLogo: `/teams/${matchInfo.teams.away.name}.png`,
+      leagueId: matchInfo.league.id,
     }));
   };
 
@@ -109,10 +116,11 @@ export const useMatches = (contractAddress: string) => {
         matchesFromContract.map((match: MatchContract) => ({
           id: match.id,
           homeTeam: match.localTeam,
-          homeLogo: `/teams/${match.localTeam}.png`,
+          homeLogo: `/teams/${Number(leagueId)}/${match.localTeam}.png`,
           awayTeam: match.awayTeam,
-          awayLogo: `/teams/${match.awayTeam}.png`,
+          awayLogo: `/teams/${Number(leagueId)}/${match.awayTeam}.png`,
           result: match.result,
+          leagueId: Number(leagueId),
         })),
       );
     }

@@ -66,10 +66,10 @@ const {
 ///////////////////
 //// Arguments
 ///////////////////
-const round = "11";
+const round = "8";
 // const league = "140"; // LA LIGA
-const league = "39" // Premier
-// const league = "78" // Bundesliga
+// const league = "39" // Premier
+const league = "78" // Bundesliga
 const season = "2024";
 
 //////////////////////////////
