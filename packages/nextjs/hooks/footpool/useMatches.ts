@@ -49,9 +49,9 @@ export const useMatches = (contractAddress: string) => {
     return response.response.map((matchInfo: any) => ({
       id: matchInfo.fixture.id,
       homeTeam: matchInfo.teams.home.name,
-      homeLogo: `/teams/${matchInfo.teams.home.name}.png`,
+      homeLogo: `/teams/${matchInfo.league.id}/${matchInfo.teams.home.name}.png`,
       awayTeam: matchInfo.teams.away.name,
-      awayLogo: `/teams/${matchInfo.teams.away.name}.png`,
+      awayLogo: `/teams/${matchInfo.league.id}/${matchInfo.teams.away.name}.png`,
       leagueId: matchInfo.league.id,
     }));
   };

@@ -53,22 +53,22 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
     );
   }
 
-  let buttonTextDisplay = "Go in!";
+  let buttonTextDisplay = "View Details";
   let isEnabled = false;
   if (matchWeek.rewardsHasBeenSent) {
-    buttonTextDisplay = "See results";
+    buttonTextDisplay = "View results";
     isEnabled = true;
   } else if (!matchWeek.isEnabled) {
-    buttonTextDisplay = "Coming soon...";
+    buttonTextDisplay = "Coming soon";
   } else if (matchWeek.isEnabled && !matchWeek.isClosed) {
-    buttonTextDisplay = "Go in!";
+    buttonTextDisplay = "View Details";
     isEnabled = true;
   } else if (matchWeek.isEnabled && matchWeek.isClosed && hasBetAlready) {
-    buttonTextDisplay = "See my bets";
+    buttonTextDisplay = "View My Bets";
     isEnabled = true;
   }
   if (isOwner) {
-    buttonTextDisplay = "Go in!";
+    buttonTextDisplay = "View Details";
     isEnabled = true;
   }
 
@@ -86,16 +86,16 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
           <p className="text-pretty text-sm mt-0">{season}</p>
           <div className="flex items-center justify-center sm:justify-start mt-2">
             {matchWeek.isClosed && !matchWeek.rewardsHasBeenSent && (
-              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Closed to bet</span>
+              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Bets Closed</span>
             )}
             {!matchWeek.isClosed && matchWeek.isEnabled && !matchWeek.rewardsHasBeenSent && (
-              <span className="ml-3 bg-success text-xs font-bold px-2 py-1 rounded-full">Open</span>
+              <span className="ml-3 bg-success text-xs font-bold px-2 py-1 rounded-full">Open for Bets</span>
             )}
             {hasBetAlready && !matchWeek.rewardsHasBeenSent && (
-              <span className="ml-3 bg-[#f59e0b] text-xs font-bold px-2 py-1 rounded-full">Current bet</span>
+              <span className="ml-3 bg-[#f59e0b] text-xs font-bold px-2 py-1 rounded-full">Active Bet</span>
             )}
             {matchWeek.rewardsHasBeenSent && (
-              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Finished</span>
+              <span className="ml-3 bg-error text-xs font-bold px-2 py-1 rounded-full">Completed</span>
             )}
           </div>
           <div className="flex items-center justify-center sm:justify-start mt-2">
