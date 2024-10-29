@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { AddMatchWeek, BannerTitle } from "~~/components/footpool";
 import { MatchWeekCard } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
-import {
-  useDeployedContractInfo,
-  useScaffoldReadContract,
-  useScaffoldWatchContractEvent,
-  useScaffoldWriteContract,
-} from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { AddressType } from "~~/types/abitype/abi";
 
@@ -34,27 +29,11 @@ export const MatchWeekList = () => {
   const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract(FootPoolContractName);
 
   //////////////////////////
-  ////// Events handling
-  /////////////////////////
-  useScaffoldWatchContractEvent({
-    contractName: FootPoolContractName,
-    eventName: "MatchWeekCreated",
-    onLogs: logs => {
-      logs.map(log => {
-        const { addr } = log.args;
-        if (addr) {
-          setMatchWeeksAddresses(prevAddresses => [addr, ...prevAddresses]);
-        }
-      });
-    },
-  });
-
-  //////////////////////////
   ////// Effects
   /////////////////////////
   useEffect(() => {
     if (Array.isArray(matchWeeksAddressesFromContract)) {
-      setMatchWeeksAddresses(matchWeeksAddressesFromContract);
+      setMatchWeeksAddresses([...matchWeeksAddressesFromContract].reverse());
     }
   }, [matchWeeksAddressesFromContract]);
 
@@ -73,7 +52,7 @@ export const MatchWeekList = () => {
   };
 
   const handleAddMatchWeek = async (name: string, leagueId: number) => {
-    if (name == "" || leagueId == 0) {
+    if (name === "" || leagueId === 0) {
       console.error("Add a valid name and league");
       return;
     }
@@ -86,17 +65,14 @@ export const MatchWeekList = () => {
   /////////////////////////
   const matchWeekCards =
     matchWeeksAddresses.length > 0 ? (
-      matchWeeksAddresses
-        .slice()
-        // .reverse()
-        .map(matchWeekAddress => (
-          <MatchWeekCard
-            key={matchWeekAddress}
-            matchWeekAddr={matchWeekAddress}
-            season="Season 2024/2025"
-            click={() => selectMatchWeek(matchWeekAddress)}
-          />
-        ))
+      matchWeeksAddresses.map(matchWeekAddress => (
+        <MatchWeekCard
+          key={matchWeekAddress}
+          matchWeekAddr={matchWeekAddress}
+          season="Season 2024/2025"
+          click={() => selectMatchWeek(matchWeekAddress)}
+        />
+      ))
     ) : (
       <div className="flex flex-col justify-center items-center bg-base-300 p-4">
         <p className="mb-4">No Match Weeks available</p>
