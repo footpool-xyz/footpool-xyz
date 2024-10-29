@@ -124,7 +124,7 @@ export const useMatches = (contractAddress: string) => {
         })),
       );
     }
-  }, [matchesIdsFromContract, matchesFromContract]);
+  }, [matchesIdsFromContract, matchesFromContract, leagueId]);
 
   return {
     matches,
