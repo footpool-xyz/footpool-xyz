@@ -26,22 +26,23 @@ export function useWinners(contractAddress: `0x${string}`, contractName: Contrac
             fromBlock,
             toBlock: "latest",
           });
+          if (fetchedEvents.length > 0) {
+            const decodedEvents = fetchedEvents.map((log: Log) => {
+              const { args } = decodeEventLog({
+                abi: deployedContractData.abi,
+                data: log.data,
+                topics: log.topics,
+                eventName: "RewardSended",
+              });
 
-          const decodedEvents = fetchedEvents.map((log: Log) => {
-            const { args } = decodeEventLog({
-              abi: deployedContractData.abi,
-              data: log.data,
-              topics: log.topics,
-              eventName: "RewardSended",
+              return {
+                to: args.to,
+                reward: formatUnits(args.reward, 18),
+              } as RewardSendedEvent;
             });
-            console.log(BigInt(args.reward).toString());
-            return {
-              to: args.to,
-              reward: formatUnits(args.reward, 18),
-            } as RewardSendedEvent;
-          });
 
-          setEvents(decodedEvents);
+            setEvents(decodedEvents);
+          }
         } catch (error) {
           console.error("Error fetching RewardSended events:", error);
         }

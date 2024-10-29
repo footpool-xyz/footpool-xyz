@@ -27,7 +27,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
       });
       enable();
     } catch (e) {
-      console.error("Error setting greeting:", e);
+      console.error("Error enabling match week:", e);
     }
   };
 
@@ -39,7 +39,7 @@ export const MatchWeekCard = ({ matchWeekAddr, season, click }: MatchWeekCardPro
       });
       close();
     } catch (e) {
-      console.error("Error setting greeting:", e);
+      console.error("Error closing match week:", e);
     }
   };
 

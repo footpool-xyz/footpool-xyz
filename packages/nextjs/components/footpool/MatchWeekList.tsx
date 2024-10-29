@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { AddMatchWeek, BannerTitle } from "~~/components/footpool";
 import { MatchWeekCard } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
-import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import {
+  useDeployedContractInfo,
+  useScaffoldReadContract,
+  useScaffoldWatchContractEvent,
+  useScaffoldWriteContract,
+} from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { AddressType } from "~~/types/abitype/abi";
 
@@ -29,6 +34,22 @@ export const MatchWeekList = () => {
   const { writeContractAsync: writeFactoryContract } = useScaffoldWriteContract(FootPoolContractName);
 
   //////////////////////////
+  ////// Events handling
+  /////////////////////////
+  useScaffoldWatchContractEvent({
+    contractName: FootPoolContractName,
+    eventName: "MatchWeekCreated",
+    onLogs: logs => {
+      logs.map(log => {
+        const { addr } = log.args;
+        if (addr) {
+          setMatchWeeksAddresses(prevAddresses => [addr, ...prevAddresses]);
+        }
+      });
+    },
+  });
+
+  //////////////////////////
   ////// Effects
   /////////////////////////
   useEffect(() => {
@@ -42,15 +63,12 @@ export const MatchWeekList = () => {
   /////////////////////////
   const saveCreatedMatchWeekInContract = async (name: string, leagueId: number) => {
     try {
-      const newMatchWeekAddress = await writeFactoryContract({
+      await writeFactoryContract({
         functionName: "createMatchWeek",
         args: [name, BigInt(leagueId)],
       });
-      if (newMatchWeekAddress) {
-        setMatchWeeksAddresses(prevAddresses => [newMatchWeekAddress, ...prevAddresses]);
-      }
     } catch (e) {
-      console.error("Error setting greeting:", e);
+      console.error("Error creating new Match Week:", e);
     }
   };
 
@@ -70,7 +88,7 @@ export const MatchWeekList = () => {
     matchWeeksAddresses.length > 0 ? (
       matchWeeksAddresses
         .slice()
-        .reverse()
+        // .reverse()
         .map(matchWeekAddress => (
           <MatchWeekCard
             key={matchWeekAddress}

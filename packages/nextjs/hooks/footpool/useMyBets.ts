@@ -16,10 +16,8 @@ export const useMyBets = (address: AddressType) => {
   }) as any;
 
   useEffect(() => {
-    console.log(myBets);
     if (myBets && myBets.length > 0) {
       setHasBetAlready(true);
-      console.log("aaaa");
     }
   }, [myBets]);
 
