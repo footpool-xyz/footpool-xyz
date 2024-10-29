@@ -12,3 +12,4 @@ export * from "./MatchResults";
 export * from "./MatchWeek";
 export * from "./MatchWeekCard";
 export * from "./Team";
+export * from "./UsdtBalance";
