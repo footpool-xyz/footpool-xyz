@@ -8,7 +8,16 @@ const MatchWeeksPage: NextPage = () => {
   const { selectedMatchWeek } = useGlobalState();
 
   if (selectedMatchWeek) {
-    return <MatchWeek />;
+    return (
+      <>
+        <section>
+          <BannerTitle title={""} subtitle="Choose your bet for each match" />
+        </section>
+        <section>
+          <MatchWeek />
+        </section>
+      </>
+    );
   }
 
   return (

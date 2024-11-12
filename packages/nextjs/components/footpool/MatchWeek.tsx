@@ -1,14 +1,12 @@
 "use client";
 
-import { ActionsButtons, BannerTitle, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "~~/components/footpool";
+import { ActionsButtons, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "~~/components/footpool";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { Bet } from "~~/types/match";
-
-const subtitle = "Choose your bet for each match";
 
 type ConsumerResultsType = {
   m: number;
@@ -69,15 +67,11 @@ export const MatchWeek = () => {
   //////////////////////////
   ////// Component
   /////////////////////////
-  const title = matchWeek?.name || "";
+  // const title = matchWeek?.name || "";
 
   if (matchWeek?.rewardsHasBeenSent) {
     return (
       <>
-        <section>
-          <BannerTitle title={title} subtitle={subtitle} />
-        </section>
-
         {isOwner && (
           <section>
             <ActionsButtons
@@ -98,10 +92,6 @@ export const MatchWeek = () => {
   if (matchWeek?.isClosed) {
     return (
       <>
-        <section>
-          <BannerTitle title={title} subtitle={subtitle} />
-        </section>
-
         {isOwner && (
           <section>
             <ActionsButtons
@@ -127,10 +117,6 @@ export const MatchWeek = () => {
 
   return (
     <>
-      <section>
-        <BannerTitle title={title} subtitle={subtitle} />
-      </section>
-
       {isOwner && (
         <section>
           <ActionsButtons
