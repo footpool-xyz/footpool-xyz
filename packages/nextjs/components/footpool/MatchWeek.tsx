@@ -74,16 +74,23 @@ export const MatchWeek = () => {
   if (matchWeek?.rewardsHasBeenSent) {
     return (
       <>
-        <BannerTitle title={title} subtitle={subtitle} />
+        <section>
+          <BannerTitle title={title} subtitle={subtitle} />
+        </section>
+
         {isOwner && (
-          <ActionsButtons
-            addMatches={addMatchesFromConsumer}
-            endMatchWeek={handleEndMatchWeek}
-            withdrawFunds={handleWithdrawFunds}
-          />
+          <section>
+            <ActionsButtons
+              addMatches={addMatchesFromConsumer}
+              endMatchWeek={handleEndMatchWeek}
+              withdrawFunds={handleWithdrawFunds}
+            />
+          </section>
         )}
 
-        <MatchResults matches={matches} bets={Object.values(bets)} />
+        <section>
+          <MatchResults matches={matches} bets={Object.values(bets)} />
+        </section>
       </>
     );
   }
@@ -91,41 +98,62 @@ export const MatchWeek = () => {
   if (matchWeek?.isClosed) {
     return (
       <>
-        <BannerTitle title={title} subtitle={subtitle} />
+        <section>
+          <BannerTitle title={title} subtitle={subtitle} />
+        </section>
+
         {isOwner && (
-          <ActionsButtons
-            addMatches={addMatchesFromConsumer}
-            endMatchWeek={handleEndMatchWeek}
-            withdrawFunds={handleWithdrawFunds}
-          />
+          <section>
+            <ActionsButtons
+              addMatches={addMatchesFromConsumer}
+              endMatchWeek={handleEndMatchWeek}
+              withdrawFunds={handleWithdrawFunds}
+            />
+          </section>
         )}
-        {isOwner && <ClosedMatch />}
-        {!isOwner && <BetsSubmitted bets={Object.values(bets)} />}
+        {isOwner && (
+          <section>
+            <ClosedMatch />
+          </section>
+        )}
+        {!isOwner && (
+          <section>
+            <BetsSubmitted bets={Object.values(bets)} />
+          </section>
+        )}
       </>
     );
   }
 
   return (
     <>
-      <BannerTitle title={title} subtitle={subtitle} />
+      <section>
+        <BannerTitle title={title} subtitle={subtitle} />
+      </section>
 
       {isOwner && (
-        <ActionsButtons
-          addMatches={addMatchesFromConsumer}
-          endMatchWeek={handleEndMatchWeek}
-          withdrawFunds={handleWithdrawFunds}
-        />
+        <section>
+          <ActionsButtons
+            addMatches={addMatchesFromConsumer}
+            endMatchWeek={handleEndMatchWeek}
+            withdrawFunds={handleWithdrawFunds}
+          />
+        </section>
       )}
 
       {!betsSubmitted ? (
-        <Bets
-          matches={matches}
-          handleBet={handleBet}
-          handleSubmitBet={handleSubmitBet}
-          betsLength={Object.keys(bets).length}
-        />
+        <section>
+          <Bets
+            matches={matches}
+            handleBet={handleBet}
+            handleSubmitBet={handleSubmitBet}
+            betsLength={Object.keys(bets).length}
+          />
+        </section>
       ) : (
-        <BetsSubmitted bets={Object.values(bets)} />
+        <section>
+          <BetsSubmitted bets={Object.values(bets)} />
+        </section>
       )}
     </>
   );

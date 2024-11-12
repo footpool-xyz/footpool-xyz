@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { AddMatchWeek, BannerTitle } from "~~/components/footpool";
+import { AddMatchWeek } from "~~/components/footpool";
 import { MatchWeekCard } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { AddressType } from "~~/types/abitype/abi";
 
-const title = "On going Match Weeks";
-const subtitle = "Compete with Footpool users to find the best bettor and win cash prizes.";
 const FootPoolContractName = "FootPool";
 
 export const MatchWeekList = () => {
@@ -80,14 +78,11 @@ export const MatchWeekList = () => {
     );
 
   return (
-    <>
-      <BannerTitle title={title} subtitle={subtitle} />
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
-          {matchWeekCards}
-        </div>
+    <div className="flex items-center flex-col flex-grow">
+      <div className="flex-grow bg-base-300 w-full px-8 py-16">
+        {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
+        {matchWeekCards}
       </div>
-    </>
+    </div>
   );
 };

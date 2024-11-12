@@ -10,6 +10,7 @@ export * from "./MatchBet";
 export * from "./MatchBetButton";
 export * from "./MatchWeekResults";
 export * from "./MatchWeek";
+export * from "./MatchWeekList";
 export * from "./MatchWeekCard";
 export * from "./Team";
 export * from "./UsdtBalance";
