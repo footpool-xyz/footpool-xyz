@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
-import { BannerTitle } from "~~/components/footpool";
+import { HeroBanner } from "~~/components/footpool";
 import { AddressInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
@@ -30,7 +30,7 @@ const Faucet: NextPage = () => {
 
   return (
     <>
-      <BannerTitle title={title} subtitle={subtitle} />
+      <HeroBanner title={title} subtitle={subtitle} />
       <div className="flex justify-center items-center mt-16">
         <div className="bg-base-100 w-full max-w-md mx-auto px-8 py-12 rounded-lg shadow-lg">
           <p className="text-center mb-4">Mint USDT</p>

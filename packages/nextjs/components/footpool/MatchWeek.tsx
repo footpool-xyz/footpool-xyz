@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionsButtons, Bets, BetsSubmitted, ClosedMatch, MatchResults } from "~~/components/footpool";
+import { Bets, BetsSubmitted, ClosedMatch, MatchResults, OwnerMatchWeekManagement } from "~~/components/footpool";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
@@ -74,7 +74,7 @@ export const MatchWeek = () => {
       <>
         {isOwner && (
           <section>
-            <ActionsButtons
+            <OwnerMatchWeekManagement
               addMatches={addMatchesFromConsumer}
               endMatchWeek={handleEndMatchWeek}
               withdrawFunds={handleWithdrawFunds}
@@ -94,7 +94,7 @@ export const MatchWeek = () => {
       <>
         {isOwner && (
           <section>
-            <ActionsButtons
+            <OwnerMatchWeekManagement
               addMatches={addMatchesFromConsumer}
               endMatchWeek={handleEndMatchWeek}
               withdrawFunds={handleWithdrawFunds}
@@ -119,7 +119,7 @@ export const MatchWeek = () => {
     <>
       {isOwner && (
         <section>
-          <ActionsButtons
+          <OwnerMatchWeekManagement
             addMatches={addMatchesFromConsumer}
             endMatchWeek={handleEndMatchWeek}
             withdrawFunds={handleWithdrawFunds}

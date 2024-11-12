@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { AddMatchWeek } from "~~/components/footpool";
-import { MatchWeekCard } from "~~/components/footpool";
+import { MatchWeekCard, OwnerAddMatchWeekModal } from "~~/components/footpool";
 import { useOnlyOwner } from "~~/hooks/footpool";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
@@ -80,7 +79,7 @@ export const MatchWeekList = () => {
   return (
     <div className="flex items-center flex-col flex-grow">
       <div className="flex-grow bg-base-300 w-full px-8 py-16">
-        {isOwner && <AddMatchWeek handleAddMatchWeek={handleAddMatchWeek} />}
+        {isOwner && <OwnerAddMatchWeekModal handleAddMatchWeek={handleAddMatchWeek} />}
         {matchWeekCards}
       </div>
     </div>

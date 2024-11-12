@@ -6,11 +6,11 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-type AddMatchesProps = {
+type OwnerAddMatchesProps = {
   handleAddMatchWeek: () => void;
 };
 
-export const AddMatches = ({ handleAddMatchWeek }: AddMatchesProps) => {
+export const OwnerAddMatches = ({ handleAddMatchWeek }: OwnerAddMatchesProps) => {
   const { consumerContractName } = useConsumerContractName();
   // @ts-expect-error
   const { data: response } = useScaffoldReadContract({

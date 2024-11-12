@@ -2,11 +2,11 @@ import { useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { InputBase } from "~~/components/scaffold-eth";
 
-type AddMatchWeekProps = {
+type OwnerAddMatchWeekModalProps = {
   handleAddMatchWeek: (name: string, leagueId: number) => void;
 };
 
-export const AddMatchWeek = ({ handleAddMatchWeek }: AddMatchWeekProps) => {
+export const OwnerAddMatchWeekModal = ({ handleAddMatchWeek }: OwnerAddMatchWeekModalProps) => {
   const [name, setName] = useState("");
   const [leagueId, setLeagueId] = useState(0);
 

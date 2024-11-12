@@ -1,12 +1,12 @@
 import { BackwardIcon } from "@heroicons/react/24/outline";
 import { useGlobalState } from "~~/services/store/store";
 
-type BannerTitleProps = {
+type HeroBannerProps = {
   title: string;
   subtitle: string;
 };
 
-export const BannerTitle = ({ title, subtitle }: BannerTitleProps) => {
+export const HeroBanner = ({ title, subtitle }: HeroBannerProps) => {
   const { selectedMatchWeek, clearSelectedMatchWeek } = useGlobalState();
 
   return (

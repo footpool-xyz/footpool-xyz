@@ -1,7 +1,7 @@
 "use client";
 
 import type { NextPage } from "next";
-import { BannerTitle, MatchWeek, MatchWeekList } from "~~/components/footpool";
+import { HeroBanner, MatchWeek, MatchWeekList } from "~~/components/footpool";
 import { useGlobalState } from "~~/services/store/store";
 
 const MatchWeeksPage: NextPage = () => {
@@ -11,7 +11,7 @@ const MatchWeeksPage: NextPage = () => {
     return (
       <>
         <section>
-          <BannerTitle title={""} subtitle="Choose your bet for each match" />
+          <HeroBanner title={""} subtitle="Choose your bet for each match" />
         </section>
         <section>
           <MatchWeek />
@@ -23,7 +23,7 @@ const MatchWeeksPage: NextPage = () => {
   return (
     <>
       <section>
-        <BannerTitle
+        <HeroBanner
           title="On going Match Weeks"
           subtitle="Compete with Footpool users to find the best bettor and win cash prizes."
         />
