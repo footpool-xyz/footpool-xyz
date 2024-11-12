@@ -1,3 +1,4 @@
+import { WinnersCounterBanner } from "./WinnersCounterBanner";
 import { Bet, Match } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -9,7 +10,8 @@ type MatchResultsProps = {
 export const MatchResults = ({ matches, bets }: MatchResultsProps) => {
   return (
     <div className="flex flex-col justify-center items-center bg-base-300 p-4">
-      <p className="mb-4">These are the results of Match Week</p>
+      <WinnersCounterBanner />
+      <h2 className="mb-4 text-xl font-bold">Results of Match Week</h2>
 
       <div className="flex w-full max-w-5xl justify-between items-center border-b-2 border-gray-300 py-2">
         <div className="flex-1 text-center font-semibold">HomeTeam</div>
@@ -28,7 +30,9 @@ export const MatchResults = ({ matches, bets }: MatchResultsProps) => {
             {match.homeTeam}
           </div>
 
-          <div className="w-1/12 text-center">vs</div>
+          <div className={`w-1/12 text-center ${match.result === 1 ? "font-bold text-warning" : ""}`}>
+            {match.result === 1 ? "Draw" : "vs"}
+          </div>
 
           <div
             className={`flex-1 text-center ${match.result === 2 ? "font-bold text-warning" : ""}`}

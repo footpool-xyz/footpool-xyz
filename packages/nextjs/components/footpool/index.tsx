@@ -8,7 +8,7 @@ export * from "./BetsSubmitted";
 export * from "./ClosedMatch";
 export * from "./MatchBet";
 export * from "./MatchBetButton";
-export * from "./MatchResults";
+export * from "./MatchWeekResults";
 export * from "./MatchWeek";
 export * from "./MatchWeekCard";
 export * from "./Team";
