@@ -1,4 +1,4 @@
-import { WinnersCounterBanner } from "./WinnersCounterBanner";
+import { WinnersBanner } from "./WinnersBanner";
 import { Bet, Match } from "~~/types/match";
 import { displayMatchResultGivenId } from "~~/utils/footpool";
 
@@ -10,7 +10,7 @@ type MatchResultsProps = {
 export const MatchResults = ({ matches, bets }: MatchResultsProps) => {
   return (
     <div className="flex flex-col justify-center items-center bg-base-300 p-4">
-      <WinnersCounterBanner />
+      <WinnersBanner />
       <h2 className="mb-4 text-xl font-bold">Results of Match Week</h2>
 
       <div className="flex w-full max-w-5xl justify-between items-center border-b-2 border-gray-300 py-2">

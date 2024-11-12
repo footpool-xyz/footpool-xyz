@@ -4,14 +4,14 @@ import { TrophyIcon } from "@heroicons/react/24/outline";
 import { useWinners } from "~~/hooks/footpool";
 import { useGlobalState } from "~~/services/store/store";
 
-export const WinnersCounterBanner = () => {
+export const WinnersBanner = () => {
   const { selectedMatchWeek } = useGlobalState();
   const connectedUser = useAccount();
 
   const { events: winners } = useWinners(selectedMatchWeek as `0x${string}`, "MatchWeek");
 
   const isUserWinner = winners.find(winner => winner.to === connectedUser.address);
-  console.log(isUserWinner);
+
   return (
     <>
       {isUserWinner && <WinningMessage amount={Number(isUserWinner.reward)} />}
