@@ -3,7 +3,7 @@ export * from "./OwnerAddMatches";
 export * from "./OwnerAddMatchWeekModal";
 export * from "./HeroBanner";
 export * from "./BetButton";
-export * from "./Bets";
+export * from "./BetsForm";
 export * from "./BetsSubmitted";
 export * from "./ClosedMatch";
 export * from "./MatchBet";

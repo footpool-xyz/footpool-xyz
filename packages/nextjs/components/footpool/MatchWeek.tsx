@@ -1,6 +1,6 @@
 "use client";
 
-import { Bets, BetsSubmitted, ClosedMatch, MatchResults, OwnerMatchWeekManagement } from "~~/components/footpool";
+import { BetsForm, BetsSubmitted, ClosedMatch, MatchResults, OwnerMatchWeekManagement } from "~~/components/footpool";
 import { useBets, useMatchWeekData, useMatches, useOnlyOwner } from "~~/hooks/footpool";
 import { useConsumerContractName } from "~~/hooks/footpool/useConsumerContractName";
 import { useWithdrawFunds } from "~~/hooks/footpool/useWithdrawFunds";
@@ -129,7 +129,7 @@ export const MatchWeek = () => {
 
       {!betsSubmitted ? (
         <section>
-          <Bets
+          <BetsForm
             matches={matches}
             handleBet={handleBet}
             handleSubmitBet={handleSubmitBet}
